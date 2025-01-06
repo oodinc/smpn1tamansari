@@ -1,0 +1,26 @@
+Website Sekolahan SMPN 1 Tamansari
+# home
+	- selamat datang + foto (slider)
+	- berita dan informasi terbaru
+	- ekstraulikuler (sekilas)
+	- kalender pendidikan (tahun ini)
+	- profil alumnni (opsional)
+
+# profil
+	- sambutan kepala sekolah
+	- sejarah
+	- visi misi
+	- informasi (identitas sekolahan, akreditasi, jumlah guru, tenaga pendidikan, siswa)
+	- struktur organisasi (Kepala Sekolah, Komite sekolah, Kepala Tata Usaha, Wakasek Kurikulum, Wakasek Humas)
+	- staff dan guru + foto
+ 
+# layanan
+	- ekstrakulikuler (penjabaran)
+	- galeri
+	- sarana prasarana
+
+# berita
+	- berita terbaru (akademik, prestasi)
+	- info sekolah (dari sekolahan untuk siswa, misal pengumuman atau kegiatan)
+
+# kontak
