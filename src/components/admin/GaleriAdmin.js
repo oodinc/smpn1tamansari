@@ -1,161 +1,213 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const GaleriAdmin = () => {
   const [galeri, setGaleri] = useState([]);
-  const [formData, setFormData] = useState({
-    title: "",
-    image: null,
-  });
-  const [editMode, setEditMode] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGaleri, setSelectedGaleri] = useState(null);
+  const [newTitle, setNewTitle] = useState("");
+  const [newImage, setNewImage] = useState("");
 
+  // Fetch gallery items from backend
   useEffect(() => {
-    fetchGaleri();
+    fetch("http://localhost:5000/api/galeri")
+      .then((response) => response.json())
+      .then((data) => setGaleri(data));
   }, []);
 
-  const fetchGaleri = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/galeri");
-      setGaleri(response.data);
-    } catch (error) {
-      console.error("Error fetching galeri:", error);
-    }
+  // Handle create gallery
+  const handleCreateGaleri = () => {
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    if (newImage) formData.append("image", newImage);
+
+    fetch("http://localhost:5000/api/galeri", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setGaleri([...galeri, data]);
+        setNewTitle("");
+        setNewImage(null);
+      });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  // Handle update gallery
+  const handleUpdateGaleri = () => {
+    const formData = new FormData();
+    formData.append("title", selectedGaleri.title);
+    if (selectedGaleri.image) formData.append("image", selectedGaleri.image);
+
+    fetch(`http://localhost:5000/api/galeri/${selectedGaleri.id}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setGaleri(galeri.map((item) => (item.id === data.id ? data : item)));
+        closeModal();
+      });
+  };
+
+  // Handle delete gallery
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/api/galeri/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setGaleri(galeri.filter((item) => item.id !== id));
     });
   };
 
-  const handleCreate = async () => {
-    try {
-      const form = new FormData();
-      form.append("title", formData.title);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.post("http://localhost:5000/admin/galeri", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchGaleri();
-      setFormData({ title: "", image: null });
-    } catch (error) {
-      console.error("Error creating galeri:", error);
-    }
+  const openModal = (item) => {
+    setSelectedGaleri(item);
+    setIsModalOpen(true);
   };
 
-  const handleUpdate = async () => {
-    try {
-      const form = new FormData();
-      form.append("title", formData.title);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.put(`http://localhost:5000/admin/galeri/${currentId}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchGaleri();
-      setFormData({ title: "", image: null });
-      setEditMode(false);
-      setCurrentId(null);
-    } catch (error) {
-      console.error("Error updating galeri:", error);
-    }
-  };
-
-  const handleEdit = (galeri) => {
-    setEditMode(true);
-    setCurrentId(galeri._id);
-    setFormData({ title: galeri.title, image: null });
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/admin/galeri/${id}`);
-      fetchGaleri();
-    } catch (error) {
-      console.error("Error deleting galeri:", error);
-    }
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedGaleri(null);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Kelola Galeri
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kelola Galeri
+        </h2>
 
-      {/* Formulir Buat atau Perbarui Galeri */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="Judul"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="file"
-          name="image"
-          onChange={(e) =>
-            setFormData({ ...formData, image: e.target.files[0] })
-          }
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        {/* Add new gallery form */}
+        <div className="mb-8">
+          <h3 className="text-2xl font-semibold text-gray-800">
+            Tambah Galeri
+          </h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCreateGaleri();
+            }}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              placeholder="Judul Galeri"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            />
+            <input
+              type="file"
+              onChange={(e) => setNewImage(e.target.files[0])}
+              className="w-full p-3 border border-gray-300 rounded-md"
+            />
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md"
+            >
+              Tambah Galeri
+            </button>
+          </form>
+        </div>
 
-        <button
-          onClick={editMode ? handleUpdate : handleCreate}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {editMode ? "Perbarui Galeri" : "Buat Galeri"}
-        </button>
-      </div>
-
-      {/* Menampilkan Daftar Galeri dalam Bentuk Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Judul</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Gambar</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {galeri.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="px-6 py-4">{item.title}</td>
-                <td className="px-6 py-4">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() => handleEdit(item)}
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2 transition-all duration-300 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md transition-all duration-300 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Hapus
-                  </button>
-                </td>
+        {/* Galeri Table */}
+        <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+          Daftar Galeri
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-left text-gray-800">Judul</th>
+                <th className="px-4 py-2 text-left text-gray-800">Gambar</th>
+                <th className="px-4 py-2 text-gray-800">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {galeri.map((item) => (
+                <tr key={item.id} className="border-t">
+                  <td className="px-4 py-2">{item.title}</td>
+                  <td className="px-4 py-2">
+                    {item.image && (
+                      <img
+                        src={`http://localhost:5000${item.image}`}
+                        alt={item.title}
+                        className="w-20 h-20 object-cover"
+                      />
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      onClick={() => openModal(item)}
+                      className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-md"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Modal for editing gallery */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-md shadow-lg">
+              <h3 className="text-2xl font-semibold mb-4">Edit Galeri</h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateGaleri();
+                }}
+                className="space-y-4"
+              >
+                <input
+                  type="text"
+                  value={selectedGaleri.title}
+                  onChange={(e) =>
+                    setSelectedGaleri({
+                      ...selectedGaleri,
+                      title: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setSelectedGaleri({
+                      ...selectedGaleri,
+                      image: e.target.files[0],
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                />
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="px-4 py-2 bg-gray-300 rounded-md"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  >
+                    Simpan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

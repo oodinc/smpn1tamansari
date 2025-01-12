@@ -42,7 +42,7 @@ const Contact = () => {
       !formErrors.message
     ) {
       try {
-        await axios.post("http://localhost:5000/admin/kontak", formData);
+        await axios.post("http://localhost:5000/api/contacts", formData);
         setIsSubmitted(true);
         setFormData({ name: "", email: "", phone: "", message: "" });
       } catch (error) {

@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const OrganizationalStructureAdmin = () => {
   const [structure, setStructure] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    role: "",
-    image: "",
-  });
-  const [editMode, setEditMode] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStructure, setSelectedStructure] = useState(null);
+  const [newName, setNewName] = useState("");
+  const [newRole, setNewRole] = useState("");
+  const [newImage, setNewImage] = useState(null);
 
   const roles = [
     "Kepala Sekolah",
@@ -23,179 +20,248 @@ const OrganizationalStructureAdmin = () => {
     "Urusan Sarpras",
   ];
 
+  // Fetch structure data from backend
   useEffect(() => {
-    fetchStructure();
+    fetch("http://localhost:5000/api/strukturOrganisasi")
+      .then((response) => response.json())
+      .then((data) => setStructure(data));
   }, []);
 
-  const fetchStructure = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/struktur");
-      setStructure(response.data);
-    } catch (error) {
-      console.error("Error fetching structure:", error);
-    }
+  // Handle create structure
+  const handleCreateStructure = () => {
+    const formData = new FormData();
+    formData.append("name", newName);
+    formData.append("role", newRole);
+    if (newImage) formData.append("image", newImage);
+
+    fetch("http://localhost:5000/api/strukturOrganisasi", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setStructure([...structure, data]);
+        setNewName("");
+        setNewRole("");
+        setNewImage(null);
+      });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  // Handle update structure
+  const handleUpdateStructure = () => {
+    const formData = new FormData();
+    formData.append("name", selectedStructure.name);
+    formData.append("role", selectedStructure.role);
+    if (selectedStructure.image)
+      formData.append("image", selectedStructure.image);
+
+    fetch(
+      `http://localhost:5000/api/strukturOrganisasi/${selectedStructure.id}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setStructure(
+          structure.map((item) => (item.id === data.id ? data : item))
+        );
+        closeModal();
+      });
+  };
+
+  // Handle delete structure
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/api/strukturOrganisasi/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setStructure(structure.filter((item) => item.id !== id));
     });
   };
 
-  const handleCreate = async () => {
-    try {
-      const form = new FormData();
-      form.append("name", formData.name);
-      form.append("role", formData.role);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.post("http://localhost:5000/admin/struktur", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchStructure();
-      setFormData({ name: "", role: "", image: "" });
-    } catch (error) {
-      console.error("Error adding structure:", error);
-    }
+  const openModal = (item) => {
+    setSelectedStructure(item);
+    setIsModalOpen(true);
   };
 
-  const handleUpdate = async () => {
-    if (!currentId) return;
-    try {
-      const form = new FormData();
-      form.append("name", formData.name);
-      form.append("role", formData.role);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.put(`http://localhost:5000/admin/struktur/${currentId}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchStructure();
-      setFormData({ name: "", role: "", image: "" });
-      setEditMode(false);
-      setCurrentId(null);
-    } catch (error) {
-      console.error("Error updating structure:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/admin/struktur/${id}`);
-      fetchStructure();
-    } catch (error) {
-      console.error("Error deleting structure:", error);
-    }
-  };
-
-  const handleEdit = (id, name, role, image) => {
-    setFormData({ name, role, image });
-    setEditMode(true);
-    setCurrentId(id);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedStructure(null);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Kelola Struktur Organisasi
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kelola Struktur Organisasi
+        </h2>
 
-      {/* Formulir untuk Menambah atau Memperbarui Struktur */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Nama"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        {/* Add new structure form */}
+        <div className="mb-8">
+          <h3 className="text-2xl font-semibold text-gray-800">
+            Tambah Struktur
+          </h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCreateStructure();
+            }}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              placeholder="Nama"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            />
+            <select
+              value={newRole}
+              onChange={(e) => setNewRole(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            >
+              <option value="">Pilih Peran</option>
+              {roles.map((role, index) => (
+                <option key={index} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+            <input
+              type="file"
+              onChange={(e) => setNewImage(e.target.files[0])}
+              className="w-full p-3 border border-gray-300 rounded-md"
+            />
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md"
+            >
+              Tambah Struktur
+            </button>
+          </form>
+        </div>
 
-        {/* Dropdown untuk Peran */}
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleInputChange}
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="" disabled>
-            Pilih Peran
-          </option>
-          {roles.map((role, index) => (
-            <option key={index} value={role}>
-              {role}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="file"
-          name="image"
-          onChange={(e) =>
-            setFormData({ ...formData, image: e.target.files[0] })
-          }
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <button
-          onClick={editMode ? handleUpdate : handleCreate}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {editMode ? "Perbarui Struktur" : "Tambah Struktur"}
-        </button>
-      </div>
-
-      {/* Menampilkan Daftar Struktur dalam Bentuk Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Nama</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Peran</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Gambar</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {structure.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="px-6 py-4">{item.name}</td>
-                <td className="px-6 py-4">{item.role}</td>
-                <td className="px-6 py-4">
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  )}
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() =>
-                      handleEdit(item._id, item.name, item.role, item.image)
-                    }
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2 transition-all duration-300 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md transition-all duration-300 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Hapus
-                  </button>
-                </td>
+        {/* Structure Table */}
+        <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+          Daftar Struktur
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-left text-gray-800">Nama</th>
+                <th className="px-4 py-2 text-left text-gray-800">Peran</th>
+                <th className="px-4 py-2 text-left text-gray-800">Gambar</th>
+                <th className="px-4 py-2 text-gray-800">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {structure.map((item) => (
+                <tr key={item.id} className="border-t">
+                  <td className="px-4 py-2">{item.name}</td>
+                  <td className="px-4 py-2">{item.role}</td>
+                  <td className="px-4 py-2">
+                    {item.image && (
+                      <img
+                        src={`http://localhost:5000${item.image}`}
+                        alt={item.name}
+                        className="w-20 h-20 object-cover"
+                      />
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      onClick={() => openModal(item)}
+                      className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-md"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Modal for editing structure */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-md shadow-lg">
+              <h3 className="text-2xl font-semibold mb-4">Edit Struktur</h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateStructure();
+                }}
+                className="space-y-4"
+              >
+                <input
+                  type="text"
+                  value={selectedStructure.name}
+                  onChange={(e) =>
+                    setSelectedStructure({
+                      ...selectedStructure,
+                      name: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+                <select
+                  value={selectedStructure.role}
+                  onChange={(e) =>
+                    setSelectedStructure({
+                      ...selectedStructure,
+                      role: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                >
+                  <option value="">Pilih Peran</option>
+                  {roles.map((role, index) => (
+                    <option key={index} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setSelectedStructure({
+                      ...selectedStructure,
+                      image: e.target.files[0],
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                />
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="px-4 py-2 bg-gray-300 rounded-md"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  >
+                    Simpan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

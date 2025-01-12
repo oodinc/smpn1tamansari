@@ -1,98 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
 
 const Profile = () => {
-  const [sambutan, setSambutan] = useState({
-    message: "",
-    description: "",
-    image: "",
-    headmasterName: "",
-  });
-
-  const [sejarah, setSejarah] = useState({
-    text: "",
-    image: "",
-  });
-
-  const [visiMisi, setVisiMisi] = useState({
-    visi: "",
-    misi: [],
-  });
-
-  const [schoolInfo, setSchoolInfo] = useState({});
-
+  const [headmasterMessage, setHeadmasterMessage] = useState([]);
+  const [sejarah, setSejarah] = useState([]);
+  const [visiMisi, setVisiMisi] = useState({ visi: "", misi: [] });
+  const [schoolInfo, setSchoolInfo] = useState(null);
   const [strukturOrganisasi, setStrukturOrganisasi] = useState([]);
-
-  const [staffMembers, setStaffMembers] = useState([]);
+  const [staffAndTeachers, setStaffAndTeachers] = useState([]);
 
   useEffect(() => {
-    const fetchSambutan = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/sambutan"
-        );
-        setSambutan(response.data.sambutan);
-      } catch (error) {
-        console.error("Error fetching sambutan:", error);
-      }
-    };
+    fetch("http://localhost:5000/api/headmaster-message")
+      .then((response) => response.json())
+      .then((data) => setHeadmasterMessage(data));
 
-    const fetchSejarah = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/sejarah");
-        setSejarah(response.data.sejarah);
-      } catch (error) {
-        console.error("Error fetching sambutan:", error);
-      }
-    };
+    fetch("http://localhost:5000/api/sejarah")
+      .then((response) => response.json())
+      .then((data) => setSejarah(data));
 
-    const fetchVisiMisi = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/visimisi"
-        );
-        setVisiMisi(response.data.visiMisi);
-      } catch (error) {
-        console.error("Error fetching Visi & Misi:", error);
-      }
-    };
+    fetch("http://localhost:5000/api/visi-misi")
+      .then((response) => response.json())
+      .then((data) => setVisiMisi(data));
 
-    const fetchSchoolInfo = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/info");
-        setSchoolInfo(response.data.schoolInfo);
-      } catch (error) {
-        console.error("Error fetching school info:", error);
-      }
-    };
+    fetch("http://localhost:5000/api/schoolinfo")
+      .then((response) => response.json())
+      .then((data) => setSchoolInfo(data));
 
-    const fetchStrukturOrganisasi = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/struktur"
-        );
-        setStrukturOrganisasi(response.data);
-      } catch (error) {
-        console.error("Error fetching organizational structure:", error);
-      }
-    };
+    fetch("http://localhost:5000/api/strukturOrganisasi")
+      .then((response) => response.json())
+      .then((data) => setStrukturOrganisasi(data));
 
-    const fetchStaff = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/staff");
-        setStaffMembers(response.data);
-      } catch (error) {
-        console.error("Error fetching staff:", error);
-      }
-    };
-
-    fetchSambutan();
-    fetchSejarah();
-    fetchVisiMisi();
-    fetchSchoolInfo();
-    fetchStrukturOrganisasi();
-    fetchStaff();
+    fetch("http://localhost:5000/api/staffandteachers")
+      .then((response) => response.json())
+      .then((data) => setStaffAndTeachers(data));
   }, []);
 
   return (
@@ -113,10 +53,10 @@ const Profile = () => {
                 className="bg-white p-10 rounded-xl shadow-2xl border border-gray-200"
               >
                 <p className="text-lg leading-relaxed text-gray-700">
-                  {sambutan.message}
+                  {headmasterMessage.message}
                 </p>
                 <p className="text-lg leading-relaxed text-gray-700">
-                  {sambutan.description}
+                  {headmasterMessage.description}
                 </p>
                 <div className="mt-6 text-gray-500 text-sm">
                   <span>- Kepala Sekolah SMPN 1 Tamansari</span>
@@ -132,7 +72,7 @@ const Profile = () => {
               >
                 <div className="relative group">
                   <img
-                    src={sambutan.image}
+                    src={`http://localhost:5000${headmasterMessage.image}`}
                     alt="Kepala Sekolah"
                     className="w-auto h-96 object-cover rounded-xl shadow-lg"
                   />
@@ -140,7 +80,7 @@ const Profile = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
                   {/* Nama Kepala Sekolah */}
                   <div className="absolute bottom-4 left-4 text-white text-lg font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span>{sambutan.headmasterName}</span>
+                    <span>{headmasterMessage.headmasterName}</span>
                   </div>
                 </div>
               </motion.div>
@@ -171,7 +111,10 @@ const Profile = () => {
                   className="flex justify-center md:w-1/3"
                 >
                   <div className="bg-gray-100 shadow-lg">
-                    <img src={sejarah.image} alt="Sejarah" />
+                    <img
+                      src={`http://localhost:5000${sejarah.image}`}
+                      alt="Sejarah"
+                    />
                   </div>
                 </motion.div>
 
@@ -216,151 +159,160 @@ const Profile = () => {
       {/* Informasi Sekolah Section */}
       <div id="informasi" className="bg-gray-50 py-24">
         <div className="max-w-7xl mx-auto px-4">
-          <section>
-            <h2 className="text-4xl font-semibold text-center mb-12 text-gray-800">
-              Informasi Sekolah
-            </h2>
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="bg-white p-8 rounded-lg shadow-lg"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <h3 className="text-xl text-gray-800">Akreditasi</h3>
-                  <p className="text-5xl font-bold text-gray-700">
-                    {schoolInfo.akreditasi}
-                  </p>
+          {schoolInfo ? (
+            <section>
+              <h2 className="text-4xl font-semibold text-center mb-12 text-gray-800">
+                Informasi Sekolah
+              </h2>
+
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+                className="bg-white p-8 rounded-lg shadow-lg"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="text-center">
+                    <h3 className="text-xl text-gray-800">Akreditasi</h3>
+                    <p className="text-5xl font-bold text-gray-700">
+                      {schoolInfo.akreditasi}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl text-gray-800">Jumlah Guru</h3>
+                    <p className="text-5xl font-bold text-gray-700">
+                      {schoolInfo.jumlahGuru}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl text-gray-800">Tenaga Pendidikan</h3>
+                    <p className="text-5xl font-bold text-gray-700">
+                      {schoolInfo.tenagaPendidikan}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-xl text-gray-800">Jumlah Siswa</h3>
+                    <p className="text-5xl font-bold text-gray-700">
+                      {schoolInfo.jumlahSiswa}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <h3 className="text-xl text-gray-800">Jumlah Guru</h3>
-                  <p className="text-5xl font-bold text-gray-700">
-                    {schoolInfo.jumlahGuru}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-xl text-gray-800">Tenaga Pendidikan</h3>
-                  <p className="text-5xl font-bold text-gray-700">
-                    {schoolInfo.tenagaPendidikan}
-                  </p>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-xl text-gray-800">Jumlah Siswa</h3>
-                  <p className="text-5xl font-bold text-gray-700">
-                    {schoolInfo.jumlahSiswa}
-                  </p>
+              </motion.div>
+
+              <div className="mt-4 bg-white p-8 rounded-lg shadow-lg">
+                <h3 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+                  Identitas Sekolah
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  {/* Side Right: School Info */}
+                  <div className="text-lg text-gray-700 space-y-6 border-gray-300 pr-8">
+                    <ul className="space-y-4">
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Nama Sekolah:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.namaSekolah}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          NSPN:{" "}
+                        </strong>
+                        <span className="text-gray-600">{schoolInfo.nspn}</span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Jenjang Pendidikan:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.jenjangPendidikan}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Status Sekolah:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.statusSekolah}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Alamat:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.alamat}
+                        </span>
+                      </li>
+                      <li>
+                        <strong className="font-semibold text-gray-800">
+                          RT / RW:{" "}
+                        </strong>
+                        <span className="text-gray-600">{schoolInfo.rtRw}</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Side Left: Address Info */}
+                  <div className="text-lg text-gray-700 space-y-6 pl-8">
+                    <ul className="space-y-4">
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Kode Pos:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.kodePos}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Kecamatan:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.kecamatan}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Kab/Kota:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.kabKota}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Provinsi:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.provinsi}
+                        </span>
+                      </li>
+                      <li className="border-b border-gray-200 pb-4">
+                        <strong className="font-semibold text-gray-800">
+                          Negara:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.negara}
+                        </span>
+                      </li>
+                      <li>
+                        <strong className="font-semibold text-gray-800">
+                          Posisi Geografis:{" "}
+                        </strong>
+                        <span className="text-gray-600">
+                          {schoolInfo.posisiGeografis}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-
-            <div className="mt-4 bg-white p-8 rounded-lg shadow-lg">
-              <h3 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
-                Identitas Sekolah
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {/* Side Right: School Info */}
-                <div className="text-lg text-gray-700 space-y-6 border-gray-300 pr-8">
-                  <ul className="space-y-4">
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Nama Sekolah:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.namaSekolah}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        NSPN:{" "}
-                      </strong>
-                      <span className="text-gray-600">{schoolInfo.nspn}</span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Jenjang Pendidikan:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.jenjangPendidikan}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Status Sekolah:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.statusSekolah}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Alamat:{" "}
-                      </strong>
-                      <span className="text-gray-600">{schoolInfo.alamat}</span>
-                    </li>
-                    <li>
-                      <strong className="font-semibold text-gray-800">
-                        RT / RW:{" "}
-                      </strong>
-                      <span className="text-gray-600">{schoolInfo.rtRw}</span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Side Left: Address Info */}
-                <div className="text-lg text-gray-700 space-y-6 pl-8">
-                  <ul className="space-y-4">
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Kode Pos:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.kodePos}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Kecamatan:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.kecamatan}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Kab/Kota:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.kabKota}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Provinsi:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.provinsi}
-                      </span>
-                    </li>
-                    <li className="border-b border-gray-200 pb-4">
-                      <strong className="font-semibold text-gray-800">
-                        Negara:{" "}
-                      </strong>
-                      <span className="text-gray-600">{schoolInfo.negara}</span>
-                    </li>
-                    <li>
-                      <strong className="font-semibold text-gray-800">
-                        Posisi Geografis:{" "}
-                      </strong>
-                      <span className="text-gray-600">
-                        {schoolInfo.posisiGeografis}
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
       </div>
 
@@ -389,7 +341,7 @@ const Profile = () => {
                     <div key={item._id} className="text-center">
                       <div className="relative inline-block">
                         <img
-                          src={item.image}
+                          src={`http://localhost:5000${item.image}`}
                           alt={item.name}
                           className="w-28 h-28 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                         />
@@ -408,7 +360,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -426,7 +378,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -444,7 +396,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -462,7 +414,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -482,7 +434,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -500,7 +452,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -518,7 +470,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -536,7 +488,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={item.image}
+                            src={`http://localhost:5000${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -567,7 +519,7 @@ const Profile = () => {
               transition={{ duration: 1 }}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {staffMembers.map((guru, index) => (
+              {staffAndTeachers.map((guru, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
@@ -575,7 +527,7 @@ const Profile = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={guru.image}
+                      src={`http://localhost:5000${guru.image}`}
                       alt={guru.name}
                       className="object-cover w-full h-full rounded-lg"
                     />

@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const Layanan = () => {
@@ -8,39 +7,22 @@ const Layanan = () => {
   const [sarana, setSarana] = useState([]);
 
   useEffect(() => {
-    const fetchExtracurriculars = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/ekstrakurikuler"
-        );
-        setExtracurriculars(response.data);
-      } catch (error) {
-        console.error("Error fetching extracurriculars:", error);
-      }
-    };
+    // Fetch extracurriculars from the backend
+    fetch("http://localhost:5000/api/extracurriculars")
+      .then((response) => response.json())
+      .then((data) => setExtracurriculars(data));
 
-    const fetchGaleri = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/galeri");
-        setGaleri(response.data); // Update state with fetched galeri data
-      } catch (error) {
-        console.error("Error fetching galeri:", error);
-      }
-    };
+    // Fetch gallery items from the backend
+    fetch("http://localhost:5000/api/galeri")
+      .then((response) => response.json())
+      .then((data) => setGaleri(data));
 
-    const fetchSarana = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/sarana");
-        setSarana(response.data);
-      } catch (error) {
-        console.error("Error fetching sarana:", error);
-      }
-    };
+    // Fetch sarana items from the backend
+    fetch("http://localhost:5000/api/sarana")
+      .then((response) => response.json())
+      .then((data) => setSarana(data));
+  }, []);
 
-    fetchExtracurriculars();
-    fetchGaleri();
-    fetchSarana();
-  });
   return (
     <div>
       {/* Ekstrakurikuler Section */}
@@ -51,7 +33,9 @@ const Layanan = () => {
               Ekstrakurikuler
             </h2>
             <p className="text-lg text-center text-gray-700">
-              SMPN 1 Tamansari menyediakan berbagai ekstrakurikuler yang bertujuan untuk mengembangkan minat dan bakat siswa. Beberapa ekstrakurikuler yang tersedia antara lain:
+              SMPN 1 Tamansari menyediakan berbagai ekstrakurikuler yang
+              bertujuan untuk mengembangkan minat dan bakat siswa. Beberapa
+              ekstrakurikuler yang tersedia antara lain:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
               {extracurriculars.map((ekstra, index) => (
@@ -62,12 +46,14 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={ekstra.image}
+                      src={`http://localhost:5000${ekstra.image}`}
                       alt={ekstra.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
                   </div>
-                  <h3 className="font-bold text-2xl text-center">{ekstra.name}</h3>
+                  <h3 className="font-bold text-2xl text-center">
+                    {ekstra.name}
+                  </h3>
                 </motion.div>
               ))}
             </div>
@@ -83,7 +69,8 @@ const Layanan = () => {
               Galeri
             </h2>
             <p className="text-lg text-center text-gray-700 mb-8">
-              Berikut adalah beberapa foto kegiatan di SMPN 1 Tamansari yang memperlihatkan suasana dan kegiatan di sekolah kami.
+              Berikut adalah beberapa foto kegiatan di SMPN 1 Tamansari yang
+              memperlihatkan suasana dan kegiatan di sekolah kami.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {galeri.map((item, index) => (
@@ -94,8 +81,8 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={item.image}
-                      alt={`Galeri ${index + 1}`}
+                      src={`http://localhost:5000${item.image}`}
+                      alt={item.title}
                       className="object-cover w-full h-full rounded-lg"
                     />
 
@@ -122,7 +109,8 @@ const Layanan = () => {
               Sarana dan Prasarana
             </h2>
             <p className="text-lg text-center text-gray-700">
-              SMPN 1 Tamansari memiliki berbagai sarana dan prasarana yang mendukung proses belajar mengajar.
+              SMPN 1 Tamansari memiliki berbagai sarana dan prasarana yang
+              mendukung proses belajar mengajar.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
               {sarana.map((sarana, index) => (
@@ -133,12 +121,14 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={sarana.image}
+                      src={`http://localhost:5000${sarana.image}`}
                       alt={sarana.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
                   </div>
-                  <h3 className="font-bold text-2xl text-center">{sarana.name}</h3>
+                  <h3 className="font-bold text-2xl text-center">
+                    {sarana.name}
+                  </h3>
                 </motion.div>
               ))}
             </div>

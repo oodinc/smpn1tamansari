@@ -1,38 +1,25 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
 
 const Berita = () => {
   const [news, setNews] = useState([]);
   const [pengumuman, setPengumuman] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPengumuman, setSelectedPengumuman] = useState(null);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/berita");
-        setNews(response.data);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-      }
-    };
+    // Fetch news from the backend
+    fetch("http://localhost:5000/api/news")
+      .then((response) => response.json())
+      .then((data) => setNews(data));
 
-    const fetchPengumuman = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/pengumuman"
-        );
-        setPengumuman(response.data);
-      } catch (error) {
-        console.error("Error fetching pengumuman:", error);
-      }
-    };
-
-    fetchNews();
-    fetchPengumuman();
+    // Fetch announcements from the backend
+    fetch("http://localhost:5000/api/announcements")
+      .then((response) => response.json())
+      .then((data) => setPengumuman(data));
   }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPengumuman, setSelectedPengumuman] = useState(null);
 
   const truncateText = (text, length) => {
     if (text.length > length) {
@@ -68,7 +55,7 @@ const Berita = () => {
                 <div className="w-full h-56 bg-gray-200">
                   {item.image && (
                     <img
-                      src={item.image}
+                      src={`http://localhost:5000${item.image}`}
                       alt={item.title}
                       className="w-full h-full object-cover"
                     />
@@ -88,7 +75,7 @@ const Berita = () => {
                   </p>
                   <div className="mt-auto text-right">
                     <Link
-                      to={`/berita/${item._id}`}
+                      to={`/berita/${item.id}`}
                       className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
                     >
                       Selengkapnya →

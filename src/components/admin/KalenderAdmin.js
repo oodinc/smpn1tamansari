@@ -1,122 +1,104 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const KalenderAdmin = () => {
-  const [kalender, setKalender] = useState({ title: "", file: "" });
-  const [formData, setFormData] = useState({ title: "", file: "" });
+  const [kalender, setKalender] = useState(null);
+  const [newTitle, setNewTitle] = useState("");
+  const [newFile, setNewFile] = useState(null);
 
   useEffect(() => {
-    fetchKalender();
+    fetch("http://localhost:5000/api/kalender")
+      .then((response) => response.json())
+      .then((data) => {
+        setKalender(data[0]);
+        setNewTitle(data[0]?.title || "");
+      });
   }, []);
 
-  const fetchKalender = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/kalender");
-      console.log("Kalender berhasil diambil:", response.data);
-      setKalender(response.data || { title: "", file: "" });
-      setFormData({ title: response.data?.title || "", file: "" });
-    } catch (error) {
-      console.error("Kesalahan mengambil kalender:", error);
-    }
-  };
+  const handleUpdateKalender = () => {
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    if (newFile) formData.append("file", newFile);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    fetch(`http://localhost:5000/api/kalender/${kalender.id}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setKalender(data);
+        setNewTitle("");
+        setNewFile(null);
+      });
   };
 
   const handleFileChange = (e) => {
-    setFormData({ ...formData, file: e.target.files[0] });
-  };
-
-  const handleUpdateKalender = async () => {
-    const form = new FormData();
-    form.append("title", formData.title);
-    if (formData.file) {
-      form.append("file", formData.file);
-    }
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/admin/kalender",
-        form,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      console.log("Kalender berhasil diperbarui:", response.data);
-      fetchKalender();
-
-      // Tambahkan pemberitahuan menggunakan alert
-      alert("Kalender berhasil diperbarui!");
-    } catch (error) {
-      console.error("Kesalahan memperbarui kalender:", error);
-      alert("Terjadi kesalahan saat memperbarui kalender.");
-    }
+    setNewFile(e.target.files[0]);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Kalender Pendidikan
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kalender Pendidikan
+        </h2>
 
-      {/* Formulir Buat atau Perbarui Kalender */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="Judul"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="file"
-          name="file"
-          onChange={handleFileChange}
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={handleUpdateKalender}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Perbarui Kalender Pendidikan
-        </button>
-      </div>
+        {kalender && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-semibold text-gray-800">
+              Update Kalender Pendidikan Section
+            </h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdateKalender();
+              }}
+              className="space-y-4"
+            >
+              <input
+                type="text"
+                placeholder="Title"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              >
+                Update Kalender
+              </button>
+            </form>
+          </div>
+        )}
 
-      {/* Menampilkan Detail Kalender dalam Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Judul
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                File
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="px-6 py-4">{kalender.title}</td>
-              <td className="px-6 py-4">
-                {kalender.file ? (
+        {kalender && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+              Current Kalender Pendidikan Section
+            </h3>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-3xl font-bold">{kalender.title}</h4>
+              {kalender.file && (
+                <div className="mt-4">
                   <a
                     href={`http://localhost:5000${kalender.file}`}
-                    download
-                    className="text-blue-600"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    Unduh PDF
+                    View Calendar PDF
                   </a>
-                ) : (
-                  "Tidak ada file tersedia"
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

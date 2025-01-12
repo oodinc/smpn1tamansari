@@ -1,229 +1,289 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import ReactQuill from "react-quill"; // Import Quill
-import "react-quill/dist/quill.snow.css"; // Import CSS
+import React, { useState, useEffect, useRef } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const BeritaAdmin = () => {
-  const [berita, setBerita] = useState([]);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    image: "",
-    author: "",
-  });
-  const [editMode, setEditMode] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [news, setNews] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newImage, setNewImage] = useState("");
+  const [newPublishedAt, setNewPublishedAt] = useState("");
+  const quillRef = useRef(null);
 
+  // Fetch berita from backend
   useEffect(() => {
-    fetchBerita();
+    fetch("http://localhost:5000/api/news")
+      .then((response) => response.json())
+      .then((data) => setNews(data));
   }, []);
 
-  const fetchBerita = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/berita");
-      setBerita(response.data);
-    } catch (error) {
-      console.error("Error fetching berita:", error);
-    }
+  // Handle update berita
+  const handleUpdateBerita = () => {
+    const formData = new FormData();
+    formData.append("title", selectedNews.title);
+    formData.append("description", selectedNews.description);
+    formData.append("publishedAt", selectedNews.publishedAt);
+    if (selectedNews.image) formData.append("image", selectedNews.image);
+
+    fetch(`http://localhost:5000/api/news/${selectedNews.id}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setNews(news.map((item) => (item.id === data.id ? data : item)));
+        closeModal();
+      });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  const handleFileChange = (e) => {
+    setNewImage(e.target.files[0]);
+  };
+
+  // Handle delete berita
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/api/news/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setNews(news.filter((item) => item.id !== id));
     });
   };
 
-  const handleEditorChange = (value) => {
-    setFormData({
-      ...formData,
-      description: value,
-    });
+  // Handle open modal
+  const openModal = (item) => {
+    setSelectedNews(item);
+    setIsModalOpen(true);
   };
 
-  const handleCreate = async () => {
-    try {
-      const form = new FormData();
-      form.append("title", formData.title);
-      form.append("description", formData.description);
-      form.append("author", formData.author);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
+  // Handle close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedNews(null);
+  };
 
-      await axios.post("http://localhost:5000/admin/berita", form, {
-        headers: { "Content-Type": "multipart/form-data" },
+  const handleDescriptionChange = (value) => {
+    setNewDescription(value);
+  };
+
+  // Handle create berita
+  const handleCreateBerita = () => {
+    const formData = new FormData();
+    formData.append("title", newTitle);
+    formData.append("description", newDescription);
+    formData.append("publishedAt", newPublishedAt);
+    if (newImage) formData.append("image", newImage);
+
+    fetch("http://localhost:5000/api/news", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setNews([...news, data]);
+        setNewTitle("");
+        setNewDescription("");
+        setNewImage(null);
+        setNewPublishedAt("");
       });
-      fetchBerita();
-      setFormData({ title: "", description: "", image: "", author: "" });
-    } catch (error) {
-      console.error("Error creating berita:", error);
-    }
-  };
-
-  const handleUpdate = async () => {
-    if (!currentId) return;
-    try {
-      const form = new FormData();
-      form.append("title", formData.title);
-      form.append("description", formData.description);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.put(`http://localhost:5000/admin/berita/${currentId}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchBerita();
-      setFormData({ title: "", description: "", image: "" });
-      setEditMode(false);
-      setCurrentId(null);
-    } catch (error) {
-      console.error("Error updating berita:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/admin/berita/${id}`);
-      fetchBerita();
-    } catch (error) {
-      console.error("Error deleting berita:", error);
-    }
-  };
-
-  const handleEdit = (id, title, description, image) => {
-    setFormData({ title, description, image });
-    setEditMode(true);
-    setCurrentId(id);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Kelola Berita
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kelola Berita
+        </h2>
 
-      {/* Formulir Buat atau Perbarui Berita */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          placeholder="Judul"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        {/* Add new berita form */}
+        <div className="mb-8">
+          <h3 className="text-2xl font-semibold text-gray-800">
+            Tambah Berita
+          </h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCreateBerita();
+            }}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              placeholder="Judul Berita"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            />
 
-        <input
-          type="text"
-          name="author"
-          value={formData.author}
-          onChange={handleInputChange}
-          placeholder="Penulis"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full"
-        />
+            <div>
+              <ReactQuill
+                ref={quillRef}
+                value={newDescription}
+                onChange={handleDescriptionChange}
+                theme="snow"
+                placeholder="Deskripsi Berita"
+              />
+            </div>
 
-        <div className="mb-4">
-          <label className="block mb-2">Deskripsi</label>
-          <ReactQuill
-            value={formData.description}
-            onChange={handleEditorChange}
-            placeholder="Tulis deskripsi berita di sini"
-            className="border border-gray-300 rounded-md w-full"
-          />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="w-full p-3 border border-gray-300 rounded-md"
+            />
+            <input
+              type="date"
+              value={newPublishedAt}
+              onChange={(e) => setNewPublishedAt(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            />
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md"
+            >
+              Tambah Berita
+            </button>
+          </form>
         </div>
 
-        <input
-          type="file"
-          name="image"
-          onChange={(e) =>
-            setFormData({ ...formData, image: e.target.files[0] })
-          }
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <button
-          onClick={editMode ? handleUpdate : handleCreate}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {editMode ? "Perbarui Berita" : "Buat Berita"}
-        </button>
-      </div>
-
-      {/* Menampilkan Daftar Berita dalam Bentuk Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Judul
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Penulis
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Deskripsi
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Gambar
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Tanggal Publikasi
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Tanggal Modifikasi
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Aksi
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {berita.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="px-6 py-4">{item.title}</td>
-                <td className="px-6 py-4">{item.author}</td>
-                <td className="px-6 py-4">
-                  <div dangerouslySetInnerHTML={{ __html: item.description }} />
-                </td>
-                <td className="px-6 py-4">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                </td>
-                <td className="px-6 py-4">{new Date(item.publishedAt).toLocaleString()}</td>
-                <td className="px-6 py-4">{item.updatedAt ? new Date(item.updatedAt).toLocaleString() : "-"}</td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() =>
-                      handleEdit(
-                        item._id,
-                        item.title,
-                        item.description,
-                        item.image,
-                        item.author
-                      )
-                    }
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2 transition-all duration-300 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md transition-all duration-300 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Hapus
-                  </button>
-                </td>
+        {/* Berita Table */}
+        <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+          Daftar Berita
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-left text-gray-600">Judul</th>
+                <th className="px-4 py-2 text-left text-gray-600">Deskripsi</th>
+                <th className="px-4 py-2 text-left text-gray-600">Gambar</th>
+                <th className="px-4 py-2 text-left text-gray-600">Tanggal</th>
+                <th className="px-4 py-2 text-left text-gray-600">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {news.map((item) => (
+                <tr key={item.id} className="border-b hover:bg-gray-100">
+                  <td className="px-4 py-2">{item.title}</td>
+                  <td className="px-4 py-2">
+                    <div
+                      className="text-lg text-gray-800 leading-relaxed quill-description"
+                      dangerouslySetInnerHTML={{ __html: item.description }} // Rendering the HTML content
+                    />
+                  </td>
+                  <td className="px-4 py-2">
+                    {item.image && (
+                      <img
+                        src={`http://localhost:5000${item.image}`}
+                        alt={item.title}
+                        className="w-20 h-20 object-cover"
+                      />
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    {new Date(item.publishedAt).toLocaleDateString("id-ID", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </td>
+                  <td className="px-4 py-2 space-x-2">
+                    <button
+                      onClick={() => openModal(item)}
+                      className="px-4 py-2 bg-yellow-600 text-white rounded-md"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-md"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      {/* Modal Edit */}
+      {isModalOpen && selectedNews && (
+        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+          <div
+            className="bg-white p-8 rounded-lg w-1/2 relative"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) closeModal();
+            }}
+          >
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-5 text-gray-600 text-3xl font-semibold hover:text-gray-900 transition-all"
+            >
+              &times;
+            </button>
+
+            <h3 className="text-3xl font-semibold text-gray-800 mb-4">
+              Edit Berita
+            </h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdateBerita();
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Judul Berita"
+                value={selectedNews.title}
+                onChange={(e) =>
+                  setSelectedNews({ ...selectedNews, title: e.target.value })
+                }
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+              {/* Use ReactQuill for description in modal */}
+              <ReactQuill
+                value={selectedNews.description}
+                onChange={(value) =>
+                  setSelectedNews({ ...selectedNews, description: value })
+                }
+                className="w-full border border-gray-300 rounded-md"
+                theme="snow"
+                placeholder="Deskripsi Berita"
+              />
+              <input
+                type="file"
+                onChange={(e) =>
+                  setSelectedNews({ ...selectedNews, image: e.target.files[0] })
+                }
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              <input
+                type="date"
+                value={selectedNews.publishedAt.split("T")[0]}
+                onChange={(e) =>
+                  setSelectedNews({
+                    ...selectedNews,
+                    publishedAt: e.target.value,
+                  })
+                }
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+              <button
+                type="submit"
+                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md"
+              >
+                Simpan Perubahan
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

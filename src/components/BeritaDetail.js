@@ -1,38 +1,36 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
-import {
-  AiOutlineUser,
-  AiOutlineCalendar,
-  AiOutlineEdit,
-} from "react-icons/ai";
+import { useParams } from "react-router-dom"; // To get the dynamic route parameter
+import { AiOutlineCalendar } from "react-icons/ai";
 
 const BeritaDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // Get the news ID from URL
   const [beritaDetail, setBeritaDetail] = useState(null);
 
+  // Fetch berita detail based on ID
   useEffect(() => {
-    const fetchBeritaDetail = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/admin/berita/${id}`
-        );
-        setBeritaDetail(response.data);
-      } catch (error) {
-        console.error("Error fetching berita detail:", error);
-      }
+    const fetchBeritaDetail = () => {
+      fetch(`http://localhost:5000/api/news/${id}`)
+        .then((response) => response.json())
+        .then((data) => setBeritaDetail(data))
+        .catch((error) => {
+          console.error("Error fetching berita detail:", error);
+        });
     };
 
     fetchBeritaDetail();
-  }, [id]);
+  }, [id]); // Rerun effect when the ID changes
 
   if (!beritaDetail) return <div>Loading...</div>;
 
   const imageUrl = `http://localhost:5000${beritaDetail.image}`;
-  const publishedDate = new Date(beritaDetail.publishedAt).toLocaleString();
-  const modifiedDate = beritaDetail.updatedAt
-    ? new Date(beritaDetail.updatedAt).toLocaleString()
-    : "-";
+  const publishedDate = new Date(beritaDetail.publishedAt).toLocaleDateString(
+    "id-ID",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
 
   return (
     <div className="bg-gray-50 py-12">
@@ -58,16 +56,8 @@ const BeritaDetail = () => {
           <div className="p-6">
             <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
               <div className="flex items-center gap-2">
-                <AiOutlineUser className="text-blue-500" />
-                <span>{beritaDetail.author}</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <AiOutlineCalendar className="text-blue-500" />
                 <span>{publishedDate}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <AiOutlineEdit className="text-blue-500" />
-                <span>{modifiedDate}</span>
               </div>
             </div>
 

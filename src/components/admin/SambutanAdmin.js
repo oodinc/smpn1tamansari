@@ -1,181 +1,139 @@
+// frontend/src/components/admin/SambutanAdmin.js
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const SambutanAdmin = () => {
-  const [sambutan, setSambutan] = useState({
-    message: "",
-    description: "",
-    image: "",
-    headmasterName: "",
-  });
-
-  const [formData, setFormData] = useState({
-    message: "",
-    description: "",
-    image: null,
-    headmasterName: "",
-  });
+  const [headmasterMessage, setHeadmasterMessage] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newHeadmasterName, setNewHeadmasterName] = useState("");
+  const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
-    const fetchSambutan = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/admin/sambutan"
-        );
-        setSambutan(response.data.sambutan); // Data sambutan untuk preview
-        setFormData({
-          message: response.data.sambutan.message,
-          description: response.data.sambutan.description,
-          image: null,
-          headmasterName: response.data.sambutan.headmasterName,
-        });
-      } catch (error) {
-        console.error("Error mengambil sambutan:", error);
-      }
-    };
-
-    fetchSambutan();
+    fetch("http://localhost:5000/api/headmaster-message")
+      .then((response) => response.json())
+      .then((data) => {
+        setHeadmasterMessage(data);
+        setNewMessage(data.message || "");
+        setNewDescription(data.description || "");
+        setNewHeadmasterName(data.headmasterName || "");
+      });
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleUpdateHeadmasterMessage = (e) => {
+    e.preventDefault();
+    if (headmasterMessage && headmasterMessage.id) {
+      const formData = new FormData();
+      formData.append("message", newMessage);
+      formData.append("description", newDescription);
+      formData.append("headmasterName", newHeadmasterName);
+      if (newImage) formData.append("image", newImage);
 
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
-  };
-
-  const handleUpdate = async () => {
-    try {
-      const form = new FormData();
-      form.append("message", formData.message);
-      form.append("description", formData.description);
-      form.append("headmasterName", formData.headmasterName);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.put("http://localhost:5000/admin/sambutan", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      alert("Sambutan berhasil diperbarui!");
-      window.location.reload(); // Refresh untuk mengambil data yang diperbarui
-    } catch (error) {
-      console.error("Kesalahan memperbarui sambutan:", error);
-      alert("Kesalahan memperbarui sambutan.");
+      fetch(
+        `http://localhost:5000/api/headmaster-message/${headmasterMessage.id}`,
+        {
+          method: "PUT",
+          body: formData,
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setHeadmasterMessage(data);
+          setNewMessage("");
+          setNewDescription("");
+          setNewHeadmasterName("");
+          setNewImage(null);
+        })
+        .catch((error) =>
+          console.error("Error updating headmaster message:", error)
+        );
     }
   };
 
+  const handleFileChange = (e) => {
+    setNewImage(e.target.files[0]);
+  };
+
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Edit Sambutan Kepala Sekolah
-      </h2>
-
-      {/* Formulir Edit */}
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
         <h3 className="text-2xl font-medium text-gray-700 mb-4">
-          Edit Sambutan
+          Admin - Kelola Sambutan
         </h3>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">
-            Pesan
-          </label>
-          <input
-            type="text"
-            name="message"
-            value={formData.message}
-            onChange={handleInputChange}
-            placeholder="Masukkan pesan"
-            className="w-full p-2 border rounded-lg"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">
-            Deskripsi
-          </label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            placeholder="Masukkan deskripsi"
-            rows="4"
-            className="w-full p-2 border rounded-lg"
-          ></textarea>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">
-            Nama Kepala Sekolah
-          </label>
-          <input
-            type="text"
-            name="headmasterName"
-            value={formData.headmasterName}
-            onChange={handleInputChange}
-            placeholder="Masukkan nama kepala sekolah"
-            className="w-full p-2 border rounded-lg"
-          />
-        </div>
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kelola Pengumuman Sekolah
+        </h2>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">Gambar</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleFileChange}
-            className="w-full p-2 border rounded-lg"
-          />
-        </div>
-        <button
-          onClick={handleUpdate}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Perbarui Sambutan
-        </button>
-      </div>
+        {headmasterMessage && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-semibold text-gray-800">
+              Update Sambutan Kepala Sekolah
+            </h3>
+            <form
+              onSubmit={handleUpdateHeadmasterMessage}
+              className="space-y-4"
+            >
+              <textarea
+                placeholder="Sambutan"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                rows="4"
+                required
+              />
+              <textarea
+                placeholder="Deskripsi"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                rows="4"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Nama Kepala Sekolah"
+                value={newHeadmasterName}
+                onChange={(e) => setNewHeadmasterName(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              >
+                Update Sambutan
+              </button>
+            </form>
+          </div>
+        )}
 
-      {/* Menampilkan Informasi Sambutan dalam Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm mt-8">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Kolom
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Nilai
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="px-6 py-4">Pesan</td>
-              <td className="px-6 py-4">{sambutan.message}</td>
-            </tr>
-            <tr className="border-t">
-              <td className="px-6 py-4">Deskripsi</td>
-              <td className="px-6 py-4">{sambutan.description}</td>
-            </tr>
-            <tr className="border-t">
-              <td className="px-6 py-4">Nama Kepala Sekolah</td>
-              <td className="px-6 py-4">{sambutan.headmasterName}</td>
-            </tr>
-            <tr className="border-t">
-              <td className="px-6 py-4">Gambar</td>
-              <td className="px-6 py-4">
-                {sambutan.image && (
-                  <img
-                    src={sambutan.image}
-                    alt="Sambutan"
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {headmasterMessage && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+              Current Sambutan Kepala Sekolah
+            </h3>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h4 className="text-3xl font-bold">
+                {headmasterMessage.message}
+              </h4>
+              <p className="mt-4 text-xl">{headmasterMessage.description}</p>
+              <p className="mt-2 text-lg font-medium">
+                {headmasterMessage.headmasterName}
+              </p>
+              {headmasterMessage.image && (
+                <img
+                  src={`http://localhost:5000${headmasterMessage.image}`}
+                  alt="Kepala Sekolah"
+                  className="mt-4 w-64 h-64 object-cover"
+                />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

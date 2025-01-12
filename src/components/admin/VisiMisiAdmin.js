@@ -4,15 +4,18 @@ import axios from "axios";
 const VisiMisiAdmin = () => {
   const [formData, setFormData] = useState({
     visi: "",
-    misi: [""], // Default array kosong untuk misi
+    misi: [""],
+    id: null, // Tambahkan id untuk menyimpan id dari visi-misi
   });
 
   useEffect(() => {
     const fetchVisiMisi = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/admin/visimisi");
-        const { visi, misi } = response.data.visiMisi || {};
-        setFormData({ visi: visi || "", misi: misi || [""] });
+        const response = await axios.get("http://localhost:5000/api/visi-misi");
+        console.log(response.data); // Pastikan ini mencetak data dengan benar
+
+        const { visi, misi, id } = response.data || {}; // Pastikan response berisi data yang benar
+        setFormData({ visi: visi || "", misi: misi || [""], id: id || null });
       } catch (error) {
         console.error("Kesalahan mengambil Visi & Misi:", error);
       }
@@ -43,8 +46,14 @@ const VisiMisiAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Pastikan ada id sebelum melakukan PUT request
+    if (formData.id === null) {
+      alert("ID tidak ditemukan!");
+      return;
+    }
+
     try {
-      await axios.put("http://localhost:5000/admin/visimisi", formData, {
+      await axios.put(`http://localhost:5000/api/visi-misi/${formData.id}`, formData, {
         headers: { "Content-Type": "application/json" },
       });
       alert("Visi & Misi berhasil diperbarui!");

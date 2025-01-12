@@ -1,174 +1,245 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 const EkstrakurikulerAdmin = () => {
-  const [ekstrakurikuler, setEkstrakurikuler] = useState([]);
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    image: "",
-  });
-  const [editMode, setEditMode] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [extracurriculars, setExtracurriculars] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedExtracurricular, setSelectedExtracurricular] = useState(null);
+  const [newName, setNewName] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newImage, setNewImage] = useState("");
 
+  // Fetch extracurriculars from backend
   useEffect(() => {
-    fetchEkstrakurikuler();
+    fetch("http://localhost:5000/api/extracurriculars")
+      .then((response) => response.json())
+      .then((data) => setExtracurriculars(data));
   }, []);
 
-  const fetchEkstrakurikuler = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/ekstrakurikuler");
-      setEkstrakurikuler(response.data);
-    } catch (error) {
-      console.error("Error mengambil ekstrakurikuler:", error);
-    }
+  // Handle create extracurricular
+  const handleCreateExtracurricular = () => {
+    const formData = new FormData();
+    formData.append("name", newName);
+    formData.append("description", newDescription);
+    if (newImage) formData.append("image", newImage);
+
+    fetch("http://localhost:5000/api/extracurriculars", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setExtracurriculars([...extracurriculars, data]);
+        setNewName("");
+        setNewDescription("");
+        setNewImage(null);
+      });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  // Handle update extracurricular
+  const handleUpdateExtracurricular = () => {
+    const formData = new FormData();
+    formData.append("name", selectedExtracurricular.name);
+    formData.append("description", selectedExtracurricular.description);
+    if (selectedExtracurricular.image)
+      formData.append("image", selectedExtracurricular.image);
+
+    fetch(
+      `http://localhost:5000/api/extracurriculars/${selectedExtracurricular.id}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setExtracurriculars(
+          extracurriculars.map((item) => (item.id === data.id ? data : item))
+        );
+        closeModal();
+      });
+  };
+
+  // Handle delete extracurricular
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/api/extracurriculars/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+      setExtracurriculars(extracurriculars.filter((item) => item.id !== id));
     });
   };
 
-  const handleCreate = async () => {
-    try {
-      const form = new FormData();
-      form.append("name", formData.name);
-      form.append("description", formData.description);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.post("http://localhost:5000/admin/ekstrakurikuler", form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchEkstrakurikuler();
-      setFormData({ name: "", description: "", image: "" });
-    } catch (error) {
-      console.error("Error membuat ekstrakurikuler:", error);
-    }
+  const openModal = (item) => {
+    setSelectedExtracurricular(item);
+    setIsModalOpen(true);
   };
 
-  const handleUpdate = async () => {
-    if (!currentId) return;
-    try {
-      const form = new FormData();
-      form.append("name", formData.name);
-      form.append("description", formData.description);
-      if (formData.image) {
-        form.append("image", formData.image);
-      }
-
-      await axios.put(`http://localhost:5000/admin/ekstrakurikuler/${currentId}`, form, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      fetchEkstrakurikuler();
-      setFormData({ name: "", description: "", image: "" });
-      setEditMode(false);
-      setCurrentId(null);
-    } catch (error) {
-      console.error("Error memperbarui ekstrakurikuler:", error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/admin/ekstrakurikuler/${id}`);
-      fetchEkstrakurikuler();
-    } catch (error) {
-      console.error("Error menghapus ekstrakurikuler:", error);
-    }
-  };
-
-  const handleEdit = (id, name, description, image) => {
-    setFormData({ name, description, image });
-    setEditMode(true);
-    setCurrentId(id);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedExtracurricular(null);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Kelola Ekstrakurikuler
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Kelola Ekstrakurikuler
+        </h2>
 
-      {/* Formulir Buat atau Perbarui Ekstrakurikuler */}
-      <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          placeholder="Nama"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder="Deskripsi"
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="file"
-          name="image"
-          onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-          className="p-3 border border-gray-300 rounded-md mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        {/* Add new extracurricular form */}
+        <div className="mb-8">
+          <h3 className="text-2xl font-semibold text-gray-800">
+            Tambah Ekstrakurikuler
+          </h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleCreateExtracurricular();
+            }}
+            className="space-y-4"
+          >
+            <input
+              type="text"
+              placeholder="Nama Ekstrakurikuler"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              required
+            />
+            <textarea
+              placeholder="Deskripsi Ekstrakurikuler"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md"
+              rows="4"
+            />
+            <input
+              type="file"
+              onChange={(e) => setNewImage(e.target.files[0])}
+              className="w-full p-3 border border-gray-300 rounded-md"
+            />
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 text-white rounded-md"
+            >
+              Tambah Ekstrakurikuler
+            </button>
+          </form>
+        </div>
 
-        <button
-          onClick={editMode ? handleUpdate : handleCreate}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md transition-all duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          {editMode ? "Perbarui Ekstrakurikuler" : "Buat Ekstrakurikuler"}
-        </button>
-      </div>
-
-      {/* Menampilkan Daftar Ekstrakurikuler dalam Bentuk Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Nama</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Deskripsi</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Gambar</th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ekstrakurikuler.map((item) => (
-              <tr key={item._id} className="border-t">
-                <td className="px-6 py-4">{item.name}</td>
-                <td className="px-6 py-4">{item.description}</td>
-                <td className="px-6 py-4">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                </td>
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() =>
-                      handleEdit(item._id, item.name, item.description, item.image)
-                    }
-                    className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2 transition-all duration-300 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(item._id)}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md transition-all duration-300 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    Hapus
-                  </button>
-                </td>
+        {/* Extracurriculars Table */}
+        <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+          Daftar Ekstrakurikuler
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="px-4 py-2 text-left text-gray-800">Nama</th>
+                <th className="px-4 py-2 text-left text-gray-800">Deskripsi</th>
+                <th className="px-4 py-2 text-left text-gray-800">Gambar</th>
+                <th className="px-4 py-2 text-gray-800">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {extracurriculars.map((item) => (
+                <tr key={item.id} className="border-t">
+                  <td className="px-4 py-2">{item.name}</td>
+                  <td className="px-4 py-2">{item.description}</td>
+                  <td className="px-4 py-2">
+                    {item.image && (
+                      <img
+                        src={`http://localhost:5000${item.image}`}
+                        alt={item.title}
+                        className="w-20 h-20 object-cover"
+                      />
+                    )}
+                  </td>
+                  <td className="px-4 py-2">
+                    <button
+                      onClick={() => openModal(item)}
+                      className="px-4 py-2 bg-yellow-500 text-white rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-md"
+                    >
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Modal for editing extracurricular */}
+        {isModalOpen && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-6 rounded-md shadow-lg">
+              <h3 className="text-2xl font-semibold mb-4">
+                Edit Ekstrakurikuler
+              </h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleUpdateExtracurricular();
+                }}
+                className="space-y-4"
+              >
+                <input
+                  type="text"
+                  value={selectedExtracurricular.name}
+                  onChange={(e) =>
+                    setSelectedExtracurricular({
+                      ...selectedExtracurricular,
+                      name: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+                <textarea
+                  value={selectedExtracurricular.description}
+                  onChange={(e) =>
+                    setSelectedExtracurricular({
+                      ...selectedExtracurricular,
+                      description: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  rows="4"
+                />
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setSelectedExtracurricular({
+                      ...selectedExtracurricular,
+                      image: e.target.files[0],
+                    })
+                  }
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                />
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="px-4 py-2 bg-gray-300 rounded-md"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                  >
+                    Simpan
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

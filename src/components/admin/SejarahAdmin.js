@@ -1,134 +1,99 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const SejarahAdmin = () => {
-  const [formData, setFormData] = useState({
-    text: "",
-    image: null,
-  });
-  const [preview, setPreview] = useState("");
+  const [sejarah, setSejarah] = useState(null);
+  const [newText, setNewText] = useState("");
+  const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
-    const fetchSejarah = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/admin/sejarah");
-        setFormData({ text: response.data.sejarah.text, image: null });
-        setPreview(response.data.sejarah.image);
-      } catch (error) {
-        console.error("Error mengambil sejarah:", error);
-      }
-    };
-
-    fetchSejarah();
+    fetch("http://localhost:5000/api/sejarah")
+      .then((response) => response.json())
+      .then((data) => {
+        setSejarah(data);
+        setNewText(data.text || "");
+      });
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleUpdateSejarah = () => {
+    const formData = new FormData();
+    formData.append("text", newText);
+    if (newImage) formData.append("image", newImage);
+
+    fetch(`http://localhost:5000/api/sejarah/${sejarah.id}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSejarah(data);
+        setNewText("");
+        setNewImage(null);
+      });
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prev) => ({ ...prev, image: file }));
-    setPreview(URL.createObjectURL(file));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append("text", formData.text);
-    if (formData.image) {
-      data.append("image", formData.image);
-    }
-
-    try {
-      await axios.put("http://localhost:5000/admin/sejarah", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert("Sejarah berhasil diperbarui!");
-    } catch (error) {
-      console.error("Kesalahan memperbarui sejarah:", error);
-      alert("Gagal memperbarui sejarah.");
-    }
+    setNewImage(e.target.files[0]);
   };
 
   return (
-    <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
-      <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-        Admin - Edit Sejarah
-      </h2>
+    <div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto p-4">
+        <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
+          Admin - Edit Sejarah
+        </h2>
 
-      {/* Formulir Edit */}
-      <div className="bg-white p-6 rounded-lg shadow-sm">
-        <h3 className="text-2xl font-medium text-gray-700 mb-4">
-          Edit Sejarah
-        </h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              Teks Sejarah
-            </label>
-            <textarea
-              name="text"
-              value={formData.text}
-              onChange={handleInputChange}
-              rows="4"
-              className="w-full p-2 border rounded-lg"
-              placeholder="Masukkan teks sejarah"
-            ></textarea>
+        {sejarah && (
+          <div className="mb-8">
+            <h3 className="text-2xl font-semibold text-gray-800">
+              Update Sejarah Section
+            </h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleUpdateSejarah();
+              }}
+              className="space-y-4"
+            >
+              <textarea
+                placeholder="Text Sejarah"
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                rows="4"
+                required
+              />
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              >
+                Update Sejarah
+              </button>
+            </form>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">
-              Foto Sejarah
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full p-2 border rounded-lg"
-            />
-          </div>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Simpan Sejarah
-          </button>
-        </form>
-      </div>
+        )}
 
-      {/* Menampilkan Informasi Sejarah dalam Tabel */}
-      <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm mt-8">
-        <table className="min-w-full table-auto text-gray-700">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Kolom
-              </th>
-              <th className="px-6 py-4 text-left font-medium text-gray-600">
-                Nilai
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="border-t">
-              <td className="px-6 py-4">Teks Sejarah</td>
-              <td className="px-6 py-4">{formData.text}</td>
-            </tr>
-            <tr className="border-t">
-              <td className="px-6 py-4">Foto Sejarah</td>
-              <td className="px-6 py-4">
-                {preview && (
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        {sejarah && (
+          <div className="mt-8">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+              Current Sejarah Section
+            </h3>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <p className="text-lg">{sejarah.text}</p>
+              {sejarah.image && (
+                <img
+                  src={`http://localhost:5000${sejarah.image}`}
+                  alt="Sejarah"
+                  className="mt-4 w-64 h-64 object-cover"
+                />
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
