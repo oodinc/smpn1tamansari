@@ -144,7 +144,7 @@ const Home = () => {
                     <div className="w-full h-56 bg-gray-200">
                       {item.image && (
                         <img
-                          src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                          src={item.image}
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />
