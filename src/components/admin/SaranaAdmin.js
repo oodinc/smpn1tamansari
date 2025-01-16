@@ -118,7 +118,6 @@ const SaranaAdmin = () => {
             <thead className="bg-gray-200">
               <tr>
                 <th className="px-4 py-2 text-left text-gray-800">Nama</th>
-                <th className="px-4 py-2 text-left text-gray-800">Deskripsi</th>
                 <th className="px-4 py-2 text-left text-gray-800">Gambar</th>
                 <th className="px-4 py-2 text-gray-800">Aksi</th>
               </tr>
