@@ -8,17 +8,17 @@ const Layanan = () => {
 
   useEffect(() => {
     // Fetch extracurriculars from the backend
-    fetch("http://localhost:5000/api/extracurriculars")
+    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
       .then((response) => response.json())
       .then((data) => setExtracurriculars(data));
 
     // Fetch gallery items from the backend
-    fetch("http://localhost:5000/api/galeri")
+    fetch("https://smpn1tamansari-api.vercel.app/api/galeri")
       .then((response) => response.json())
       .then((data) => setGaleri(data));
 
     // Fetch sarana items from the backend
-    fetch("http://localhost:5000/api/sarana")
+    fetch("https://smpn1tamansari-api.vercel.app/api/sarana")
       .then((response) => response.json())
       .then((data) => setSarana(data));
   }, []);
@@ -46,7 +46,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`http://localhost:5000${ekstra.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${ekstra.image}`}
                       alt={ekstra.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -81,7 +81,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`http://localhost:5000${item.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                       alt={item.title}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -121,7 +121,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`http://localhost:5000${sarana.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${sarana.image}`}
                       alt={sarana.name}
                       className="object-cover w-full h-full rounded-lg"
                     />

@@ -42,7 +42,7 @@ const Contact = () => {
       !formErrors.message
     ) {
       try {
-        await axios.post("http://localhost:5000/api/contacts", formData);
+        await axios.post("https://smpn1tamansari-api.vercel.app/api/contacts", formData);
         setIsSubmitted(true);
         setFormData({ name: "", email: "", phone: "", message: "" });
       } catch (error) {

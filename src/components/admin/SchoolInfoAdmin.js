@@ -20,7 +20,7 @@ const SchoolInfoAdmin = () => {
   const [newPosisiGeografis, setNewPosisiGeografis] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/schoolinfo")
+    fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo")
       .then((response) => response.json())
       .then((data) => {
         setSchoolInfo(data);
@@ -65,7 +65,7 @@ const SchoolInfoAdmin = () => {
       posisiGeografis: newPosisiGeografis,
     };
 
-    fetch(`http://localhost:5000/api/schoolinfo/${schoolInfo.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/schoolinfo/${schoolInfo.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

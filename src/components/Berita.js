@@ -8,12 +8,12 @@ const Berita = () => {
 
   useEffect(() => {
     // Fetch news from the backend
-    fetch("http://localhost:5000/api/news")
+    fetch("https://smpn1tamansari-api.vercel.app/api/news")
       .then((response) => response.json())
       .then((data) => setNews(data));
 
     // Fetch announcements from the backend
-    fetch("http://localhost:5000/api/announcements")
+    fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
       .then((response) => response.json())
       .then((data) => setPengumuman(data));
   }, []);
@@ -55,7 +55,7 @@ const Berita = () => {
                 <div className="w-full h-56 bg-gray-200">
                   {item.image && (
                     <img
-                      src={`http://localhost:5000${item.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                       alt={item.title}
                       className="w-full h-full object-cover"
                     />

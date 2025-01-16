@@ -6,7 +6,7 @@ const KalenderAdmin = () => {
   const [newFile, setNewFile] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/kalender")
+    fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
       .then((response) => response.json())
       .then((data) => {
         setKalender(data[0]);
@@ -19,7 +19,7 @@ const KalenderAdmin = () => {
     formData.append("title", newTitle);
     if (newFile) formData.append("file", newFile);
 
-    fetch(`http://localhost:5000/api/kalender/${kalender.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/kalender/${kalender.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -87,7 +87,7 @@ const KalenderAdmin = () => {
               {kalender.file && (
                 <div className="mt-4">
                   <a
-                    href={`http://localhost:5000${kalender.file}`}
+                    href={`https://smpn1tamansari-api.vercel.app${kalender.file}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800"

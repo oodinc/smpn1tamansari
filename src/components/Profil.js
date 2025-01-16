@@ -10,27 +10,27 @@ const Profile = () => {
   const [staffAndTeachers, setStaffAndTeachers] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/headmaster-message")
+    fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message")
       .then((response) => response.json())
       .then((data) => setHeadmasterMessage(data));
 
-    fetch("http://localhost:5000/api/sejarah")
+    fetch("https://smpn1tamansari-api.vercel.app/api/sejarah")
       .then((response) => response.json())
       .then((data) => setSejarah(data));
 
-    fetch("http://localhost:5000/api/visi-misi")
+    fetch("https://smpn1tamansari-api.vercel.app/api/visi-misi")
       .then((response) => response.json())
       .then((data) => setVisiMisi(data));
 
-    fetch("http://localhost:5000/api/schoolinfo")
+    fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo")
       .then((response) => response.json())
       .then((data) => setSchoolInfo(data));
 
-    fetch("http://localhost:5000/api/strukturOrganisasi")
+    fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi")
       .then((response) => response.json())
       .then((data) => setStrukturOrganisasi(data));
 
-    fetch("http://localhost:5000/api/staffandteachers")
+    fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers")
       .then((response) => response.json())
       .then((data) => setStaffAndTeachers(data));
   }, []);
@@ -72,7 +72,7 @@ const Profile = () => {
               >
                 <div className="relative group">
                   <img
-                    src={`http://localhost:5000${headmasterMessage.image}`}
+                    src={`https://smpn1tamansari-api.vercel.app${headmasterMessage.image}`}
                     alt="Kepala Sekolah"
                     className="w-auto h-96 object-cover rounded-xl shadow-lg"
                   />
@@ -112,7 +112,7 @@ const Profile = () => {
                 >
                   <div className="bg-gray-100 shadow-lg">
                     <img
-                      src={`http://localhost:5000${sejarah.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${sejarah.image}`}
                       alt="Sejarah"
                     />
                   </div>
@@ -341,7 +341,7 @@ const Profile = () => {
                     <div key={item._id} className="text-center">
                       <div className="relative inline-block">
                         <img
-                          src={`http://localhost:5000${item.image}`}
+                          src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                           alt={item.name}
                           className="w-28 h-28 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                         />
@@ -360,7 +360,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -378,7 +378,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -396,7 +396,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -414,7 +414,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -434,7 +434,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -452,7 +452,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -470,7 +470,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -488,7 +488,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`http://localhost:5000${item.image}`}
+                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -527,7 +527,7 @@ const Profile = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`http://localhost:5000${guru.image}`}
+                      src={`https://smpn1tamansari-api.vercel.app${guru.image}`}
                       alt={guru.name}
                       className="object-cover w-full h-full rounded-lg"
                     />

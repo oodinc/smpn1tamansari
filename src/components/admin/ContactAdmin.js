@@ -11,7 +11,7 @@ const ContactAdmin = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/contacts");
+      const response = await axios.get("https://smpn1tamansari-api.vercel.app/api/contacts");
       setMessages(response.data);
     } catch (error) {
       console.error("Kesalahan mengambil data pesan:", error);
@@ -20,7 +20,7 @@ const ContactAdmin = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/contacts/${id}`);
+      await axios.delete(`https://smpn1tamansari-api.vercel.app/api/contacts/${id}`);
       fetchMessages();
     } catch (error) {
       console.error("Kesalahan menghapus data pesan:", error);

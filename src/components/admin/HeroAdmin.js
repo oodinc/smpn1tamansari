@@ -7,7 +7,7 @@ const HeroAdmin = () => {
   const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/hero")
+    fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
       .then((data) => {
         setHero(data);
@@ -22,7 +22,7 @@ const HeroAdmin = () => {
     formData.append("description", newDescription);
     if (newImage) formData.append("image", newImage); // Attach the new image if exists
   
-    fetch(`http://localhost:5000/api/hero/${hero.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/hero/${hero.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -102,7 +102,7 @@ const HeroAdmin = () => {
               <p className="mt-4 text-xl">{hero.description}</p>
               {hero.image && (
                 <img
-                  src={`http://localhost:5000${hero.image}`}
+                  src={`https://smpn1tamansari-api.vercel.app${hero.image}`}
                   alt="Hero"
                   className="mt-4 w-64 h-64 object-cover"
                 />

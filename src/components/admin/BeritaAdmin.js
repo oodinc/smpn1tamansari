@@ -14,7 +14,7 @@ const BeritaAdmin = () => {
 
   // Fetch berita from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/news")
+    fetch("https://smpn1tamansari-api.vercel.app/api/news")
       .then((response) => response.json())
       .then((data) => setNews(data));
   }, []);
@@ -27,7 +27,7 @@ const BeritaAdmin = () => {
     formData.append("publishedAt", selectedNews.publishedAt);
     if (selectedNews.image) formData.append("image", selectedNews.image);
 
-    fetch(`http://localhost:5000/api/news/${selectedNews.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/news/${selectedNews.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -44,7 +44,7 @@ const BeritaAdmin = () => {
 
   // Handle delete berita
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/news/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/news/${id}`, {
       method: "DELETE",
     }).then(() => {
       setNews(news.filter((item) => item.id !== id));
@@ -75,7 +75,7 @@ const BeritaAdmin = () => {
     formData.append("publishedAt", newPublishedAt);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/news", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/news", {
       method: "POST",
       body: formData,
     })
@@ -176,7 +176,7 @@ const BeritaAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.title}
                         className="w-20 h-20 object-cover"
                       />

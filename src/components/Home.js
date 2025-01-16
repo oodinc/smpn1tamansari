@@ -33,32 +33,32 @@ const Home = () => {
 
   useEffect(() => {
     // Fetch hero data from the backend
-    fetch("http://localhost:5000/api/hero")
+    fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
       .then((data) => setHero(data));
 
     // Fetch news from the backend
-    fetch("http://localhost:5000/api/news")
+    fetch("https://smpn1tamansari-api.vercel.app/api/news")
       .then((response) => response.json())
       .then((data) => setNews(data));
 
     // Fetch announcements from the backend
-    fetch("http://localhost:5000/api/announcements")
+    fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
       .then((response) => response.json())
       .then((data) => setPengumuman(data));
 
     // Fetch extracurriculars from the backend
-    fetch("http://localhost:5000/api/extracurriculars")
+    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
       .then((response) => response.json())
       .then((data) => setExtracurriculars(data));
 
     // Fetch Kalender from the backend
-    fetch("http://localhost:5000/api/kalender")
+    fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
       .then((response) => response.json())
       .then((data) => setKalender(data));
 
     // Fetch alumni from the backend
-    fetch("http://localhost:5000/api/alumni")
+    fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
       .then((response) => response.json())
       .then((data) => setAlumni(data));
   }, []);
@@ -112,7 +112,7 @@ const Home = () => {
             className="md:w-1/2 flex justify-center"
           >
             <img
-              src={`http://localhost:5000${hero.image}`}
+              src={`https://smpn1tamansari-api.vercel.app${hero.image}`}
               alt="SMPN 1 Tamansari"
               className="rounded-lg shadow-lg w-2/3 md:w-3/4 hover:shadow-xl hover:scale-105 transition duration-300"
             />
@@ -144,7 +144,7 @@ const Home = () => {
                     <div className="w-full h-56 bg-gray-200">
                       {item.image && (
                         <img
-                          src={`http://localhost:5000${item.image}`}
+                          src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />
@@ -325,7 +325,7 @@ const Home = () => {
                     >
                       <div className="relative w-full h-48 mb-4">
                         <img
-                          src={`http://localhost:5000${ekstra.image}`}
+                          src={`https://smpn1tamansari-api.vercel.app${ekstra.image}`}
                           alt={ekstra.name}
                           className="object-cover w-full h-full rounded-lg"
                         />
@@ -384,7 +384,7 @@ const Home = () => {
                 className="bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300"
               >
                 <img
-                  src={`http://localhost:5000${item.image}`}
+                  src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                   alt={item.title}
                   className="w-full h-56 object-cover rounded-t-lg"
                 />

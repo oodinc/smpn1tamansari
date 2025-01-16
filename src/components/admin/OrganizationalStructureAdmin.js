@@ -22,7 +22,7 @@ const OrganizationalStructureAdmin = () => {
 
   // Fetch structure data from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/strukturOrganisasi")
+    fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi")
       .then((response) => response.json())
       .then((data) => setStructure(data));
   }, []);
@@ -34,7 +34,7 @@ const OrganizationalStructureAdmin = () => {
     formData.append("role", newRole);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/strukturOrganisasi", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi", {
       method: "POST",
       body: formData,
     })
@@ -56,7 +56,7 @@ const OrganizationalStructureAdmin = () => {
       formData.append("image", selectedStructure.image);
 
     fetch(
-      `http://localhost:5000/api/strukturOrganisasi/${selectedStructure.id}`,
+      `https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi/${selectedStructure.id}`,
       {
         method: "PUT",
         body: formData,
@@ -73,7 +73,7 @@ const OrganizationalStructureAdmin = () => {
 
   // Handle delete structure
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/strukturOrganisasi/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi/${id}`, {
       method: "DELETE",
     }).then(() => {
       setStructure(structure.filter((item) => item.id !== id));
@@ -166,7 +166,7 @@ const OrganizationalStructureAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.name}
                         className="w-20 h-20 object-cover"
                       />

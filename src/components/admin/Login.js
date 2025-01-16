@@ -17,7 +17,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/admin/login", credentials);
+      const response = await axios.post("https://smpn1tamansari-api.vercel.app/admin/login", credentials);
       const expirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 hour expiration
       localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("tokenExpiration", expirationTime);

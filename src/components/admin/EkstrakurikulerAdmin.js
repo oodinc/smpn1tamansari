@@ -10,7 +10,7 @@ const EkstrakurikulerAdmin = () => {
 
   // Fetch extracurriculars from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/extracurriculars")
+    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
       .then((response) => response.json())
       .then((data) => setExtracurriculars(data));
   }, []);
@@ -22,7 +22,7 @@ const EkstrakurikulerAdmin = () => {
     formData.append("description", newDescription);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/extracurriculars", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars", {
       method: "POST",
       body: formData,
     })
@@ -44,7 +44,7 @@ const EkstrakurikulerAdmin = () => {
       formData.append("image", selectedExtracurricular.image);
 
     fetch(
-      `http://localhost:5000/api/extracurriculars/${selectedExtracurricular.id}`,
+      `https://smpn1tamansari-api.vercel.app/api/extracurriculars/${selectedExtracurricular.id}`,
       {
         method: "PUT",
         body: formData,
@@ -61,7 +61,7 @@ const EkstrakurikulerAdmin = () => {
 
   // Handle delete extracurricular
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/extracurriculars/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/extracurriculars/${id}`, {
       method: "DELETE",
     }).then(() => {
       setExtracurriculars(extracurriculars.filter((item) => item.id !== id));
@@ -148,7 +148,7 @@ const EkstrakurikulerAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.title}
                         className="w-20 h-20 object-cover"
                       />

@@ -6,7 +6,7 @@ const SejarahAdmin = () => {
   const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/sejarah")
+    fetch("https://smpn1tamansari-api.vercel.app/api/sejarah")
       .then((response) => response.json())
       .then((data) => {
         setSejarah(data);
@@ -19,7 +19,7 @@ const SejarahAdmin = () => {
     formData.append("text", newText);
     if (newImage) formData.append("image", newImage);
 
-    fetch(`http://localhost:5000/api/sejarah/${sejarah.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/sejarah/${sejarah.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -86,7 +86,7 @@ const SejarahAdmin = () => {
               <p className="text-lg">{sejarah.text}</p>
               {sejarah.image && (
                 <img
-                  src={`http://localhost:5000${sejarah.image}`}
+                  src={`https://smpn1tamansari-api.vercel.app${sejarah.image}`}
                   alt="Sejarah"
                   className="mt-4 w-64 h-64 object-cover"
                 />

@@ -10,7 +10,7 @@ const StaffAdmin = () => {
 
   // Fetch staff and teachers from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/staffandteachers")
+    fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers")
       .then((response) => response.json())
       .then((data) => setStaff(data));
   }, []);
@@ -22,7 +22,7 @@ const StaffAdmin = () => {
     formData.append("role", newStaffRole);
     if (newStaffImage) formData.append("image", newStaffImage);
 
-    fetch("http://localhost:5000/api/staffandteachers", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers", {
       method: "POST",
       body: formData,
     })
@@ -37,7 +37,7 @@ const StaffAdmin = () => {
 
   // Handle delete staff
   const handleDeleteStaff = (id) => {
-    fetch(`http://localhost:5000/api/staffandteachers/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/staffandteachers/${id}`, {
       method: "DELETE",
     }).then(() => {
       setStaff(staff.filter((item) => item.id !== id));
@@ -51,7 +51,7 @@ const StaffAdmin = () => {
     formData.append("role", selectedStaff.role);
     if (selectedStaff.image) formData.append("image", selectedStaff.image);
 
-    fetch(`http://localhost:5000/api/staffandteachers/${selectedStaff.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/staffandteachers/${selectedStaff.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -143,7 +143,7 @@ const StaffAdmin = () => {
                   <td className="px-4 py-2">
                     {person.image && (
                       <img
-                        src={`http://localhost:5000${person.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${person.image}`}
                         alt={person.name}
                         className="w-20 h-20 object-cover"
                       />

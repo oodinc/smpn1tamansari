@@ -9,7 +9,7 @@ const GaleriAdmin = () => {
 
   // Fetch gallery items from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/galeri")
+    fetch("https://smpn1tamansari-api.vercel.app/api/galeri")
       .then((response) => response.json())
       .then((data) => setGaleri(data));
   }, []);
@@ -20,7 +20,7 @@ const GaleriAdmin = () => {
     formData.append("title", newTitle);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/galeri", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/galeri", {
       method: "POST",
       body: formData,
     })
@@ -38,7 +38,7 @@ const GaleriAdmin = () => {
     formData.append("title", selectedGaleri.title);
     if (selectedGaleri.image) formData.append("image", selectedGaleri.image);
 
-    fetch(`http://localhost:5000/api/galeri/${selectedGaleri.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${selectedGaleri.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -51,7 +51,7 @@ const GaleriAdmin = () => {
 
   // Handle delete gallery
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/galeri/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${id}`, {
       method: "DELETE",
     }).then(() => {
       setGaleri(galeri.filter((item) => item.id !== id));
@@ -129,7 +129,7 @@ const GaleriAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.title}
                         className="w-20 h-20 object-cover"
                       />

@@ -11,7 +11,7 @@ const VisiMisiAdmin = () => {
   useEffect(() => {
     const fetchVisiMisi = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/visi-misi");
+        const response = await axios.get("https://smpn1tamansari-api.vercel.app/api/visi-misi");
         console.log(response.data); // Pastikan ini mencetak data dengan benar
 
         const { visi, misi, id } = response.data || {}; // Pastikan response berisi data yang benar
@@ -53,7 +53,7 @@ const VisiMisiAdmin = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/visi-misi/${formData.id}`, formData, {
+      await axios.put(`https://smpn1tamansari-api.vercel.app/api/visi-misi/${formData.id}`, formData, {
         headers: { "Content-Type": "application/json" },
       });
       alert("Visi & Misi berhasil diperbarui!");

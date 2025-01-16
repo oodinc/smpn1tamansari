@@ -9,7 +9,7 @@ const SaranaAdmin = () => {
 
   // Fetch sarana from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/sarana")
+    fetch("https://smpn1tamansari-api.vercel.app/api/sarana")
       .then((response) => response.json())
       .then((data) => setSarana(data));
   }, []);
@@ -20,7 +20,7 @@ const SaranaAdmin = () => {
     formData.append("name", newName);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/sarana", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/sarana", {
       method: "POST",
       body: formData,
     })
@@ -38,7 +38,7 @@ const SaranaAdmin = () => {
     formData.append("name", selectedSarana.name);
     if (selectedSarana.image) formData.append("image", selectedSarana.image);
 
-    fetch(`http://localhost:5000/api/sarana/${selectedSarana.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${selectedSarana.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -51,7 +51,7 @@ const SaranaAdmin = () => {
 
   // Handle delete sarana
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/sarana/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${id}`, {
       method: "DELETE",
     }).then(() => {
       setSarana(sarana.filter((item) => item.id !== id));
@@ -130,7 +130,7 @@ const SaranaAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.name}
                         className="w-20 h-20 object-cover"
                       />

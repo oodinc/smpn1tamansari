@@ -9,7 +9,7 @@ const SambutanAdmin = () => {
   const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/headmaster-message")
+    fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message")
       .then((response) => response.json())
       .then((data) => {
         setHeadmasterMessage(data);
@@ -29,7 +29,7 @@ const SambutanAdmin = () => {
       if (newImage) formData.append("image", newImage);
 
       fetch(
-        `http://localhost:5000/api/headmaster-message/${headmasterMessage.id}`,
+        `https://smpn1tamansari-api.vercel.app/api/headmaster-message/${headmasterMessage.id}`,
         {
           method: "PUT",
           body: formData,
@@ -126,7 +126,7 @@ const SambutanAdmin = () => {
               </p>
               {headmasterMessage.image && (
                 <img
-                  src={`http://localhost:5000${headmasterMessage.image}`}
+                  src={`https://smpn1tamansari-api.vercel.app${headmasterMessage.image}`}
                   alt="Kepala Sekolah"
                   className="mt-4 w-64 h-64 object-cover"
                 />

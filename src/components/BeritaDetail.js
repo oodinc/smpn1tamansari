@@ -9,7 +9,7 @@ const BeritaDetail = () => {
   // Fetch berita detail based on ID
   useEffect(() => {
     const fetchBeritaDetail = () => {
-      fetch(`http://localhost:5000/api/news/${id}`)
+      fetch(`https://smpn1tamansari-api.vercel.app/api/news/${id}`)
         .then((response) => response.json())
         .then((data) => setBeritaDetail(data))
         .catch((error) => {
@@ -22,7 +22,7 @@ const BeritaDetail = () => {
 
   if (!beritaDetail) return <div>Loading...</div>;
 
-  const imageUrl = `http://localhost:5000${beritaDetail.image}`;
+  const imageUrl = `https://smpn1tamansari-api.vercel.app${beritaDetail.image}`;
   const publishedDate = new Date(beritaDetail.publishedAt).toLocaleDateString(
     "id-ID",
     {

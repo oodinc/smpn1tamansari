@@ -10,7 +10,7 @@ const AlumniAdmin = () => {
 
   // Fetch alumni from backend
   useEffect(() => {
-    fetch("http://localhost:5000/api/alumni")
+    fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
       .then((response) => response.json())
       .then((data) => setAlumni(data));
   }, []);
@@ -22,7 +22,7 @@ const AlumniAdmin = () => {
     formData.append("description", selectedAlumni.description);
     if (selectedAlumni.image) formData.append("image", selectedAlumni.image);
 
-    fetch(`http://localhost:5000/api/alumni/${selectedAlumni.id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/alumni/${selectedAlumni.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -43,7 +43,7 @@ const AlumniAdmin = () => {
 
   // Handle delete alumni
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/api/alumni/${id}`, {
+    fetch(`https://smpn1tamansari-api.vercel.app/api/alumni/${id}`, {
       method: "DELETE",
     }).then(() => {
       setAlumni(alumni.filter((item) => item.id !== id));
@@ -69,7 +69,7 @@ const AlumniAdmin = () => {
     formData.append("description", newDescription);
     if (newImage) formData.append("image", newImage);
 
-    fetch("http://localhost:5000/api/alumni", {
+    fetch("https://smpn1tamansari-api.vercel.app/api/alumni", {
       method: "POST",
       body: formData,
     })
@@ -152,7 +152,7 @@ const AlumniAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
                         alt={item.title}
                         className="w-16 h-16 object-cover rounded-md"
                       />
