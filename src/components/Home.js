@@ -356,20 +356,21 @@ const Home = () => {
               className="bg-white p-8 rounded-lg shadow-lg"
             >
               <p className="text-xl">
-                Kalender pendidikan untuk tahun ajaran {kalender[0]?.title}:
+                Kalender pendidikan untuk tahun ajaran {kalender.title}:
               </p>
               {/* PDF Viewer */}
-              <div className="mt-8">
-                {kalender[0]?.file ? (
-                  <Worker
-                    workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+              {kalender.file && (
+                <div className="mt-8">
+                  <a
+                    href={kalender.file}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800"
                   >
-                    <Viewer fileUrl={kalender[0]?.file} />
-                  </Worker>
-                ) : (
-                  <p>Loading PDF...</p>
-                )}
-              </div>
+                    View Calendar PDF
+                  </a>
+                </div>
+              )}
             </motion.div>
           </section>
         </div>
