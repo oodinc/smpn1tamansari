@@ -112,7 +112,7 @@ const Home = () => {
             className="md:w-1/2 flex justify-center"
           >
             <img
-              src={`https://smpn1tamansari-api.vercel.app${hero.image}`}
+              src={hero.image}
               alt="SMPN 1 Tamansari"
               className="rounded-lg shadow-lg w-2/3 md:w-3/4 hover:shadow-xl hover:scale-105 transition duration-300"
             />
