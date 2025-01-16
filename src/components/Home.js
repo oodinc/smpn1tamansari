@@ -206,7 +206,7 @@ const Home = () => {
                         className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-72"
                       >
                         <div className="flex items-center mb-4">
-                          <FaBullhorn className="text-blue-500 text-3xl mr-4" />
+                          <FaBullhorn className="text-blue-600 text-3xl mr-4" />
                           <div className="flex-1">
                             <h3 className="font-semibold text-xl text-gray-800">
                               {truncateText(item.title, 35)}
@@ -365,7 +365,7 @@ const Home = () => {
                       href={kalender[0]?.file}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-blue-600 text-center hover:text-blue-800"
                     >
                       View Calendar PDF
                     </a>
