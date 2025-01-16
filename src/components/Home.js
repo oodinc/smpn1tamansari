@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -356,21 +355,25 @@ const Home = () => {
               className="bg-white p-8 rounded-lg shadow-lg"
             >
               <p className="text-xl">
-                Kalender pendidikan untuk tahun ajaran {kalender.title}:
+                Kalender pendidikan untuk tahun ajaran {kalender[0]?.title}:
               </p>
               {/* PDF Viewer */}
-              {kalender.file && (
-                <div className="mt-8">
-                  <a
-                    href={kalender.file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800"
-                  >
-                    View Calendar PDF
-                  </a>
-                </div>
-              )}
+              <div className="mt-8">
+                {kalender[0]?.file ? (
+                  <div className="mt-8">
+                    <a
+                      href={kalender[0]?.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      View Calendar PDF
+                    </a>
+                  </div>
+                ) : (
+                  <p>Loading PDF...</p>
+                )}
+              </div>
             </motion.div>
           </section>
         </div>
