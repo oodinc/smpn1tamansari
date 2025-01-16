@@ -54,7 +54,7 @@ const Navbar = () => {
                       SMP NEGERI 1 TAMANSARI
                     </div>
                     <div className="text-[12px] text-gray-700 tracking-wide">
-                      Jl. Merbabu No.13 Klaten, Jawa Tengah 57423
+                      Karangkendal, Tamansari,  Boyolali, Jawa Tengah
                     </div>
                   </>
                 )}
