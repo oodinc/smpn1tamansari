@@ -358,9 +358,9 @@ const Home = () => {
                 Kalender pendidikan untuk tahun ajaran {kalender[0]?.title}:
               </p>
               {/* PDF Viewer */}
-              <div className="mt-8 flex justify-center items-center">
+              <div className="flex justify-center items-center">
                 {kalender[0]?.file ? (
-                  <div className="mt-8">
+                  <div className="mt-6">
                     <a
                       href={kalender[0]?.file}
                       target="_blank"
