@@ -16,7 +16,10 @@ const BeritaAdmin = () => {
   useEffect(() => {
     fetch("https://smpn1tamansari-api.vercel.app/api/news")
       .then((response) => response.json())
-      .then((data) => setNews(data));
+      .then((data) => {
+        console.log(data);
+        setNews(data);
+      });
   }, []);
 
   // Handle update berita
