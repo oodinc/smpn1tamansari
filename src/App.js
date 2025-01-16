@@ -50,22 +50,22 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Navigate to="/admin-hero" />} /> 
 
-        <Route path="/admin-hero" element={<PrivateRoute><AdminLayout><HeroAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-berita" element={<PrivateRoute><AdminLayout><BeritaAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-ekskul" element={<PrivateRoute><AdminLayout><EkstrakurikulerAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-kalender" element={<PrivateRoute><AdminLayout><KalenderAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-alumni" element={<PrivateRoute><AdminLayout><AlumniAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-sambutan" element={<PrivateRoute><AdminLayout><SambutanAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-sejarah" element={<PrivateRoute><AdminLayout><SejarahAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-visimisi" element={<PrivateRoute><AdminLayout><VisiMisiAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-info" element={<PrivateRoute><AdminLayout><SchoolInfoAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-struktur" element={<PrivateRoute><AdminLayout><StrukturOrganisasi /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-staff" element={<PrivateRoute><AdminLayout><StaffAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-galeri" element={<PrivateRoute><AdminLayout><GaleriAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-sarana" element={<PrivateRoute><AdminLayout><SaranaAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-pengumuman" element={<PrivateRoute><AdminLayout><PengumumanAdmin /></AdminLayout></PrivateRoute>} />
-        <Route path="/admin-kontak" element={<PrivateRoute><AdminLayout><ContactAdmin /></AdminLayout></PrivateRoute>} />
-        
+        <Route path="/admin-hero" element={<AdminLayout><HeroAdmin /></AdminLayout>} />
+        <Route path="/admin-berita" element={<AdminLayout><BeritaAdmin /></AdminLayout>} />
+        <Route path="/admin-ekskul" element={<AdminLayout><EkstrakurikulerAdmin /></AdminLayout>} />
+        <Route path="/admin-kalender" element={<AdminLayout><KalenderAdmin /></AdminLayout>} />
+        <Route path="/admin-alumni" element={<AdminLayout><AlumniAdmin /></AdminLayout>} />
+        <Route path="/admin-sambutan" element={<AdminLayout><SambutanAdmin /></AdminLayout>} />
+        <Route path="/admin-sejarah" element={<AdminLayout><SejarahAdmin /></AdminLayout>} />
+        <Route path="/admin-visimisi" element={<AdminLayout><VisiMisiAdmin /></AdminLayout>} />
+        <Route path="/admin-info" element={<AdminLayout><SchoolInfoAdmin /></AdminLayout>} />
+        <Route path="/admin-struktur" element={<AdminLayout><StrukturOrganisasi /></AdminLayout>} />
+        <Route path="/admin-staff" element={<AdminLayout><StaffAdmin /></AdminLayout>} />
+        <Route path="/admin-galeri" element={<AdminLayout><GaleriAdmin /></AdminLayout>} />
+        <Route path="/admin-sarana" element={<AdminLayout><SaranaAdmin /></AdminLayout>} />
+        <Route path="/admin-pengumuman" element={<AdminLayout><PengumumanAdmin /></AdminLayout>} />
+        <Route path="/admin-kontak" element={<AdminLayout><ContactAdmin /></AdminLayout>} />
+
       </Routes>
     </BrowserRouter>
   );
