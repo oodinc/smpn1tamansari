@@ -143,7 +143,7 @@ const StaffAdmin = () => {
                   <td className="px-4 py-2">
                     {person.image && (
                       <img
-                        src={`https://smpn1tamansari-api.vercel.app${person.image}`}
+                        src={person.image}
                         alt={person.name}
                         className="w-20 h-20 object-cover"
                       />

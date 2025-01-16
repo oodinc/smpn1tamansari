@@ -86,7 +86,7 @@ const SejarahAdmin = () => {
               <p className="text-lg">{sejarah.text}</p>
               {sejarah.image && (
                 <img
-                  src={`https://smpn1tamansari-api.vercel.app${sejarah.image}`}
+                  src={sejarah.image}
                   alt="Sejarah"
                   className="mt-4 w-64 h-64 object-cover"
                 />

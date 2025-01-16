@@ -126,7 +126,7 @@ const SambutanAdmin = () => {
               </p>
               {headmasterMessage.image && (
                 <img
-                  src={`https://smpn1tamansari-api.vercel.app${headmasterMessage.image}`}
+                  src={headmasterMessage.image}
                   alt="Kepala Sekolah"
                   className="mt-4 w-64 h-64 object-cover"
                 />

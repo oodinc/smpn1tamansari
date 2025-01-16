@@ -22,7 +22,6 @@ const BeritaDetail = () => {
 
   if (!beritaDetail) return <div>Loading...</div>;
 
-  const imageUrl = `https://smpn1tamansari-api.vercel.app${beritaDetail.image}`;
   const publishedDate = new Date(beritaDetail.publishedAt).toLocaleDateString(
     "id-ID",
     {
@@ -43,13 +42,11 @@ const BeritaDetail = () => {
 
           {/* Image Section */}
           <div className="relative overflow-hidden">
-            {imageUrl && (
               <img
-                src={imageUrl}
+                src={beritaDetail.image}
                 alt={beritaDetail.title}
                 className="object-cover w-full h-[500px] transition-transform duration-300 hover:scale-105"
               />
-            )}
           </div>
 
           {/* Content Section */}

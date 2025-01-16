@@ -325,7 +325,7 @@ const Home = () => {
                     >
                       <div className="relative w-full h-48 mb-4">
                         <img
-                          src={`https://smpn1tamansari-api.vercel.app${ekstra.image}`}
+                          src={ekstra.image}
                           alt={ekstra.name}
                           className="object-cover w-full h-full rounded-lg"
                         />
@@ -384,7 +384,7 @@ const Home = () => {
                 className="bg-white rounded-lg shadow-lg hover:shadow-xl transition duration-300"
               >
                 <img
-                  src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                  src={item.image}
                   alt={item.title}
                   className="w-full h-56 object-cover rounded-t-lg"
                 />

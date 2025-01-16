@@ -99,7 +99,7 @@ const HeroAdmin = () => {
               <p className="mt-4 text-xl">{hero.description}</p>
               {hero.image && (
                 <img
-                  src={`https://smpn1tamansari-api.vercel.app${hero.image}`}
+                  src={hero.image}
                   alt="Hero"
                   className="mt-4 w-64 h-64 object-cover"
                 />

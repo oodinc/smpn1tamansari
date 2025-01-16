@@ -130,7 +130,7 @@ const SaranaAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                        src={item.image}
                         alt={item.name}
                         className="w-20 h-20 object-cover"
                       />

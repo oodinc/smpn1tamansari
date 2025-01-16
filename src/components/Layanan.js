@@ -46,7 +46,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`https://smpn1tamansari-api.vercel.app${ekstra.image}`}
+                      src={ekstra.image}
                       alt={ekstra.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -81,7 +81,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                      src={item.image}
                       alt={item.title}
                       className="object-cover w-full h-full rounded-lg"
                     />
@@ -121,7 +121,7 @@ const Layanan = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`https://smpn1tamansari-api.vercel.app${sarana.image}`}
+                      src={sarana.image}
                       alt={sarana.name}
                       className="object-cover w-full h-full rounded-lg"
                     />

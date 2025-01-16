@@ -87,7 +87,7 @@ const KalenderAdmin = () => {
               {kalender.file && (
                 <div className="mt-4">
                   <a
-                    href={`https://smpn1tamansari-api.vercel.app${kalender.file}`}
+                    href={kalender.file}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800"

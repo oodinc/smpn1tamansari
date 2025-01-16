@@ -72,7 +72,7 @@ const Profile = () => {
               >
                 <div className="relative group">
                   <img
-                    src={`https://smpn1tamansari-api.vercel.app${headmasterMessage.image}`}
+                    src={headmasterMessage.image}
                     alt="Kepala Sekolah"
                     className="w-auto h-96 object-cover rounded-xl shadow-lg"
                   />
@@ -112,7 +112,7 @@ const Profile = () => {
                 >
                   <div className="bg-gray-100 shadow-lg">
                     <img
-                      src={`https://smpn1tamansari-api.vercel.app${sejarah.image}`}
+                      src={sejarah.image}
                       alt="Sejarah"
                     />
                   </div>
@@ -341,7 +341,7 @@ const Profile = () => {
                     <div key={item._id} className="text-center">
                       <div className="relative inline-block">
                         <img
-                          src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                          src={item.image}
                           alt={item.name}
                           className="w-28 h-28 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                         />
@@ -360,7 +360,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -378,7 +378,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -396,7 +396,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -414,7 +414,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -434,7 +434,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -452,7 +452,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -470,7 +470,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -488,7 +488,7 @@ const Profile = () => {
                       <div key={item._id} className="text-center">
                         <div className="relative inline-block">
                           <img
-                            src={`https://smpn1tamansari-api.vercel.app${item.image}`}
+                            src={item.image}
                             alt={item.name}
                             className="w-24 h-24 rounded-full border-4 border-grey-400 object-cover shadow-lg hover:scale-105 transition-transform duration-300"
                           />
@@ -527,7 +527,7 @@ const Profile = () => {
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={`https://smpn1tamansari-api.vercel.app${guru.image}`}
+                      src={guru.image}
                       alt={guru.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
