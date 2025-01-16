@@ -54,7 +54,7 @@ const Navbar = () => {
                       SMP NEGERI 1 TAMANSARI
                     </div>
                     <div className="text-[12px] text-gray-700 tracking-wide">
-                      Karangkendal, Tamansari,  Boyolali, Jawa Tengah
+                      Karangkendal, Tamansari,  Boyolali, Jawa Tengah 57331
                     </div>
                   </>
                 )}
