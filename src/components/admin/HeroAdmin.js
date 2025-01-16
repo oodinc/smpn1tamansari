@@ -51,9 +51,6 @@ const HeroAdmin = () => {
 
         {hero && (
           <div className="mb-8">
-            <h3 className="text-2xl font-semibold text-gray-800">
-              Update Hero Section
-            </h3>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
