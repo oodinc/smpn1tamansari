@@ -360,11 +360,15 @@ const Home = () => {
               </p>
               {/* PDF Viewer */}
               <div className="mt-8">
-                <Worker
-                  workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-                >
-                  <Viewer fileUrl={kalender[0]?.file} />
-                </Worker>
+                {kalender[0]?.file ? (
+                  <Worker
+                    workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+                  >
+                    <Viewer fileUrl={kalender[0]?.file} />
+                  </Worker>
+                ) : (
+                  <p>Loading PDF...</p>
+                )}
               </div>
             </motion.div>
           </section>
