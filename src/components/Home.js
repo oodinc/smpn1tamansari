@@ -6,9 +6,11 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
+import { useLoading } from '../contexts/LoadingContext';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { showLoading, hideLoading } = useLoading();
 
   const [hero, setHero] = useState([]);
   const [news, setNews] = useState([]);
@@ -31,10 +33,15 @@ const Home = () => {
   };
 
   useEffect(() => {
+    showLoading();
+
     // Fetch hero data from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
-      .then((data) => setHero(data));
+      .then((data) => {
+        setHero(data);
+        hideLoading(); // Hide the loading spinner after data is fetched
+      });
 
     // Fetch news from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/news")
@@ -43,24 +50,37 @@ const Home = () => {
 
     // Fetch announcements from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
-      .then((response) => response.json())
-      .then((data) => setPengumuman(data));
+    .then((response) => response.json())
+    .then((data) => {
+      setPengumuman(data);
+      hideLoading(); // Hide the loading spinner after data is fetched
+    });
 
     // Fetch extracurriculars from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
-      .then((response) => response.json())
-      .then((data) => setExtracurriculars(data));
+    .then((response) => response.json())
+    .then((data) => {
+      setExtracurriculars(data);
+      hideLoading(); // Hide the loading spinner after data is fetched
+    });
 
     // Fetch Kalender from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
-      .then((response) => response.json())
-      .then((data) => setKalender(data));
+    .then((response) => response.json())
+    .then((data) => {
+      setKalender(data);
+      hideLoading(); // Hide the loading spinner after data is fetched
+    });
 
     // Fetch alumni from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
-      .then((response) => response.json())
-      .then((data) => setAlumni(data));
-  }, []);
+    .then((response) => response.json())
+    .then((data) => {
+      setAlumni(data);
+      hideLoading(); // Hide the loading spinner after data is fetched
+    });
+
+  }, [showLoading, hideLoading]);
 
   const truncateText = (text, length) => {
     if (text.length > length) {

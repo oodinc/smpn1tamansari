@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom'; 
 
+import { LoadingProvider } from './contexts/LoadingContext';
+
 import Navbar from './components/Navbar'; 
 import Home from './components/Home'; 
 import Profil from './components/Profil'; 
@@ -36,6 +38,7 @@ import Login from './components/admin/Login';
 
 function App() {
   return (
+    <LoadingProvider>
     <BrowserRouter> 
       <Navbar />
       <Routes>
@@ -68,6 +71,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </LoadingProvider>
   );
 }
 
