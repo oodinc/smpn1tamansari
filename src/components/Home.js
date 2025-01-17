@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -6,21 +6,16 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
+
 import LoadingSpinner from "./LoadingSpinner";
+import useFetchData from "./useFetchData";
+
 const Home = () => {
   const navigate = useNavigate();
 
-  const [hero, setHero] = useState([]);
-  const [news, setNews] = useState([]);
-  const [pengumuman, setPengumuman] = useState([]);
-  const [extracurriculars, setExtracurriculars] = useState([]);
-  const [kalender, setKalender] = useState([]);
-  const [alumni, setAlumni] = useState([]);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPengumuman, setSelectedPengumuman] = useState(null);
-  const [loading, setLoading] = useState(true);
-  
+
   const handleNavigation = (path, section) => {
     navigate(path); // Pindah ke halaman yang dimaksud
     setTimeout(() => {
@@ -31,53 +26,23 @@ const Home = () => {
     }, 100); // Tambahkan jeda untuk memastikan halaman dimuat
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-  
-        // Fetch hero data
-        const heroResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/hero");
-        const heroData = await heroResponse.json();
-        setHero(heroData);
-  
-        // Fetch news
-        const newsResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/news");
-        const newsData = await newsResponse.json();
-        setNews(newsData);
-  
-        // Fetch announcements
-        const pengumumanResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/announcements");
-        const pengumumanData = await pengumumanResponse.json();
-        setPengumuman(pengumumanData);
-  
-        // Fetch extracurriculars
-        const extracurricularsResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars");
-        const extracurricularsData = await extracurricularsResponse.json();
-        setExtracurriculars(extracurricularsData);
-  
-        // Fetch Kalender
-        const kalenderResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/kalender");
-        const kalenderData = await kalenderResponse.json();
-        setKalender(kalenderData);
-  
-        // Fetch alumni
-        const alumniResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/alumni");
-        const alumniData = await alumniResponse.json();
-        setAlumni(alumniData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Matikan loading setelah semua selesai
-      }
-    };
-  
-    fetchData();
-  }, []);  
+  const urls = [
+    "https://smpn1tamansari-api.vercel.app/api/hero",
+    "https://smpn1tamansari-api.vercel.app/api/news",
+    "https://smpn1tamansari-api.vercel.app/api/announcements",
+    "https://smpn1tamansari-api.vercel.app/api/extracurriculars",
+    "https://smpn1tamansari-api.vercel.app/api/kalender",
+    "https://smpn1tamansari-api.vercel.app/api/alumni"
+  ];
+
+  const { data, loading, error } = useFetchData(urls);
 
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  // Misalnya data hero ada di data[0], news di data[1], dsb.
+  const [hero, news, pengumuman, extracurriculars, kalender, alumni] = data;
 
   const truncateText = (text, length) => {
     if (text.length > length) {

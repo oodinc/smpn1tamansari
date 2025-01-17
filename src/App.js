@@ -1,7 +1,5 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom'; 
-
-import LoadingSpinner from './components/LoadingSpinner';
 
 import Navbar from './components/Navbar'; 
 import Home from './components/Home'; 
@@ -40,7 +38,6 @@ function App() {
   return (
     <BrowserRouter> 
       <Navbar />
-      <Suspense fallback={<LoadingSpinner />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profil" element={<Profil />} />
@@ -70,7 +67,6 @@ function App() {
         <Route path="/admin-kontak" element={<PrivateRoute><AdminLayout><ContactAdmin /></AdminLayout></PrivateRoute>} />
 
       </Routes>
-      </Suspense>
     </BrowserRouter>
   );
 }
