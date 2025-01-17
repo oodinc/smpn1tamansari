@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
-
+import LoadingSpinner from "./LoadingSpinner";
 const Home = () => {
   const navigate = useNavigate();
 
@@ -19,7 +19,8 @@ const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPengumuman, setSelectedPengumuman] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+  
   const handleNavigation = (path, section) => {
     navigate(path); // Pindah ke halaman yang dimaksud
     setTimeout(() => {
@@ -34,7 +35,14 @@ const Home = () => {
     // Fetch hero data from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
-      .then((data) => setHero(data));
+      .then((data) => {
+        setHero(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
 
     // Fetch news from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/news")
@@ -61,6 +69,10 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => setAlumni(data));
   }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   const truncateText = (text, length) => {
     if (text.length > length) {
