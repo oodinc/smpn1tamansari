@@ -6,9 +6,13 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
+import { useLoading } from "../context/LoadingContext";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const { showLoading, hideLoading } = useLoading();
 
   const [hero, setHero] = useState([]);
   const [news, setNews] = useState([]);
@@ -31,10 +35,16 @@ const Home = () => {
   };
 
   useEffect(() => {
+    showLoading();
+
     // Fetch hero data from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
-      .then((data) => setHero(data));
+      .then((data) => {
+        setHero(data);
+        hideLoading();
+      })
+      .catch(() => hideLoading());
 
     // Fetch news from the backend
     fetch("https://smpn1tamansari-api.vercel.app/api/news")
@@ -60,7 +70,7 @@ const Home = () => {
     fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
       .then((response) => response.json())
       .then((data) => setAlumni(data));
-  }, []);
+  }, [hideLoading, showLoading]);
 
   const truncateText = (text, length) => {
     if (text.length > length) {
@@ -81,6 +91,7 @@ const Home = () => {
 
   return (
     <div>
+      <LoadingSpinner />
       {/* Hero Section */}
       <div id="home" className="relative bg-gray-100">
         <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center h-screen">
