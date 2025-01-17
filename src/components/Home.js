@@ -32,43 +32,48 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Fetch hero data from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/hero")
-      .then((response) => response.json())
-      .then((data) => {
-        setHero(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+  
+        // Fetch hero data
+        const heroResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/hero");
+        const heroData = await heroResponse.json();
+        setHero(heroData);
+  
+        // Fetch news
+        const newsResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/news");
+        const newsData = await newsResponse.json();
+        setNews(newsData);
+  
+        // Fetch announcements
+        const pengumumanResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/announcements");
+        const pengumumanData = await pengumumanResponse.json();
+        setPengumuman(pengumumanData);
+  
+        // Fetch extracurriculars
+        const extracurricularsResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars");
+        const extracurricularsData = await extracurricularsResponse.json();
+        setExtracurriculars(extracurricularsData);
+  
+        // Fetch Kalender
+        const kalenderResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/kalender");
+        const kalenderData = await kalenderResponse.json();
+        setKalender(kalenderData);
+  
+        // Fetch alumni
+        const alumniResponse = await fetch("https://smpn1tamansari-api.vercel.app/api/alumni");
+        const alumniData = await alumniResponse.json();
+        setAlumni(alumniData);
+      } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false);
-      });
-
-    // Fetch news from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/news")
-      .then((response) => response.json())
-      .then((data) => setNews(data));
-
-    // Fetch announcements from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
-      .then((response) => response.json())
-      .then((data) => setPengumuman(data));
-
-    // Fetch extracurriculars from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
-      .then((response) => response.json())
-      .then((data) => setExtracurriculars(data));
-
-    // Fetch Kalender from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
-      .then((response) => response.json())
-      .then((data) => setKalender(data));
-
-    // Fetch alumni from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
-      .then((response) => response.json())
-      .then((data) => setAlumni(data));
-  }, []);
+      } finally {
+        setLoading(false); // Matikan loading setelah semua selesai
+      }
+    };
+  
+    fetchData();
+  }, []);  
 
   if (loading) {
     return <LoadingSpinner />;
