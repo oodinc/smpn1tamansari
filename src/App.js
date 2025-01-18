@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom'; 
 
 import Navbar from './components/Navbar'; 
+import Footer from './components/Footer';
+
 import Home from './components/Home'; 
 import Profil from './components/Profil'; 
 import Layanan from './components/Layanan'; 
@@ -67,6 +69,8 @@ function App() {
         <Route path="/admin-kontak" element={<PrivateRoute><AdminLayout><ContactAdmin /></AdminLayout></PrivateRoute>} />
 
       </Routes>
+
+      <Footer />
     </BrowserRouter>
   );
 }
