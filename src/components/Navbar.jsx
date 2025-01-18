@@ -60,8 +60,8 @@ const Navbar = () => {
                   <div className="text-2xl font-bold text-gray-700 tracking-wide">
                     SMP NEGERI 1 TAMANSARI
                   </div>
-                  <div className="text-[12px] text-gray-700 tracking-wide">
-                    Jl. Merbabu No.13 Klaten, Jawa Tengah 57423
+                  <div className="text-[10px] text-gray-700 tracking-wide">
+                    Karangkendal, Tamansari, Boyolali, Jawa Tengah 57331
                   </div>
                 </>
               )}
@@ -228,7 +228,7 @@ const Navbar = () => {
             <div className="text-lg font-bold tracking-wide">
               SMP NEGERI 1 TAMANSARI
             </div>
-            <div className="text-[9px] tracking-wide">
+            <div className="text-[10px] tracking-wide">
               Karangkendal, Tamansari, Boyolali, Jawa Tengah 57331
             </div>
           </div>
