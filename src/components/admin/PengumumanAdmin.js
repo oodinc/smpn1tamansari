@@ -95,7 +95,11 @@ const PengumumanAdmin = () => {
   };
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (
