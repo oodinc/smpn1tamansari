@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SejarahAdmin = () => {
   const [sejarah, setSejarah] = useState(null);
   const [newText, setNewText] = useState("");
   const [newImage, setNewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/sejarah")
       .then((response) => response.json())
-      .then((data) => {
-        setSejarah(data);
-        setNewText(data.text || "");
-      });
+      .then((data) => setSejarah(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleUpdateSejarah = () => {
@@ -35,6 +36,10 @@ const SejarahAdmin = () => {
     setNewImage(e.target.files[0]);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">

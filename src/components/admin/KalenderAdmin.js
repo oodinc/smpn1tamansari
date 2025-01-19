@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const KalenderAdmin = () => {
   const [kalender, setKalender] = useState(null);
   const [newTitle, setNewTitle] = useState("");
   const [newFile, setNewFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
       .then((response) => response.json())
       .then((data) => {
         setKalender(data[0]);
         setNewTitle(data[0]?.title || "");
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleUpdateKalender = () => {
@@ -35,6 +39,10 @@ const KalenderAdmin = () => {
     setNewFile(e.target.files[0]);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">

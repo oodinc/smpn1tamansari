@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SchoolInfoAdmin = () => {
   const [schoolInfo, setSchoolInfo] = useState(null);
@@ -18,29 +19,14 @@ const SchoolInfoAdmin = () => {
   const [newProvinsi, setNewProvinsi] = useState("");
   const [newNegara, setNewNegara] = useState("");
   const [newPosisiGeografis, setNewPosisiGeografis] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo")
       .then((response) => response.json())
-      .then((data) => {
-        setSchoolInfo(data);
-        setNewAkreditasi(data.akreditasi || "");
-        setNewJumlahGuru(data.jumlahGuru || "");
-        setNewTenagaPendidikan(data.tenagaPendidikan || "");
-        setNewJumlahSiswa(data.jumlahSiswa || "");
-        setNewNamaSekolah(data.namaSekolah || "");
-        setNewNSPN(data.nspn || "");
-        setNewJenjangPendidikan(data.jenjangPendidikan || "");
-        setNewStatusSekolah(data.statusSekolah || "");
-        setNewAlamat(data.alamat || "");
-        setNewRtRw(data.rtRw || "");
-        setNewKodePos(data.kodePos || "");
-        setNewKecamatan(data.kecamatan || "");
-        setNewKabKota(data.kabKota || "");
-        setNewProvinsi(data.provinsi || "");
-        setNewNegara(data.negara || "");
-        setNewPosisiGeografis(data.posisiGeografis || "");
-      });
+      .then((data) => setSchoolInfo(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleUpdateSchoolInfo = () => {
@@ -79,6 +65,10 @@ const SchoolInfoAdmin = () => {
       });
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">

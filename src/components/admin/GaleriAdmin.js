@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const GaleriAdmin = () => {
   const [galeri, setGaleri] = useState([]);
@@ -6,12 +7,15 @@ const GaleriAdmin = () => {
   const [selectedGaleri, setSelectedGaleri] = useState(null);
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch gallery items from backend
   useEffect(() => {
+    setIsLoading(true); // Mulai loading
     fetch("https://smpn1tamansari-api.vercel.app/api/galeri")
       .then((response) => response.json())
-      .then((data) => setGaleri(data));
+      .then((data) => setGaleri(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Handle create gallery
@@ -67,6 +71,10 @@ const GaleriAdmin = () => {
     setIsModalOpen(false);
     setSelectedGaleri(null);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

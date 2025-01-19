@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import LoadingSpinner from "../LoadingSpinner";
 
 const PengumumanAdmin = () => {
   const [announcements, setAnnouncements] = useState([]);
@@ -8,12 +9,15 @@ const PengumumanAdmin = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newPublishedDate, setNewPublishedDate] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch announcements from backend
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
       .then((response) => response.json())
-      .then((data) => setAnnouncements(data));
+      .then((data) => setAnnouncements(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Handle update pengumuman
@@ -89,6 +93,10 @@ const PengumumanAdmin = () => {
       })
       .catch((error) => console.error("Error creating announcement:", error));
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Profile = () => {
   const [headmasterMessage, setHeadmasterMessage] = useState([]);
@@ -8,32 +9,31 @@ const Profile = () => {
   const [schoolInfo, setSchoolInfo] = useState(null);
   const [strukturOrganisasi, setStrukturOrganisasi] = useState([]);
   const [staffAndTeachers, setStaffAndTeachers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message")
-      .then((response) => response.json())
-      .then((data) => setHeadmasterMessage(data));
-
-    fetch("https://smpn1tamansari-api.vercel.app/api/sejarah")
-      .then((response) => response.json())
-      .then((data) => setSejarah(data));
-
-    fetch("https://smpn1tamansari-api.vercel.app/api/visi-misi")
-      .then((response) => response.json())
-      .then((data) => setVisiMisi(data));
-
-    fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo")
-      .then((response) => response.json())
-      .then((data) => setSchoolInfo(data));
-
-    fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi")
-      .then((response) => response.json())
-      .then((data) => setStrukturOrganisasi(data));
-
-    fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers")
-      .then((response) => response.json())
-      .then((data) => setStaffAndTeachers(data));
+    Promise.all([
+      fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/sejarah").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/visi-misi").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers").then((res) => res.json()),
+    ])
+      .then(([headmasterData, sejarahData, visiMisiData, schoolInfoData, strukturData, staffData]) => {
+        setHeadmasterMessage(headmasterData);
+        setSejarah(sejarahData);
+        setVisiMisi(visiMisiData);
+        setSchoolInfo(schoolInfoData);
+        setStrukturOrganisasi(strukturData);
+        setStaffAndTeachers(staffData);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>

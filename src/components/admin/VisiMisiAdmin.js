@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import LoadingSpinner from "../LoadingSpinner";
 
 const VisiMisiAdmin = () => {
   const [formData, setFormData] = useState({
@@ -7,21 +8,18 @@ const VisiMisiAdmin = () => {
     misi: [""],
     id: null, // Tambahkan id untuk menyimpan id dari visi-misi
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchVisiMisi = async () => {
-      try {
-        const response = await axios.get("https://smpn1tamansari-api.vercel.app/api/visi-misi");
-        console.log(response.data); // Pastikan ini mencetak data dengan benar
-
-        const { visi, misi, id } = response.data || {}; // Pastikan response berisi data yang benar
+    setIsLoading(true);
+    axios
+      .get("https://smpn1tamansari-api.vercel.app/api/visi-misi")
+      .then((response) => {
+        const { visi, misi, id } = response.data || {};
         setFormData({ visi: visi || "", misi: misi || [""], id: id || null });
-      } catch (error) {
-        console.error("Kesalahan mengambil Visi & Misi:", error);
-      }
-    };
-
-    fetchVisiMisi();
+      })
+      .catch((error) => console.error("Kesalahan mengambil Visi & Misi:", error))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleVisiChange = (e) => {
@@ -63,6 +61,10 @@ const VisiMisiAdmin = () => {
     }
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 p-8 rounded-lg shadow-lg">
       <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">

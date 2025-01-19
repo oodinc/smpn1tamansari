@@ -1,20 +1,24 @@
-// frontend/src/components/admin/ContactAdmin.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "../LoadingSpinner";
 
 const ContactAdmin = () => {
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchMessages();
   }, []);
 
   const fetchMessages = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get("https://smpn1tamansari-api.vercel.app/api/contacts");
       setMessages(response.data);
     } catch (error) {
       console.error("Kesalahan mengambil data pesan:", error);
+    } finally {
+      setIsLoading(false); 
     }
   };
 
@@ -26,6 +30,10 @@ const ContactAdmin = () => {
       console.error("Kesalahan menghapus data pesan:", error);
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 p-8 rounded-lg shadow-lg">

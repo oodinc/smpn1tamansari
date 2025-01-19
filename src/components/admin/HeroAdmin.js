@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const HeroAdmin = () => {
   const [hero, setHero] = useState(null);
   const [newWelcomeMessage, setNewWelcomeMessage] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true); // Mulai loading
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
-      .then((data) => {
-        setHero(data);
-        setNewWelcomeMessage(data.welcomeMessage || "");
-        setNewDescription(data.description || "");
-      });
+      .then((data) => setHero(data))
+      .finally(() => setIsLoading(false)); // Hentikan loading
   }, []);
 
   const handleUpdateHero = () => {
@@ -41,6 +41,10 @@ const HeroAdmin = () => {
   const handleFileChange = (e) => {
     setNewImage(e.target.files[0]);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />; // Tampilkan spinner saat loading
+  }
 
   return (
     <div className="bg-gray-50 py-12">

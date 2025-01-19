@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const OrganizationalStructureAdmin = () => {
   const [structure, setStructure] = useState([]);
@@ -7,6 +8,7 @@ const OrganizationalStructureAdmin = () => {
   const [newName, setNewName] = useState("");
   const [newRole, setNewRole] = useState("");
   const [newImage, setNewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const roles = [
     "Kepala Sekolah",
@@ -22,9 +24,11 @@ const OrganizationalStructureAdmin = () => {
 
   // Fetch structure data from backend
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi")
       .then((response) => response.json())
-      .then((data) => setStructure(data));
+      .then((data) => setStructure(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Handle create structure
@@ -90,6 +94,10 @@ const OrganizationalStructureAdmin = () => {
     setSelectedStructure(null);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">

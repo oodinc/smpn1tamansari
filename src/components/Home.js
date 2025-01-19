@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPengumuman, setSelectedPengumuman] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+  
   const handleNavigation = (path, section) => {
     navigate(path); // Pindah ke halaman yang dimaksud
     setTimeout(() => {
@@ -31,35 +34,23 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // Fetch hero data from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/hero")
-      .then((response) => response.json())
-      .then((data) => setHero(data));
-
-    // Fetch news from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/news")
-      .then((response) => response.json())
-      .then((data) => setNews(data));
-
-    // Fetch announcements from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
-      .then((response) => response.json())
-      .then((data) => setPengumuman(data));
-
-    // Fetch extracurriculars from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
-      .then((response) => response.json())
-      .then((data) => setExtracurriculars(data));
-
-    // Fetch Kalender from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/kalender")
-      .then((response) => response.json())
-      .then((data) => setKalender(data));
-
-    // Fetch alumni from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
-      .then((response) => response.json())
-      .then((data) => setAlumni(data));
+    Promise.all([
+      fetch("https://smpn1tamansari-api.vercel.app/api/hero").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/news").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/announcements").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/kalender").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/alumni").then((res) => res.json()),
+    ])
+      .then(([heroData, newsData, pengumumanData, extracurricularsData, kalenderData, alumniData]) => {
+        setHero(heroData);
+        setNews(newsData);
+        setPengumuman(pengumumanData);
+        setExtracurriculars(extracurricularsData);
+        setKalender(kalenderData);
+        setAlumni(alumniData);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const truncateText = (text, length) => {
@@ -78,6 +69,10 @@ const Home = () => {
     setIsModalOpen(false);
     setSelectedPengumuman(null);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const StaffAdmin = () => {
   const [staff, setStaff] = useState([]);
@@ -7,12 +8,15 @@ const StaffAdmin = () => {
   const [newStaffName, setNewStaffName] = useState("");
   const [newStaffRole, setNewStaffRole] = useState("");
   const [newStaffImage, setNewStaffImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch staff and teachers from backend
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers")
       .then((response) => response.json())
-      .then((data) => setStaff(data));
+      .then((data) => setStaff(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Handle create staff
@@ -72,6 +76,10 @@ const StaffAdmin = () => {
     setSelectedStaff(null);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">

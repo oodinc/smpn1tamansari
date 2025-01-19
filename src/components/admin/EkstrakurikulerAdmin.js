@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const EkstrakurikulerAdmin = () => {
   const [extracurriculars, setExtracurriculars] = useState([]);
@@ -7,12 +8,15 @@ const EkstrakurikulerAdmin = () => {
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch extracurriculars from backend
   useEffect(() => {
+    setIsLoading(true); // Mulai loading
     fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
       .then((response) => response.json())
-      .then((data) => setExtracurriculars(data));
+      .then((data) => setExtracurriculars(data))
+      .finally(() => setIsLoading(false)); 
   }, []);
 
   // Handle create extracurricular
@@ -77,6 +81,10 @@ const EkstrakurikulerAdmin = () => {
     setIsModalOpen(false);
     setSelectedExtracurricular(null);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

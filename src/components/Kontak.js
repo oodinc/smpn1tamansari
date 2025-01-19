@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,15 +43,22 @@ const Contact = () => {
       !formErrors.phone &&
       !formErrors.message
     ) {
+      setIsLoading(true); 
       try {
         await axios.post("https://smpn1tamansari-api.vercel.app/api/contacts", formData);
         setIsSubmitted(true);
         setFormData({ name: "", email: "", phone: "", message: "" });
       } catch (error) {
         console.error("Kesalahan mengirim pesan:", error);
+      } finally {
+        setIsLoading(false); 
       }
     }
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />; 
+  }
 
   return (
     <div id="kontak" className="bg-gray-100 py-24">

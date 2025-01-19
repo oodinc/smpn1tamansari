@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SaranaAdmin = () => {
   const [sarana, setSarana] = useState([]);
@@ -6,12 +7,15 @@ const SaranaAdmin = () => {
   const [selectedSarana, setSelectedSarana] = useState(null);
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch sarana from backend
   useEffect(() => {
+    setIsLoading(true); 
     fetch("https://smpn1tamansari-api.vercel.app/api/sarana")
       .then((response) => response.json())
-      .then((data) => setSarana(data));
+      .then((data) => setSarana(data))
+      .finally(() => setIsLoading(false));
   }, []);
 
   // Handle create sarana
@@ -67,6 +71,10 @@ const SaranaAdmin = () => {
     setIsModalOpen(false);
     setSelectedSarana(null);
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

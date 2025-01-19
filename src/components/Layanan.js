@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Layanan = () => {
   const [extracurriculars, setExtracurriculars] = useState([]);
   const [galeri, setGaleri] = useState([]);
   const [sarana, setSarana] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch extracurriculars from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars")
-      .then((response) => response.json())
-      .then((data) => setExtracurriculars(data));
-
-    // Fetch gallery items from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/galeri")
-      .then((response) => response.json())
-      .then((data) => setGaleri(data));
-
-    // Fetch sarana items from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/sarana")
-      .then((response) => response.json())
-      .then((data) => setSarana(data));
+    Promise.all([
+      fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/galeri").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/sarana").then((res) => res.json()),
+    ])
+      .then(([ekskulData, galeriData, saranaData]) => {
+        setExtracurriculars(ekskulData);
+        setGaleri(galeriData);
+        setSarana(saranaData);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>

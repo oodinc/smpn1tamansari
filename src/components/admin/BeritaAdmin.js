@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import LoadingSpinner from "../LoadingSpinner";
 
 const BeritaAdmin = () => {
   const [news, setNews] = useState([]);
@@ -12,14 +13,18 @@ const BeritaAdmin = () => {
   const [newPublishedAt, setNewPublishedAt] = useState("");
   const quillRef = useRef(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   // Fetch berita from backend
   useEffect(() => {
+    setIsLoading(true); 
     fetch("https://smpn1tamansari-api.vercel.app/api/news")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setNews(data);
-      });
+      })
+      .finally(() => setIsLoading(false)); 
   }, []);
 
   // Handle update berita
@@ -91,6 +96,10 @@ const BeritaAdmin = () => {
         setNewPublishedAt("");
       });
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

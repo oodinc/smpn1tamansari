@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const AlumniAdmin = () => {
   const [alumni, setAlumni] = useState([]);
@@ -7,12 +8,15 @@ const AlumniAdmin = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch alumni from backend
   useEffect(() => {
+    setIsLoading(true); 
     fetch("https://smpn1tamansari-api.vercel.app/api/alumni")
       .then((response) => response.json())
-      .then((data) => setAlumni(data));
+      .then((data) => setAlumni(data))
+      .finally(() => setIsLoading(false)); 
   }, []);
 
   // Handle update alumni
@@ -41,7 +45,6 @@ const AlumniAdmin = () => {
     setNewImage(e.target.files[0]);
   };
 
-  // Handle delete alumni
   const handleDelete = (id) => {
     fetch(`https://smpn1tamansari-api.vercel.app/api/alumni/${id}`, {
       method: "DELETE",
@@ -81,6 +84,10 @@ const AlumniAdmin = () => {
         setNewImage(null);
       });
   };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">

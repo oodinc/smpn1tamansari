@@ -1,5 +1,5 @@
-// frontend/src/components/admin/SambutanAdmin.js
 import React, { useState, useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner";
 
 const SambutanAdmin = () => {
   const [headmasterMessage, setHeadmasterMessage] = useState(null);
@@ -7,16 +7,16 @@ const SambutanAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newHeadmasterName, setNewHeadmasterName] = useState("");
   const [newImage, setNewImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message")
       .then((response) => response.json())
       .then((data) => {
         setHeadmasterMessage(data);
-        setNewMessage(data.message || "");
-        setNewDescription(data.description || "");
-        setNewHeadmasterName(data.headmasterName || "");
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleUpdateHeadmasterMessage = (e) => {
@@ -53,6 +53,10 @@ const SambutanAdmin = () => {
     setNewImage(e.target.files[0]);
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
