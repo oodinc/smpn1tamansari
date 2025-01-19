@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation  } from 'react-router-dom'; 
+import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom'; 
 
 import Navbar from './components/Navbar'; 
 import Footer from './components/Footer';
@@ -37,10 +37,6 @@ import PrivateRoute from './components/admin/PrivateRoute';
 import Login from './components/admin/Login';
 
 function App() {
-  const location = useLocation();
-  
-  const isAdminPage = location.pathname.startsWith("/admin");
-
   return (
     <BrowserRouter> 
       <Navbar />
@@ -74,7 +70,7 @@ function App() {
 
       </Routes>
 
-      {!isAdminPage && <Footer />}
+      <Footer />
     </BrowserRouter>
   );
 }
