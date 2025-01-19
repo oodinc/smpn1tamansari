@@ -25,7 +25,25 @@ const SchoolInfoAdmin = () => {
     setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo")
       .then((response) => response.json())
-      .then((data) => setSchoolInfo(data))
+      .then((data) => {
+        setSchoolInfo(data);
+        setNewAkreditasi(data.akreditasi || "");
+        setNewJumlahGuru(data.jumlahGuru || "");
+        setNewTenagaPendidikan(data.tenagaPendidikan || "");
+        setNewJumlahSiswa(data.jumlahSiswa || "");
+        setNewNamaSekolah(data.namaSekolah || "");
+        setNewNSPN(data.nspn || "");
+        setNewJenjangPendidikan(data.jenjangPendidikan || "");
+        setNewStatusSekolah(data.statusSekolah || "");
+        setNewAlamat(data.alamat || "");
+        setNewRtRw(data.rtRw || "");
+        setNewKodePos(data.kodePos || "");
+        setNewKecamatan(data.kecamatan || "");
+        setNewKabKota(data.kabKota || "");
+        setNewProvinsi(data.provinsi || "");
+        setNewNegara(data.negara || "");
+        setNewPosisiGeografis(data.posisiGeografis || "");
+      })
       .finally(() => setIsLoading(false));
   }, []);
 

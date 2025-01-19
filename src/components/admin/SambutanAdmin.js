@@ -15,6 +15,9 @@ const SambutanAdmin = () => {
       .then((response) => response.json())
       .then((data) => {
         setHeadmasterMessage(data);
+        setNewMessage(data.message || "");
+        setNewDescription(data.description || "");
+        setNewHeadmasterName(data.headmasterName || "");
       })
       .finally(() => setIsLoading(false));
   }, []);

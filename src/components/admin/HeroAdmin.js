@@ -7,13 +7,17 @@ const HeroAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
     setIsLoading(true); // Mulai loading
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
       .then((response) => response.json())
-      .then((data) => setHero(data))
-      .finally(() => setIsLoading(false)); // Hentikan loading
+      .then((data) => {
+        setHero(data);
+        setNewWelcomeMessage(data.welcomeMessage || "");
+        setNewDescription(data.description || "");
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleUpdateHero = () => {
@@ -43,9 +47,13 @@ const HeroAdmin = () => {
   };
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
+        <LoadingSpinner />
+      </div>
+    );
   }
-
+  
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
