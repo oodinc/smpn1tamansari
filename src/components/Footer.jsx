@@ -1,7 +1,15 @@
 import React from "react";
 import { FaYoutube, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
+  const location = useLocation();
+
+  // Check if the current page is the admin page
+  const isAdminPage = location.pathname.startsWith("/admin");
+
+  if (isAdminPage) return null;
+  
   return (
     <footer className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
