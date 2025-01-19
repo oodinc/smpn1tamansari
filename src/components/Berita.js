@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaBullhorn } from "react-icons/fa";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Berita = () => {
   const [news, setNews] = useState([]);
   const [pengumuman, setPengumuman] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
-    // Fetch news from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/news")
-      .then((response) => response.json())
-      .then((data) => setNews(data));
-
-    // Fetch announcements from the backend
-    fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
-      .then((response) => response.json())
-      .then((data) => setPengumuman(data));
+    Promise.all([
+      fetch("https://smpn1tamansari-api.vercel.app/api/news").then((res) => res.json()
+      ),
+      fetch("https://smpn1tamansari-api.vercel.app/api/announcements").then((res) => res.json()
+      ),
+    ])
+      .then(([newsData, pengumumanData]) => {
+        setNews(newsData);
+        setPengumuman(pengumumanData);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +41,11 @@ const Berita = () => {
     setIsModalOpen(false);
     setSelectedPengumuman(null);
   };
+
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="bg-gray-50 py-12">
