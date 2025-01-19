@@ -43,7 +43,7 @@ const HeroAdmin = () => {
   };
 
   if (isLoading) {
-    return <LoadingSpinner />; // Tampilkan spinner saat loading
+    return <LoadingSpinner />;
   }
 
   return (
