@@ -8,6 +8,9 @@ const SaranaAdmin = () => {
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch sarana from backend
   useEffect(() => {
@@ -20,6 +23,7 @@ const SaranaAdmin = () => {
 
   // Handle create sarana
   const handleCreateSarana = () => {
+    setIsCreating(true); // Set creating state to true
     const formData = new FormData();
     formData.append("name", newName);
     if (newImage) formData.append("image", newImage);
@@ -33,11 +37,13 @@ const SaranaAdmin = () => {
         setSarana([...sarana, data]);
         setNewName("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsCreating(false)); // Set creating state to false after operation
   };
 
   // Handle update sarana
   const handleUpdateSarana = () => {
+    setIsUpdating(true); // Set updating state to true
     const formData = new FormData();
     formData.append("name", selectedSarana.name);
     if (selectedSarana.image) formData.append("image", selectedSarana.image);
@@ -50,16 +56,20 @@ const SaranaAdmin = () => {
       .then((data) => {
         setSarana(sarana.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Set updating state to false after operation
   };
 
   // Handle delete sarana
   const handleDelete = (id) => {
+    setIsDeleting(true); // Set deleting state to true
     fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setSarana(sarana.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setSarana(sarana.filter((item) => item.id !== id));
+      })
+      .finally(() => setIsDeleting(false)); // Set deleting state to false after operation
   };
 
   const openModal = (item) => {
@@ -72,7 +82,7 @@ const SaranaAdmin = () => {
     setSelectedSarana(null);
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

@@ -20,6 +20,7 @@ const SchoolInfoAdmin = () => {
   const [newNegara, setNewNegara] = useState("");
   const [newPosisiGeografis, setNewPosisiGeografis] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,6 +49,7 @@ const SchoolInfoAdmin = () => {
   }, []);
 
   const handleUpdateSchoolInfo = () => {
+    setIsUpdating(true); // Set loading to true before updating
     const updatedData = {
       akreditasi: newAkreditasi,
       jumlahGuru: newJumlahGuru ? parseInt(newJumlahGuru, 10) : 0,
@@ -80,10 +82,11 @@ const SchoolInfoAdmin = () => {
       .then((data) => {
         setSchoolInfo(data);
         alert("School information updated successfully");
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Reset loading state after update
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

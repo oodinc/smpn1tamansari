@@ -8,7 +8,10 @@ const GaleriAdmin = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  
   // Fetch gallery items from backend
   useEffect(() => {
     setIsLoading(true); // Mulai loading
@@ -20,6 +23,7 @@ const GaleriAdmin = () => {
 
   // Handle create gallery
   const handleCreateGaleri = () => {
+    setIsCreating(true); // Start creating
     const formData = new FormData();
     formData.append("title", newTitle);
     if (newImage) formData.append("image", newImage);
@@ -33,11 +37,13 @@ const GaleriAdmin = () => {
         setGaleri([...galeri, data]);
         setNewTitle("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsCreating(false)); // Stop creating
   };
 
   // Handle update gallery
   const handleUpdateGaleri = () => {
+    setIsUpdating(true); // Start updating
     const formData = new FormData();
     formData.append("title", selectedGaleri.title);
     if (selectedGaleri.image) formData.append("image", selectedGaleri.image);
@@ -50,16 +56,20 @@ const GaleriAdmin = () => {
       .then((data) => {
         setGaleri(galeri.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Stop updating
   };
 
   // Handle delete gallery
   const handleDelete = (id) => {
+    setIsDeleting(true); // Start deleting
     fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setGaleri(galeri.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setGaleri(galeri.filter((item) => item.id !== id));
+      })
+      .finally(() => setIsDeleting(false)); // Stop deleting
   };
 
   const openModal = (item) => {
@@ -72,7 +82,7 @@ const GaleriAdmin = () => {
     setSelectedGaleri(null);
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

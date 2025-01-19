@@ -6,6 +6,7 @@ const KalenderAdmin = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newFile, setNewFile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,6 +24,8 @@ const KalenderAdmin = () => {
     formData.append("title", newTitle);
     if (newFile) formData.append("file", newFile);
 
+    setIsUpdating(true); // Start loading when updating
+
     fetch(`https://smpn1tamansari-api.vercel.app/api/kalender/${kalender.id}`, {
       method: "PUT",
       body: formData,
@@ -32,14 +35,15 @@ const KalenderAdmin = () => {
         setKalender(data);
         setNewTitle("");
         setNewFile(null);
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Stop loading after updating
   };
 
   const handleFileChange = (e) => {
     setNewFile(e.target.files[0]);
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

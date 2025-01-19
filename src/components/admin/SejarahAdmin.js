@@ -6,6 +6,7 @@ const SejarahAdmin = () => {
   const [newText, setNewText] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -16,6 +17,7 @@ const SejarahAdmin = () => {
   }, []);
 
   const handleUpdateSejarah = () => {
+    setIsUpdating(true);
     const formData = new FormData();
     formData.append("text", newText);
     if (newImage) formData.append("image", newImage);
@@ -29,14 +31,15 @@ const SejarahAdmin = () => {
         setSejarah(data);
         setNewText("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsUpdating(false));
   };
 
   const handleFileChange = (e) => {
     setNewImage(e.target.files[0]);
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

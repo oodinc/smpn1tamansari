@@ -14,6 +14,9 @@ const BeritaAdmin = () => {
   const quillRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false); 
+  const [isUpdating, setIsUpdating] = useState(false); 
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch berita from backend
   useEffect(() => {
@@ -29,6 +32,7 @@ const BeritaAdmin = () => {
 
   // Handle update berita
   const handleUpdateBerita = () => {
+    setIsUpdating(true); // Set loading for update
     const formData = new FormData();
     formData.append("title", selectedNews.title);
     formData.append("description", selectedNews.description);
@@ -43,7 +47,8 @@ const BeritaAdmin = () => {
       .then((data) => {
         setNews(news.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Stop loading
   };
 
   const handleFileChange = (e) => {
@@ -52,11 +57,14 @@ const BeritaAdmin = () => {
 
   // Handle delete berita
   const handleDelete = (id) => {
+    setIsDeleting(true); // Set loading for delete
     fetch(`https://smpn1tamansari-api.vercel.app/api/news/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setNews(news.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setNews(news.filter((item) => item.id !== id));
+      })
+      .finally(() => setIsDeleting(false)); // Stop loading
   };
 
   // Handle open modal
@@ -77,6 +85,7 @@ const BeritaAdmin = () => {
 
   // Handle create berita
   const handleCreateBerita = () => {
+    setIsCreating(true); // Set loading for create
     const formData = new FormData();
     formData.append("title", newTitle);
     formData.append("description", newDescription);
@@ -94,10 +103,11 @@ const BeritaAdmin = () => {
         setNewDescription("");
         setNewImage(null);
         setNewPublishedAt("");
-      });
+      })
+      .finally(() => setIsCreating(false)); // Stop loading
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

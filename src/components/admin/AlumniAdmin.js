@@ -9,7 +9,10 @@ const AlumniAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  
   // Fetch alumni from backend
   useEffect(() => {
     setIsLoading(true); 
@@ -26,6 +29,7 @@ const AlumniAdmin = () => {
     formData.append("description", selectedAlumni.description);
     if (selectedAlumni.image) formData.append("image", selectedAlumni.image);
 
+    setIsUpdating(true); // Start the loading spinner for update
     fetch(`https://smpn1tamansari-api.vercel.app/api/alumni/${selectedAlumni.id}`, {
       method: "PUT",
       body: formData,
@@ -34,7 +38,8 @@ const AlumniAdmin = () => {
       .then((data) => {
         setAlumni(alumni.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false)); // Stop the loading spinner for update
   };
 
   const handleDescriptionChange = (e) => {
@@ -46,11 +51,14 @@ const AlumniAdmin = () => {
   };
 
   const handleDelete = (id) => {
+    setIsDeleting(true); // Start the loading spinner for delete
     fetch(`https://smpn1tamansari-api.vercel.app/api/alumni/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setAlumni(alumni.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setAlumni(alumni.filter((item) => item.id !== id));
+      })
+      .finally(() => setIsDeleting(false)); // Stop the loading spinner for delete
   };
 
   // Handle open modal
@@ -72,6 +80,7 @@ const AlumniAdmin = () => {
     formData.append("description", newDescription);
     if (newImage) formData.append("image", newImage);
 
+    setIsCreating(true); // Start the loading spinner for create
     fetch("https://smpn1tamansari-api.vercel.app/api/alumni", {
       method: "POST",
       body: formData,
@@ -82,10 +91,11 @@ const AlumniAdmin = () => {
         setNewTitle("");
         setNewDescription("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsCreating(false)); // Stop the loading spinner for create
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating || isDeleting || isCreating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

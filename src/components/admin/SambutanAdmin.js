@@ -8,6 +8,7 @@ const SambutanAdmin = () => {
   const [newHeadmasterName, setNewHeadmasterName] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,6 +26,7 @@ const SambutanAdmin = () => {
   const handleUpdateHeadmasterMessage = (e) => {
     e.preventDefault();
     if (headmasterMessage && headmasterMessage.id) {
+      setIsUpdating(true); // Set updating state to true during the update
       const formData = new FormData();
       formData.append("message", newMessage);
       formData.append("description", newDescription);
@@ -48,7 +50,8 @@ const SambutanAdmin = () => {
         })
         .catch((error) =>
           console.error("Error updating headmaster message:", error)
-        );
+        )
+        .finally(() => setIsUpdating(false)); // Set updating to false once the update completes
     }
   };
 
@@ -56,7 +59,7 @@ const SambutanAdmin = () => {
     setNewImage(e.target.files[0]);
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

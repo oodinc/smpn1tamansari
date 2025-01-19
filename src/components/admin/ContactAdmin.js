@@ -5,6 +5,7 @@ import LoadingSpinner from "../LoadingSpinner";
 const ContactAdmin = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -23,15 +24,18 @@ const ContactAdmin = () => {
   };
 
   const handleDelete = async (id) => {
+    setIsDeleting(true); 
     try {
       await axios.delete(`https://smpn1tamansari-api.vercel.app/api/contacts/${id}`);
-      fetchMessages();
+      fetchMessages(); 
     } catch (error) {
       console.error("Kesalahan menghapus data pesan:", error);
+    } finally {
+      setIsDeleting(false); 
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

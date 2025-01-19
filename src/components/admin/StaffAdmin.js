@@ -9,6 +9,9 @@ const StaffAdmin = () => {
   const [newStaffRole, setNewStaffRole] = useState("");
   const [newStaffImage, setNewStaffImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch staff and teachers from backend
   useEffect(() => {
@@ -21,6 +24,7 @@ const StaffAdmin = () => {
 
   // Handle create staff
   const handleAddStaff = () => {
+    setIsAdding(true);
     const formData = new FormData();
     formData.append("name", newStaffName);
     formData.append("role", newStaffRole);
@@ -36,20 +40,24 @@ const StaffAdmin = () => {
         setNewStaffName("");
         setNewStaffRole("");
         setNewStaffImage(null);
-      });
+      })
+      .finally(() => setIsAdding(false));
   };
 
   // Handle delete staff
   const handleDeleteStaff = (id) => {
+    setIsDeleting(true);
     fetch(`https://smpn1tamansari-api.vercel.app/api/staffandteachers/${id}`, {
       method: "DELETE",
     }).then(() => {
       setStaff(staff.filter((item) => item.id !== id));
+      setIsDeleting(false);
     });
   };
 
   // Handle update staff
   const handleUpdateStaff = () => {
+    setIsUpdating(true);
     const formData = new FormData();
     formData.append("name", selectedStaff.name);
     formData.append("role", selectedStaff.role);
@@ -63,7 +71,8 @@ const StaffAdmin = () => {
       .then((data) => {
         setStaff(staff.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false));
   };
 
   const openModal = (item) => {
@@ -76,7 +85,7 @@ const StaffAdmin = () => {
     setSelectedStaff(null);
   };
 
-  if (isLoading) {
+  if (isLoading || isAdding || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

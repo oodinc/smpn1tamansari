@@ -10,6 +10,9 @@ const PengumumanAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newPublishedDate, setNewPublishedDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false); 
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch announcements from backend
   useEffect(() => {
@@ -22,6 +25,7 @@ const PengumumanAdmin = () => {
 
   // Handle update pengumuman
   const handleUpdatePengumuman = () => {
+    setIsUpdating(true);
     const updatedAnnouncement = {
       title: selectedAnnouncement.title,
       description: selectedAnnouncement.description,
@@ -47,16 +51,21 @@ const PengumumanAdmin = () => {
       })
       .catch((error) => {
         console.error("Error updating announcement:", error);
-      });
+      })
+      .finally(() => setIsUpdating(false));
   };
 
   // Handle delete pengumuman
   const handleDelete = (id) => {
+    setIsDeleting(true);
     fetch(`https://smpn1tamansari-api.vercel.app/api/announcements/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setAnnouncements(announcements.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setAnnouncements(announcements.filter((item) => item.id !== id));
+      })
+      .catch((error) => console.error("Error deleting announcement:", error))
+      .finally(() => setIsDeleting(false));
   };
 
   // Handle open modal
@@ -73,6 +82,7 @@ const PengumumanAdmin = () => {
 
   // Handle create pengumuman
   const handleCreatePengumuman = () => {
+    setIsCreating(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/announcements", {
       method: "POST",
       headers: {
@@ -91,10 +101,11 @@ const PengumumanAdmin = () => {
         setNewDescription("");
         setNewPublishedDate("");
       })
-      .catch((error) => console.error("Error creating announcement:", error));
+      .catch((error) => console.error("Error creating announcement:", error))
+      .finally(() => setIsCreating(false));
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

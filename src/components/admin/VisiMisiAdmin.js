@@ -43,13 +43,12 @@ const VisiMisiAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Pastikan ada id sebelum melakukan PUT request
     if (formData.id === null) {
       alert("ID tidak ditemukan!");
       return;
     }
 
+    setIsLoading(true); // Show loading when sending the request
     try {
       await axios.put(`https://smpn1tamansari-api.vercel.app/api/visi-misi/${formData.id}`, formData, {
         headers: { "Content-Type": "application/json" },
@@ -58,6 +57,8 @@ const VisiMisiAdmin = () => {
     } catch (error) {
       console.error("Kesalahan memperbarui Visi & Misi:", error);
       alert("Gagal memperbarui Visi & Misi.");
+    } finally {
+      setIsLoading(false); // Stop loading after request finishes
     }
   };
 

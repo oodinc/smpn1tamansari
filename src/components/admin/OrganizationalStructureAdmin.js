@@ -9,6 +9,9 @@ const OrganizationalStructureAdmin = () => {
   const [newRole, setNewRole] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false); 
+  const [isUpdating, setIsUpdating] = useState(false); 
+  const [isDeleting, setIsDeleting] = useState(false); 
 
   const roles = [
     "Kepala Sekolah",
@@ -33,6 +36,7 @@ const OrganizationalStructureAdmin = () => {
 
   // Handle create structure
   const handleCreateStructure = () => {
+    setIsCreating(true);
     const formData = new FormData();
     formData.append("name", newName);
     formData.append("role", newRole);
@@ -48,11 +52,13 @@ const OrganizationalStructureAdmin = () => {
         setNewName("");
         setNewRole("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsCreating(false));
   };
 
   // Handle update structure
   const handleUpdateStructure = () => {
+    setIsUpdating(true);
     const formData = new FormData();
     formData.append("name", selectedStructure.name);
     formData.append("role", selectedStructure.role);
@@ -72,15 +78,18 @@ const OrganizationalStructureAdmin = () => {
           structure.map((item) => (item.id === data.id ? data : item))
         );
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false));
   };
 
   // Handle delete structure
   const handleDelete = (id) => {
+    setIsDeleting(true);
     fetch(`https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi/${id}`, {
       method: "DELETE",
     }).then(() => {
       setStructure(structure.filter((item) => item.id !== id));
+      setIsDeleting(false);
     });
   };
 
@@ -94,7 +103,7 @@ const OrganizationalStructureAdmin = () => {
     setSelectedStructure(null);
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />

@@ -9,6 +9,9 @@ const EkstrakurikulerAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreating, setIsCreating] = useState(false); 
+  const [isUpdating, setIsUpdating] = useState(false); 
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch extracurriculars from backend
   useEffect(() => {
@@ -21,6 +24,7 @@ const EkstrakurikulerAdmin = () => {
 
   // Handle create extracurricular
   const handleCreateExtracurricular = () => {
+    setIsCreating(true); // Start creating loading
     const formData = new FormData();
     formData.append("name", newName);
     formData.append("description", newDescription);
@@ -36,11 +40,13 @@ const EkstrakurikulerAdmin = () => {
         setNewName("");
         setNewDescription("");
         setNewImage(null);
-      });
+      })
+      .finally(() => setIsCreating(false)); // End creating loading
   };
 
   // Handle update extracurricular
   const handleUpdateExtracurricular = () => {
+    setIsUpdating(true); // Start updating loading
     const formData = new FormData();
     formData.append("name", selectedExtracurricular.name);
     formData.append("description", selectedExtracurricular.description);
@@ -60,16 +66,20 @@ const EkstrakurikulerAdmin = () => {
           extracurriculars.map((item) => (item.id === data.id ? data : item))
         );
         closeModal();
-      });
+      })
+      .finally(() => setIsUpdating(false)); // End updating loading
   };
 
   // Handle delete extracurricular
   const handleDelete = (id) => {
+    setIsDeleting(true); // Start deleting loading
     fetch(`https://smpn1tamansari-api.vercel.app/api/extracurriculars/${id}`, {
       method: "DELETE",
-    }).then(() => {
-      setExtracurriculars(extracurriculars.filter((item) => item.id !== id));
-    });
+    })
+      .then(() => {
+        setExtracurriculars(extracurriculars.filter((item) => item.id !== id));
+      })
+      .finally(() => setIsDeleting(false)); // End deleting loading
   };
 
   const openModal = (item) => {
@@ -82,7 +92,7 @@ const EkstrakurikulerAdmin = () => {
     setSelectedExtracurricular(null);
   };
 
-  if (isLoading) {
+  if (isLoading || isCreating || isUpdating || isDeleting) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />
