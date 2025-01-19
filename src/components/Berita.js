@@ -45,7 +45,7 @@ const Berita = () => {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />
       </div>
     );
