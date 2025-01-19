@@ -7,7 +7,8 @@ const HeroAdmin = () => {
   const [newDescription, setNewDescription] = useState("");
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [isUpdating, setIsUpdating] = useState(false);
+
   useEffect(() => {
     setIsLoading(true); // Mulai loading
     fetch("https://smpn1tamansari-api.vercel.app/api/hero")
@@ -26,27 +27,30 @@ const HeroAdmin = () => {
     formData.append("description", newDescription);
     if (newImage) formData.append("image", newImage); // Attach the new image if exists
   
+    setIsUpdating(true);
+
     fetch(`https://smpn1tamansari-api.vercel.app/api/hero/${hero.id}`, {
       method: "PUT",
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
-        setHero(data); // Update the state with the new data
+        setHero(data); 
         setNewWelcomeMessage("");
         setNewDescription("");
-        setNewImage(null); // Reset the form
+        setNewImage(null); 
       })
       .catch((error) => {
-        console.error("Error updating hero:", error); // Log errors
-      });
+        console.error("Error updating hero:", error); 
+      })
+      .finally(() => setIsUpdating(false));
   };  
 
   const handleFileChange = (e) => {
     setNewImage(e.target.files[0]);
   };
 
-  if (isLoading) {
+  if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
         <LoadingSpinner />
