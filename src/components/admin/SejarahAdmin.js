@@ -12,7 +12,10 @@ const SejarahAdmin = () => {
     setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/sejarah")
       .then((response) => response.json())
-      .then((data) => setSejarah(data))
+      .then((data) => {
+        setSejarah(data);
+        setNewText(data.text || "");
+      })
       .finally(() => setIsLoading(false));
   }, []);
 

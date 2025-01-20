@@ -109,7 +109,7 @@ const Berita = () => {
             {pengumuman.map((item, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-72 relative"
+                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-48 relative"
               >
                 <div className="flex items-center mb-4">
                   <FaBullhorn className="text-blue-500 text-3xl mr-4" />
@@ -130,7 +130,7 @@ const Berita = () => {
                   </div>
                 </div>
                 <p className="text-gray-700 text-base">
-                  {truncateText(item.description, 115)}
+                  {truncateText(item.description, 75)}
                 </p>
 
                 {/* Tombol Lihat di kanan bawah */}

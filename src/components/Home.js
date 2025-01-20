@@ -202,7 +202,7 @@ const Home = () => {
                     <SwiperSlide key={index} className="mb-6">
                       <motion.div
                         whileHover={{ scale: 1.01 }}
-                        className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-72"
+                        className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-48"
                       >
                         <div className="flex items-center mb-4">
                           <FaBullhorn className="text-blue-600 text-3xl mr-4" />
@@ -223,7 +223,7 @@ const Home = () => {
                           </div>
                         </div>
                         <p className="text-gray-700 text-base mb-4 flex-grow">
-                          {truncateText(item.description, 105)}
+                          {truncateText(item.description, 75)}
                         </p>
                         {/* Positioned button at the bottom-right */}
                         <button
