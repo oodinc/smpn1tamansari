@@ -83,7 +83,7 @@ const SambutanAdmin = () => {
               onSubmit={handleUpdateHeadmasterMessage}
               className="space-y-4"
             >
-              <label className="block text-gray-600">Sambutan</label>
+              <label className="block text-gray-600">Salam</label>
               <textarea
                 placeholder="Sambutan"
                 value={newMessage}
