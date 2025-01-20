@@ -13,21 +13,42 @@ const Profile = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch("https://smpn1tamansari-api.vercel.app/api/headmaster-message").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/sejarah").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/visi-misi").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers").then((res) => res.json()),
+      fetch(
+        "https://smpn1tamansari-api.vercel.app/api/headmaster-message"
+      ).then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/sejarah").then((res) =>
+        res.json()
+      ),
+      fetch("https://smpn1tamansari-api.vercel.app/api/visi-misi").then((res) =>
+        res.json()
+      ),
+      fetch("https://smpn1tamansari-api.vercel.app/api/schoolinfo").then(
+        (res) => res.json()
+      ),
+      fetch(
+        "https://smpn1tamansari-api.vercel.app/api/strukturOrganisasi"
+      ).then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/staffandteachers").then(
+        (res) => res.json()
+      ),
     ])
-      .then(([headmasterData, sejarahData, visiMisiData, schoolInfoData, strukturData, staffData]) => {
-        setHeadmasterMessage(headmasterData);
-        setSejarah(sejarahData);
-        setVisiMisi(visiMisiData);
-        setSchoolInfo(schoolInfoData);
-        setStrukturOrganisasi(strukturData);
-        setStaffAndTeachers(staffData);
-      })
+      .then(
+        ([
+          headmasterData,
+          sejarahData,
+          visiMisiData,
+          schoolInfoData,
+          strukturData,
+          staffData,
+        ]) => {
+          setHeadmasterMessage(headmasterData);
+          setSejarah(sejarahData);
+          setVisiMisi(visiMisiData);
+          setSchoolInfo(schoolInfoData);
+          setStrukturOrganisasi(strukturData);
+          setStaffAndTeachers(staffData);
+        }
+      )
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -115,10 +136,7 @@ const Profile = () => {
                   className="flex justify-center md:w-1/3"
                 >
                   <div className="bg-gray-100 shadow-lg">
-                    <img
-                      src={sejarah.image}
-                      alt="Sejarah"
-                    />
+                    <img src={sejarah.image} alt="Sejarah" />
                   </div>
                 </motion.div>
 
@@ -150,11 +168,13 @@ const Profile = () => {
               <h3 className="text-2xl font-semibold text-gray-800 mt-8">
                 Misi
               </h3>
-              <ul className="list-disc pl-6 text-lg text-gray-700 mt-4">
+              <ol className="list-decimal pl-6 text-lg text-gray-700 mt-4">
                 {visiMisi.misi.map((item, index) => (
-                  <li key={index}>{item}</li>
+                  <li key={index} className="mb-2">
+                    {item}
+                  </li>
                 ))}
-              </ul>
+              </ol>
             </motion.div>
           </section>
         </div>
