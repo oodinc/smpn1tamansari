@@ -7,8 +7,9 @@ const Footer = () => {
 
   // Check if the current page is the admin page
   const isAdminPage = location.pathname.startsWith("/admin");
-
-  if (isAdminPage) return null;
+  const isLoginPage = location.pathname === "/login";
+  
+  if (isAdminPage || isLoginPage) return null;
   
   return (
     <footer className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-12">
