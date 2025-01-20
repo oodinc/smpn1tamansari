@@ -66,12 +66,12 @@ const SambutanAdmin = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
         <h2 className="text-4xl font-semibold text-center mb-8 text-gray-800">
-          Admin - Kelola Pengumuman Sekolah
+          Admin - Kelola Sambutan Kepala Sekolah
         </h2>
 
         {headmasterMessage && (
@@ -83,6 +83,7 @@ const SambutanAdmin = () => {
               onSubmit={handleUpdateHeadmasterMessage}
               className="space-y-4"
             >
+              <label className="block text-gray-600">Sambutan</label>
               <textarea
                 placeholder="Sambutan"
                 value={newMessage}
@@ -91,6 +92,7 @@ const SambutanAdmin = () => {
                 rows="4"
                 required
               />
+              <label className="block text-gray-600">Deskripsi</label>
               <textarea
                 placeholder="Deskripsi"
                 value={newDescription}
@@ -99,6 +101,7 @@ const SambutanAdmin = () => {
                 rows="4"
                 required
               />
+              <label className="block text-gray-600">Nama Kepala Sekolah</label>
               <input
                 type="text"
                 placeholder="Nama Kepala Sekolah"
@@ -107,6 +110,7 @@ const SambutanAdmin = () => {
                 className="w-full p-3 border border-gray-300 rounded-md"
                 required
               />
+              <label className="block text-gray-600">Gambar Kepala Sekolah</label>
               <input
                 type="file"
                 onChange={handleFileChange}
@@ -116,7 +120,7 @@ const SambutanAdmin = () => {
                 type="submit"
                 className="px-6 py-2 bg-blue-600 text-white rounded-md"
               >
-                Update Sambutan
+                Perbarui Sambutan
               </button>
             </form>
           </div>
@@ -125,12 +129,10 @@ const SambutanAdmin = () => {
         {headmasterMessage && (
           <div className="mt-8">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-              Current Sambutan Kepala Sekolah
+              Bagian Sambutan Kepala Sekolah Saat Ini
             </h3>
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h4 className="text-3xl font-bold">
-                {headmasterMessage.message}
-              </h4>
+              <h4 className="text-3xl font-bold">{headmasterMessage.message}</h4>
               <p className="mt-4 text-xl">{headmasterMessage.description}</p>
               <p className="mt-2 text-lg font-medium">
                 {headmasterMessage.headmasterName}

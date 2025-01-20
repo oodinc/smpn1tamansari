@@ -23,7 +23,7 @@ const SaranaAdmin = () => {
 
   // Handle create sarana
   const handleCreateSarana = () => {
-    setIsCreating(true); // Set creating state to true
+    setIsCreating(true); // Mulai membuat sarana
     const formData = new FormData();
     formData.append("name", newName);
     if (newImage) formData.append("image", newImage);
@@ -38,12 +38,12 @@ const SaranaAdmin = () => {
         setNewName("");
         setNewImage(null);
       })
-      .finally(() => setIsCreating(false)); // Set creating state to false after operation
+      .finally(() => setIsCreating(false)); // Selesai membuat sarana
   };
 
   // Handle update sarana
   const handleUpdateSarana = () => {
-    setIsUpdating(true); // Set updating state to true
+    setIsUpdating(true); // Mulai memperbarui sarana
     const formData = new FormData();
     formData.append("name", selectedSarana.name);
     if (selectedSarana.image) formData.append("image", selectedSarana.image);
@@ -57,19 +57,19 @@ const SaranaAdmin = () => {
         setSarana(sarana.map((item) => (item.id === data.id ? data : item)));
         closeModal();
       })
-      .finally(() => setIsUpdating(false)); // Set updating state to false after operation
+      .finally(() => setIsUpdating(false)); // Selesai memperbarui sarana
   };
 
   // Handle delete sarana
   const handleDelete = (id) => {
-    setIsDeleting(true); // Set deleting state to true
+    setIsDeleting(true); // Mulai menghapus sarana
     fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${id}`, {
       method: "DELETE",
     })
       .then(() => {
         setSarana(sarana.filter((item) => item.id !== id));
       })
-      .finally(() => setIsDeleting(false)); // Set deleting state to false after operation
+      .finally(() => setIsDeleting(false)); // Selesai menghapus sarana
   };
 
   const openModal = (item) => {
@@ -109,6 +109,8 @@ const SaranaAdmin = () => {
             }}
             className="space-y-4"
           >
+            {/* Keterangan Nama */}
+            <label className="block text-gray-700">Nama Sarana</label>
             <input
               type="text"
               placeholder="Nama Sarana"
@@ -189,6 +191,7 @@ const SaranaAdmin = () => {
                 }}
                 className="space-y-4"
               >
+                <label className="block text-gray-700">Nama Sarana</label>
                 <input
                   type="text"
                   value={selectedSarana.name}

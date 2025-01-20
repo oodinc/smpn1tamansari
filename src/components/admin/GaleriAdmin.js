@@ -23,7 +23,7 @@ const GaleriAdmin = () => {
 
   // Handle create gallery
   const handleCreateGaleri = () => {
-    setIsCreating(true); // Start creating
+    setIsCreating(true); // Mulai membuat galeri
     const formData = new FormData();
     formData.append("title", newTitle);
     if (newImage) formData.append("image", newImage);
@@ -38,12 +38,12 @@ const GaleriAdmin = () => {
         setNewTitle("");
         setNewImage(null);
       })
-      .finally(() => setIsCreating(false)); // Stop creating
+      .finally(() => setIsCreating(false)); // Selesai membuat galeri
   };
 
   // Handle update gallery
   const handleUpdateGaleri = () => {
-    setIsUpdating(true); // Start updating
+    setIsUpdating(true); // Mulai memperbarui galeri
     const formData = new FormData();
     formData.append("title", selectedGaleri.title);
     if (selectedGaleri.image) formData.append("image", selectedGaleri.image);
@@ -57,19 +57,19 @@ const GaleriAdmin = () => {
         setGaleri(galeri.map((item) => (item.id === data.id ? data : item)));
         closeModal();
       })
-      .finally(() => setIsUpdating(false)); // Stop updating
+      .finally(() => setIsUpdating(false)); // Selesai memperbarui galeri
   };
 
   // Handle delete gallery
   const handleDelete = (id) => {
-    setIsDeleting(true); // Start deleting
+    setIsDeleting(true); // Mulai menghapus galeri
     fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${id}`, {
       method: "DELETE",
     })
       .then(() => {
         setGaleri(galeri.filter((item) => item.id !== id));
       })
-      .finally(() => setIsDeleting(false)); // Stop deleting
+      .finally(() => setIsDeleting(false)); // Selesai menghapus galeri
   };
 
   const openModal = (item) => {
@@ -109,6 +109,8 @@ const GaleriAdmin = () => {
             }}
             className="space-y-4"
           >
+            {/* Keterangan Nama */}
+            <label className="block text-gray-700">Nama Galeri</label>
             <input
               type="text"
               placeholder="Judul Galeri"
@@ -189,6 +191,7 @@ const GaleriAdmin = () => {
                 }}
                 className="space-y-4"
               >
+                <label className="block text-gray-700">Nama Galeri</label>
                 <input
                   type="text"
                   value={selectedGaleri.title}

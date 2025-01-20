@@ -119,21 +119,24 @@ const EkstrakurikulerAdmin = () => {
             }}
             className="space-y-4"
           >
+            <label className="block text-gray-700">Nama Ekstrakurikuler</label>
             <input
               type="text"
-              placeholder="Nama Ekstrakurikuler"
+              placeholder="Masukkan Nama Ekstrakurikuler"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+            <label className="block text-gray-700">Deskripsi Ekstrakurikuler</label>
             <textarea
-              placeholder="Deskripsi Ekstrakurikuler"
+              placeholder="Masukkan Deskripsi Ekstrakurikuler"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md"
               rows="4"
             />
+            <label className="block text-gray-700">Gambar Ekstrakurikuler</label>
             <input
               type="file"
               onChange={(e) => setNewImage(e.target.files[0])}
@@ -210,6 +213,7 @@ const EkstrakurikulerAdmin = () => {
                 }}
                 className="space-y-4"
               >
+                <label className="block text-gray-700">Nama Ekstrakurikuler</label>
                 <input
                   type="text"
                   value={selectedExtracurricular.name}
@@ -222,6 +226,7 @@ const EkstrakurikulerAdmin = () => {
                   className="w-full p-3 border border-gray-300 rounded-md"
                   required
                 />
+                <label className="block text-gray-700">Deskripsi Ekstrakurikuler</label>
                 <textarea
                   value={selectedExtracurricular.description}
                   onChange={(e) =>
@@ -233,6 +238,7 @@ const EkstrakurikulerAdmin = () => {
                   className="w-full p-3 border border-gray-300 rounded-md"
                   rows="4"
                 />
+                <label className="block text-gray-700">Gambar Ekstrakurikuler</label>
                 <input
                   type="file"
                   onChange={(e) =>

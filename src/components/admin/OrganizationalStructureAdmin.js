@@ -121,7 +121,7 @@ const OrganizationalStructureAdmin = () => {
         {/* Add new structure form */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold text-gray-800">
-            Tambah Struktur
+            Tambah Struktur Organisasi
           </h3>
           <form
             onSubmit={(e) => {
@@ -130,6 +130,9 @@ const OrganizationalStructureAdmin = () => {
             }}
             className="space-y-4"
           >
+            <label className="block text-sm font-medium text-gray-700">
+              Nama
+            </label>
             <input
               type="text"
               placeholder="Nama"
@@ -138,6 +141,10 @@ const OrganizationalStructureAdmin = () => {
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+            
+            <label className="block text-sm font-medium text-gray-700">
+              Peran
+            </label>
             <select
               value={newRole}
               onChange={(e) => setNewRole(e.target.value)}
@@ -151,6 +158,10 @@ const OrganizationalStructureAdmin = () => {
                 </option>
               ))}
             </select>
+            
+            <label className="block text-sm font-medium text-gray-700">
+              Gambar (Opsional)
+            </label>
             <input
               type="file"
               onChange={(e) => setNewImage(e.target.files[0])}
@@ -167,7 +178,7 @@ const OrganizationalStructureAdmin = () => {
 
         {/* Structure Table */}
         <h3 className="text-2xl font-semibold text-gray-800 mb-6">
-          Daftar Struktur
+          Daftar Struktur Organisasi
         </h3>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white shadow-md rounded-lg">
@@ -217,7 +228,7 @@ const OrganizationalStructureAdmin = () => {
         {isModalOpen && (
           <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-md shadow-lg">
-              <h3 className="text-2xl font-semibold mb-4">Edit Struktur</h3>
+              <h3 className="text-2xl font-semibold mb-4">Edit Struktur Organisasi</h3>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -225,6 +236,9 @@ const OrganizationalStructureAdmin = () => {
                 }}
                 className="space-y-4"
               >
+                <label className="block text-sm font-medium text-gray-700">
+                  Nama
+                </label>
                 <input
                   type="text"
                   value={selectedStructure.name}
@@ -237,6 +251,10 @@ const OrganizationalStructureAdmin = () => {
                   className="w-full p-3 border border-gray-300 rounded-md"
                   required
                 />
+                
+                <label className="block text-sm font-medium text-gray-700">
+                  Peran
+                </label>
                 <select
                   value={selectedStructure.role}
                   onChange={(e) =>
@@ -254,6 +272,10 @@ const OrganizationalStructureAdmin = () => {
                     </option>
                   ))}
                 </select>
+                
+                <label className="block text-sm font-medium text-gray-700">
+                  Gambar (Opsional)
+                </label>
                 <input
                   type="file"
                   onChange={(e) =>

@@ -92,7 +92,7 @@ const StaffAdmin = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
@@ -112,27 +112,39 @@ const StaffAdmin = () => {
             }}
             className="space-y-4"
           >
-            <input
-              type="text"
-              placeholder="Nama"
-              value={newStaffName}
-              onChange={(e) => setNewStaffName(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              required
-            />
-            <input
-              type="text"
-              placeholder="Peran"
-              value={newStaffRole}
-              onChange={(e) => setNewStaffRole(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
-              required
-            />
-            <input
-              type="file"
-              onChange={(e) => setNewStaffImage(e.target.files[0])}
-              className="w-full p-3 border border-gray-300 rounded-md"
-            />
+            <div>
+              <label className="block text-gray-700">Nama</label>
+              <input
+                type="text"
+                placeholder="Nama"
+                value={newStaffName}
+                onChange={(e) => setNewStaffName(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700">Peran</label>
+              <input
+                type="text"
+                placeholder="Peran"
+                value={newStaffRole}
+                onChange={(e) => setNewStaffRole(e.target.value)}
+                className="w-full p-3 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700">Gambar</label>
+              <input
+                type="file"
+                onChange={(e) => setNewStaffImage(e.target.files[0])}
+                className="w-full p-3 border border-gray-300 rounded-md"
+              />
+            </div>
+
             <button
               type="submit"
               className="px-6 py-3 bg-blue-600 text-white rounded-md"
@@ -181,7 +193,7 @@ const StaffAdmin = () => {
                       onClick={() => handleDeleteStaff(person.id)}
                       className="px-4 py-2 bg-red-600 text-white rounded-md"
                     >
-                      Delete
+                      Hapus
                     </button>
                   </td>
                 </tr>
@@ -202,53 +214,65 @@ const StaffAdmin = () => {
                 }}
                 className="space-y-4"
               >
-                <input
-                  type="text"
-                  value={selectedStaff.name}
-                  onChange={(e) =>
-                    setSelectedStaff({
-                      ...selectedStaff,
-                      name: e.target.value,
-                    })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  required
-                />
-                <input
-                  type="text"
-                  value={selectedStaff.role}
-                  onChange={(e) =>
-                    setSelectedStaff({
-                      ...selectedStaff,
-                      role: e.target.value,
-                    })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                  required
-                />
-                <input
-                  type="file"
-                  onChange={(e) =>
-                    setSelectedStaff({
-                      ...selectedStaff,
-                      image: e.target.files[0],
-                    })
-                  }
-                  className="w-full p-3 border border-gray-300 rounded-md"
-                />
+                <div>
+                  <label className="block text-gray-700">Nama</label>
+                  <input
+                    type="text"
+                    value={selectedStaff.name}
+                    onChange={(e) =>
+                      setSelectedStaff({
+                        ...selectedStaff,
+                        name: e.target.value,
+                      })
+                    }
+                    className="w-full p-3 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Peran</label>
+                  <input
+                    type="text"
+                    value={selectedStaff.role}
+                    onChange={(e) =>
+                      setSelectedStaff({
+                        ...selectedStaff,
+                        role: e.target.value,
+                      })
+                    }
+                    className="w-full p-3 border border-gray-300 rounded-md"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700">Gambar</label>
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      setSelectedStaff({
+                        ...selectedStaff,
+                        image: e.target.files[0],
+                      })
+                    }
+                    className="w-full p-3 border border-gray-300 rounded-md"
+                  />
+                </div>
+
                 <div className="flex justify-end space-x-4">
                   <button
                     type="button"
                     onClick={closeModal}
                     className="px-4 py-2 bg-gray-300 rounded-md"
                   >
-                    Cancel
+                    Batal
                   </button>
                   <button
                     type="submit"
                     className="px-4 py-2 bg-blue-600 text-white rounded-md"
                   >
-                    Save
+                    Simpan
                   </button>
                 </div>
               </form>

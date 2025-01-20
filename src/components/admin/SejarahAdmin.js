@@ -46,7 +46,7 @@ const SejarahAdmin = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
@@ -57,7 +57,7 @@ const SejarahAdmin = () => {
         {sejarah && (
           <div className="mb-8">
             <h3 className="text-2xl font-semibold text-gray-800">
-              Update Sejarah Section
+              Update Seksi Sejarah
             </h3>
             <form
               onSubmit={(e) => {
@@ -66,14 +66,16 @@ const SejarahAdmin = () => {
               }}
               className="space-y-4"
             >
+              <label className="block text-gray-600">Teks Sejarah</label>
               <textarea
-                placeholder="Text Sejarah"
+                placeholder="Teks Sejarah"
                 value={newText}
                 onChange={(e) => setNewText(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-md"
                 rows="4"
                 required
               />
+              <label className="block text-gray-600">Gambar Sejarah</label>
               <input
                 type="file"
                 onChange={handleFileChange}
@@ -83,7 +85,7 @@ const SejarahAdmin = () => {
                 type="submit"
                 className="px-6 py-2 bg-blue-600 text-white rounded-md"
               >
-                Update Sejarah
+                Perbarui Sejarah
               </button>
             </form>
           </div>
@@ -92,7 +94,7 @@ const SejarahAdmin = () => {
         {sejarah && (
           <div className="mt-8">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-              Current Sejarah Section
+              Bagian Sejarah Saat Ini
             </h3>
             <div className="bg-white p-6 rounded-lg shadow-md">
               <p className="text-lg">{sejarah.text}</p>

@@ -11,10 +11,10 @@ const PengumumanAdmin = () => {
   const [newPublishedDate, setNewPublishedDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false); 
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Fetch announcements from backend
+  // Fetch pengumuman dari backend
   useEffect(() => {
     setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
@@ -120,7 +120,7 @@ const PengumumanAdmin = () => {
           Admin - Kelola Pengumuman Sekolah
         </h2>
 
-        {/* Add new pengumuman form */}
+        {/* Form Tambah Pengumuman */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold text-gray-800">
             Tambah Pengumuman
@@ -132,22 +132,39 @@ const PengumumanAdmin = () => {
             }}
             className="space-y-4"
           >
+            {/* Judul Pengumuman */}
+            <label htmlFor="title" className="block text-gray-700">
+              Judul Pengumuman
+            </label>
             <input
+              id="title"
               type="text"
-              placeholder="Judul Pengumuman"
+              placeholder="Masukkan Judul Pengumuman"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+
+            {/* Deskripsi Pengumuman */}
+            <label htmlFor="description" className="block text-gray-700">
+              Deskripsi Pengumuman
+            </label>
             <textarea
-              placeholder="Deskripsi Pengumuman"
+              id="description"
+              placeholder="Masukkan Deskripsi Pengumuman"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md"
               rows="4"
             />
+
+            {/* Tanggal Pengumuman */}
+            <label htmlFor="publishedDate" className="block text-gray-700">
+              Tanggal Pengumuman
+            </label>
             <input
+              id="publishedDate"
               type="date"
               value={newPublishedDate}
               onChange={(e) => setNewPublishedDate(e.target.value)}
@@ -163,7 +180,7 @@ const PengumumanAdmin = () => {
           </form>
         </div>
 
-        {/* Pengumuman Table */}
+        {/* Tabel Pengumuman */}
         <h3 className="text-2xl font-semibold text-gray-800 mb-6">
           Daftar Pengumuman
         </h3>
@@ -241,9 +258,13 @@ const PengumumanAdmin = () => {
                 handleUpdatePengumuman();
               }}
             >
+              {/* Judul Pengumuman */}
+              <label htmlFor="edit-title" className="block text-gray-700">
+                Judul Pengumuman
+              </label>
               <input
+                id="edit-title"
                 type="text"
-                placeholder="Judul Pengumuman"
                 value={selectedAnnouncement.title}
                 onChange={(e) =>
                   setSelectedAnnouncement({
@@ -254,7 +275,13 @@ const PengumumanAdmin = () => {
                 className="w-full p-3 border border-gray-300 rounded-md"
                 required
               />
+
+              {/* Deskripsi Pengumuman */}
+              <label htmlFor="edit-description" className="block text-gray-700">
+                Deskripsi Pengumuman
+              </label>
               <textarea
+                id="edit-description"
                 value={selectedAnnouncement.description}
                 onChange={(e) =>
                   setSelectedAnnouncement({
@@ -265,7 +292,13 @@ const PengumumanAdmin = () => {
                 className="w-full p-3 border border-gray-300 rounded-md"
                 rows="4"
               />
+
+              {/* Tanggal Pengumuman */}
+              <label htmlFor="edit-publishedDate" className="block text-gray-700">
+                Tanggal Pengumuman
+              </label>
               <input
+                id="edit-publishedDate"
                 type="date"
                 value={selectedAnnouncement.publishedDate.split("T")[0]}
                 onChange={(e) =>

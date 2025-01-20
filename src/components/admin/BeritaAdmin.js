@@ -134,30 +134,34 @@ const BeritaAdmin = () => {
             }}
             className="space-y-4"
           >
+            <label className="block text-gray-600">Judul Berita</label>
             <input
               type="text"
-              placeholder="Judul Berita"
+              placeholder="Masukkan Judul Berita"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
 
+            <label className="block text-gray-600">Deskripsi Berita</label>
             <div>
               <ReactQuill
                 ref={quillRef}
                 value={newDescription}
                 onChange={handleDescriptionChange}
                 theme="snow"
-                placeholder="Deskripsi Berita"
+                placeholder="Masukkan Deskripsi Berita"
               />
             </div>
 
+            <label className="block text-gray-600">Gambar</label>
             <input
               type="file"
               onChange={handleFileChange}
               className="w-full p-3 border border-gray-300 rounded-md"
             />
+            <label className="block text-gray-600">Tanggal Terbit</label>
             <input
               type="date"
               value={newPublishedAt}
@@ -185,7 +189,7 @@ const BeritaAdmin = () => {
                 <th className="px-4 py-2 text-left text-gray-600">Judul</th>
                 <th className="px-4 py-2 text-left text-gray-600">Deskripsi</th>
                 <th className="px-4 py-2 text-left text-gray-600">Gambar</th>
-                <th className="px-4 py-2 text-left text-gray-600">Tanggal</th>
+                <th className="px-4 py-2 text-left text-gray-600">Tanggal Terbit</th>
                 <th className="px-4 py-2 text-left text-gray-600">Aksi</th>
               </tr>
             </thead>
@@ -261,9 +265,10 @@ const BeritaAdmin = () => {
                 handleUpdateBerita();
               }}
             >
+              <label className="block text-gray-600">Judul Berita</label>
               <input
                 type="text"
-                placeholder="Judul Berita"
+                placeholder="Masukkan Judul Berita"
                 value={selectedNews.title}
                 onChange={(e) =>
                   setSelectedNews({ ...selectedNews, title: e.target.value })
@@ -281,6 +286,7 @@ const BeritaAdmin = () => {
                 theme="snow"
                 placeholder="Deskripsi Berita"
               />
+              <label className="block text-gray-600">Gambar</label>
               <input
                 type="file"
                 onChange={(e) =>
@@ -288,6 +294,7 @@ const BeritaAdmin = () => {
                 }
                 className="w-full p-3 border border-gray-300 rounded-md"
               />
+              <label className="block text-gray-600">Tanggal Terbit</label>
               <input
                 type="date"
                 value={selectedNews.publishedAt.split("T")[0]}

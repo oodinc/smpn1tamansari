@@ -122,6 +122,7 @@ const AlumniAdmin = () => {
             }}
             className="space-y-4"
           >
+            <label className="block text-gray-600">Nama Alumni</label>
             <input
               type="text"
               placeholder="Nama Alumni"
@@ -130,6 +131,7 @@ const AlumniAdmin = () => {
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+            <label className="block text-gray-600">Deskripsi Alumni</label>
             <textarea
               placeholder="Deskripsi Alumni"
               value={newDescription}
@@ -137,6 +139,7 @@ const AlumniAdmin = () => {
               className="w-full p-3 border border-gray-300 rounded-md"
               rows="4"
             />
+            <label className="block text-gray-600">Gambar Alumni</label>
             <input
               type="file"
               onChange={handleFileChange}
@@ -211,6 +214,7 @@ const AlumniAdmin = () => {
                 }}
                 className="space-y-4"
               >
+                <label className="block text-gray-600">Nama Alumni</label>
                 <input
                   type="text"
                   value={selectedAlumni.title}
@@ -222,6 +226,7 @@ const AlumniAdmin = () => {
                   }
                   className="w-full p-3 border border-gray-300 rounded-md"
                 />
+                <label className="block text-gray-600">Deskripsi Alumni</label>
                 <textarea
                   value={selectedAlumni.description}
                   onChange={(e) =>
@@ -233,6 +238,7 @@ const AlumniAdmin = () => {
                   className="w-full p-3 border border-gray-300 rounded-md"
                   rows="4"
                 />
+                <label className="block text-gray-600">Gambar Alumni</label>
                 <input
                   type="file"
                   onChange={(e) =>

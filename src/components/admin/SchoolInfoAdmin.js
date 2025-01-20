@@ -81,7 +81,7 @@ const SchoolInfoAdmin = () => {
       .then((response) => response.json())
       .then((data) => {
         setSchoolInfo(data);
-        alert("School information updated successfully");
+        alert("Informasi Sekolah berhasil diperbarui");
       })
       .finally(() => setIsUpdating(false)); // Reset loading state after update
   };
@@ -102,7 +102,7 @@ const SchoolInfoAdmin = () => {
         {schoolInfo && (
           <div className="mb-8">
             <h3 className="text-2xl font-semibold text-gray-800">
-              Update School Information
+              Perbarui Informasi Sekolah
             </h3>
             <form
               onSubmit={(e) => {
@@ -111,139 +111,187 @@ const SchoolInfoAdmin = () => {
               }}
               className="space-y-4"
             >
-              <input
-                type="text"
-                placeholder="Akreditasi"
-                value={newAkreditasi}
-                onChange={(e) => setNewAkreditasi(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Jumlah Guru"
-                value={newJumlahGuru}
-                onChange={(e) => setNewJumlahGuru(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Tenaga Pendidikan"
-                value={newTenagaPendidikan}
-                onChange={(e) => setNewTenagaPendidikan(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Jumlah Siswa"
-                value={newJumlahSiswa}
-                onChange={(e) => setNewJumlahSiswa(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Nama Sekolah"
-                value={newNamaSekolah}
-                onChange={(e) => setNewNamaSekolah(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="NSPN"
-                value={newNSPN}
-                onChange={(e) => setNewNSPN(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Jenjang Pendidikan"
-                value={newJenjangPendidikan}
-                onChange={(e) => setNewJenjangPendidikan(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Status Sekolah"
-                value={newStatusSekolah}
-                onChange={(e) => setNewStatusSekolah(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Alamat"
-                value={newAlamat}
-                onChange={(e) => setNewAlamat(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="RT / RW"
-                value={newRtRw}
-                onChange={(e) => setNewRtRw(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Kode Pos"
-                value={newKodePos}
-                onChange={(e) => setNewKodePos(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Kecamatan"
-                value={newKecamatan}
-                onChange={(e) => setNewKecamatan(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Kab/Kota"
-                value={newKabKota}
-                onChange={(e) => setNewKabKota(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Provinsi"
-                value={newProvinsi}
-                onChange={(e) => setNewProvinsi(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Negara"
-                value={newNegara}
-                onChange={(e) => setNewNegara(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Posisi Geografis"
-                value={newPosisiGeografis}
-                onChange={(e) => setNewPosisiGeografis(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                required
-              />
+              <div>
+                <label className="block text-gray-600">Akreditasi</label>
+                <input
+                  type="text"
+                  placeholder="Akreditasi"
+                  value={newAkreditasi}
+                  onChange={(e) => setNewAkreditasi(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Jumlah Guru</label>
+                <input
+                  type="number"
+                  placeholder="Jumlah Guru"
+                  value={newJumlahGuru}
+                  onChange={(e) => setNewJumlahGuru(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Tenaga Pendidikan</label>
+                <input
+                  type="number"
+                  placeholder="Tenaga Pendidikan"
+                  value={newTenagaPendidikan}
+                  onChange={(e) => setNewTenagaPendidikan(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Jumlah Siswa</label>
+                <input
+                  type="number"
+                  placeholder="Jumlah Siswa"
+                  value={newJumlahSiswa}
+                  onChange={(e) => setNewJumlahSiswa(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Nama Sekolah</label>
+                <input
+                  type="text"
+                  placeholder="Nama Sekolah"
+                  value={newNamaSekolah}
+                  onChange={(e) => setNewNamaSekolah(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">NSPN</label>
+                <input
+                  type="text"
+                  placeholder="NSPN"
+                  value={newNSPN}
+                  onChange={(e) => setNewNSPN(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Jenjang Pendidikan</label>
+                <input
+                  type="text"
+                  placeholder="Jenjang Pendidikan"
+                  value={newJenjangPendidikan}
+                  onChange={(e) => setNewJenjangPendidikan(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Status Sekolah</label>
+                <input
+                  type="text"
+                  placeholder="Status Sekolah"
+                  value={newStatusSekolah}
+                  onChange={(e) => setNewStatusSekolah(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Alamat</label>
+                <input
+                  type="text"
+                  placeholder="Alamat"
+                  value={newAlamat}
+                  onChange={(e) => setNewAlamat(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">RT / RW</label>
+                <input
+                  type="text"
+                  placeholder="RT / RW"
+                  value={newRtRw}
+                  onChange={(e) => setNewRtRw(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Kode Pos</label>
+                <input
+                  type="text"
+                  placeholder="Kode Pos"
+                  value={newKodePos}
+                  onChange={(e) => setNewKodePos(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Kecamatan</label>
+                <input
+                  type="text"
+                  placeholder="Kecamatan"
+                  value={newKecamatan}
+                  onChange={(e) => setNewKecamatan(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Kab/Kota</label>
+                <input
+                  type="text"
+                  placeholder="Kab/Kota"
+                  value={newKabKota}
+                  onChange={(e) => setNewKabKota(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Provinsi</label>
+                <input
+                  type="text"
+                  placeholder="Provinsi"
+                  value={newProvinsi}
+                  onChange={(e) => setNewProvinsi(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Negara</label>
+                <input
+                  type="text"
+                  placeholder="Negara"
+                  value={newNegara}
+                  onChange={(e) => setNewNegara(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-600">Posisi Geografis</label>
+                <input
+                  type="text"
+                  placeholder="Posisi Geografis"
+                  value={newPosisiGeografis}
+                  onChange={(e) => setNewPosisiGeografis(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
               <button
                 type="submit"
                 className="px-6 py-2 bg-blue-600 text-white rounded-md"
               >
-                Update School Info
+                Perbarui Informasi Sekolah
               </button>
             </form>
           </div>
@@ -252,7 +300,7 @@ const SchoolInfoAdmin = () => {
         {schoolInfo && (
           <div className="mt-8">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-              Current School Info
+              Informasi Sekolah Saat Ini
             </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               <div className="p-4 bg-white shadow rounded-md">

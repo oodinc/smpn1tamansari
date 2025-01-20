@@ -78,6 +78,7 @@ const VisiMisiAdmin = () => {
 
       {/* Formulir Visi */}
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">
+        <label className="block text-gray-600 mb-2">Visi</label>
         <textarea
           value={formData.visi}
           onChange={handleVisiChange}
@@ -89,6 +90,7 @@ const VisiMisiAdmin = () => {
 
       {/* Tabel Misi */}
       <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-sm">
+        <label className="block text-gray-600 mb-2">Misi</label>
         <table className="min-w-full table-auto text-gray-700">
           <thead className="bg-gray-200">
             <tr>
