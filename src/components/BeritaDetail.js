@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AiOutlineCalendar } from "react-icons/ai";
 import { FaBullhorn } from "react-icons/fa";
+import LoadingSpinner from "./LoadingSpinner"
 
 const BeritaDetail = () => {
   const { id } = useParams();
@@ -10,16 +11,25 @@ const BeritaDetail = () => {
   const [pengumuman, setPengumuman] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPengumuman, setSelectedPengumuman] = useState(null);
+  
+  const [isBeritaLoading, setIsBeritaLoading] = useState(true);
+  const [isOtherNewsLoading, setIsOtherNewsLoading] = useState(true);
+  const [isPengumumanLoading, setIsPengumumanLoading] = useState(true);
 
   // Fetch berita detail
   useEffect(() => {
     const fetchBeritaDetail = () => {
+      setIsBeritaLoading(true); // Set loading to true before fetching
       fetch(`https://smpn1tamansari-api.vercel.app/api/news/${id}`)
         .then((response) => response.json())
-        .then((data) => setBeritaDetail(data))
-        .catch((error) =>
-          console.error("Error fetching berita detail:", error)
-        );
+        .then((data) => {
+          setBeritaDetail(data);
+          setIsBeritaLoading(false); // Set loading to false once data is fetched
+        })
+        .catch((error) => {
+          console.error("Error fetching berita detail:", error);
+          setIsBeritaLoading(false); // Set loading to false even if there's an error
+        });
     };
 
     fetchBeritaDetail();
@@ -28,9 +38,13 @@ const BeritaDetail = () => {
   // Fetch other news
   useEffect(() => {
     const fetchOtherNews = () => {
+      setIsOtherNewsLoading(true); // Set loading to true before fetching
       fetch("https://smpn1tamansari-api.vercel.app/api/news")
         .then((response) => response.json())
-        .then((data) => setOtherNews(data));
+        .then((data) => {
+          setOtherNews(data);
+          setIsOtherNewsLoading(false); // Set loading to false once data is fetched
+        });
     };
 
     fetchOtherNews();
@@ -39,15 +53,25 @@ const BeritaDetail = () => {
   // Fetch pengumuman
   useEffect(() => {
     const fetchPengumuman = () => {
+      setIsPengumumanLoading(true); // Set loading to true before fetching
       fetch("https://smpn1tamansari-api.vercel.app/api/announcements")
         .then((response) => response.json())
-        .then((data) => setPengumuman(data));
+        .then((data) => {
+          setPengumuman(data);
+          setIsPengumumanLoading(false); // Set loading to false once data is fetched
+        });
     };
 
     fetchPengumuman();
   }, []);
 
-  if (!beritaDetail) return <div>Loading...</div>;
+  if (isBeritaLoading || isOtherNewsLoading || isPengumumanLoading) {
+    return (
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   const publishedDate = new Date(beritaDetail.publishedAt).toLocaleDateString(
     "id-ID",
