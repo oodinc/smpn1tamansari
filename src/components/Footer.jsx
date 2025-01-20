@@ -20,7 +20,7 @@ const Footer = () => {
             <img
               src="/assets/image/logo.png"
               alt="SMP NEGERI 1 TAMANSARI"
-              className="h-12 w-auto"
+              className="h-12 w-auto mr-3"
             />
             <p className="text-2xl font-bold">SMP NEGERI 1 TAMANSARI</p>
           </div>
