@@ -91,113 +91,131 @@ const Navbar = () => {
               </div>
 
               {/* Profil Dropdown */}
-              <div className="relative group">
+              <div
+                className="relative"
+                onMouseEnter={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, profil: true }))
+                }
+                onMouseLeave={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, profil: false }))
+                }
+              >
                 <button className="flex items-center text-lg font-medium hover:text-blue-400 transition duration-300">
                   Profil
-                  {isDropdownOpen.profil ? (
-                    <FaCaretUp />
-                  ) : (
-                    <FaCaretDown />
-                  )}
+                  {isDropdownOpen.profil ? <FaCaretUp /> : <FaCaretDown />}
                 </button>
-                <div className="absolute left-0 hidden space-y-2 bg-gray-100 text-gray-700 group-hover:block w-56 p-4 rounded-lg shadow-xl transition duration-300">
-                  <button
-                    onClick={() => handleNavigation("/profil", "#sambutan")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Sambutan
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/profil", "#sejarah")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Sejarah
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/profil", "#visi-misi")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Visi Misi
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/profil", "#informasi")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Informasi Sekolah
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/profil", "#struktur")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Struktur Organisasi
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/profil", "#staff-guru")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Staff & Guru
-                  </button>
-                </div>
+                {isDropdownOpen.profil && (
+                  <div className="absolute left-0 space-y-2 bg-gray-100 text-gray-700 w-56 p-4 rounded-lg shadow-xl transition duration-300">
+                    <button
+                      onClick={() => handleNavigation("/profil", "#sambutan")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Sambutan
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/profil", "#sejarah")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Sejarah
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/profil", "#visi-misi")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Visi Misi
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/profil", "#informasi")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Informasi Sekolah
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/profil", "#struktur")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Struktur Organisasi
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/profil", "#staff-guru")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Staff & Guru
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Layanan Dropdown */}
-              <div className="relative group">
+              <div
+                className="relative group"
+                onMouseEnter={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, layanan: true }))
+                }
+                onMouseLeave={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, layanan: false }))
+                }
+              >
                 <button className="flex items-center text-lg font-medium hover:text-blue-400 transition duration-300">
                   Layanan
-                  {isDropdownOpen.layanan ? (
-                    <FaCaretUp />
-                  ) : (
-                    <FaCaretDown />
-                  )}
+                  {isDropdownOpen.layanan ? <FaCaretUp /> : <FaCaretDown />}
                 </button>
-                <div className="absolute left-0 hidden space-y-2 bg-gray-100 text-gray-700 group-hover:block w-56 p-4 rounded-lg shadow-xl transition duration-300">
-                  <button
-                    onClick={() =>
-                      handleNavigation("/layanan", "#ekstrakulikuler")
-                    }
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Ekstrakurikuler
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/layanan", "#galeri")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Galeri
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/layanan", "#sarana")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Sarana Prasarana
-                  </button>
-                </div>
+                {isDropdownOpen.layanan && (
+                  <div className="absolute left-0 space-y-2 bg-gray-100 text-gray-700 w-56 p-4 rounded-lg shadow-xl transition duration-300">
+                    <button
+                      onClick={() =>
+                        handleNavigation("/layanan", "#ekstrakulikuler")
+                      }
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Ekstrakurikuler
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/layanan", "#galeri")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Galeri
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/layanan", "#sarana")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Sarana Prasarana
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Berita Dropdown */}
-              <div className="relative group">
+              <div
+                className="relative group"
+                onMouseEnter={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, berita: true }))
+                }
+                onMouseLeave={() =>
+                  setIsDropdownOpen((prev) => ({ ...prev, berita: false }))
+                }
+              >
                 <button className="flex items-center text-lg font-medium hover:text-blue-400 transition duration-300">
                   Berita
-                  {isDropdownOpen.berita ? (
-                    <FaCaretUp />
-                  ) : (
-                    <FaCaretDown />
-                  )}
+                  {isDropdownOpen.berita ? <FaCaretUp /> : <FaCaretDown />}
                 </button>
-                <div className="absolute left-0 hidden space-y-2 bg-gray-100 text-gray-700 group-hover:block w-56 p-4 rounded-lg shadow-xl transition duration-300">
-                  <button
-                    onClick={() => handleNavigation("/berita", "#berita")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Berita Terbaru
-                  </button>
-                  <button
-                    onClick={() => handleNavigation("/berita", "#info")}
-                    className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
-                  >
-                    Pengumuman
-                  </button>
-                </div>
+                {isDropdownOpen.berita && (
+                  <div className="absolute left-0 space-y-2 bg-gray-100 text-gray-700 w-56 p-4 rounded-lg shadow-xl transition duration-300">
+                    <button
+                      onClick={() => handleNavigation("/berita", "#berita")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Berita Terbaru
+                    </button>
+                    <button
+                      onClick={() => handleNavigation("/berita", "#info")}
+                      className="block w-full text-left text-lg font-medium hover:text-blue-400 transition duration-300"
+                    >
+                      Pengumuman
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="group">
@@ -252,11 +270,7 @@ const Navbar = () => {
               className="flex justify-between items-center text-lg font-medium w-full hover:text-gray-200 transition duration-300"
             >
               Profil
-              {isDropdownOpen.profil ? (
-                <FaCaretUp />
-              ) : (
-                <FaCaretDown />
-              )}
+              {isDropdownOpen.profil ? <FaCaretUp /> : <FaCaretDown />}
             </button>
             {isDropdownOpen.profil && (
               <div className="ml-6 mt-2 space-y-2">
@@ -312,11 +326,7 @@ const Navbar = () => {
               className="flex justify-between items-center text-lg font-medium w-full hover:text-gray-200 transition duration-300"
             >
               Layanan
-              {isDropdownOpen.layanan ? (
-                <FaCaretUp />
-              ) : (
-                <FaCaretDown />
-              )}
+              {isDropdownOpen.layanan ? <FaCaretUp /> : <FaCaretDown />}
             </button>
             {isDropdownOpen.layanan && (
               <div className="ml-6 mt-2 space-y-2">
@@ -356,11 +366,7 @@ const Navbar = () => {
               className="flex justify-between items-center text-lg font-medium w-full hover:text-gray-200 transition duration-300"
             >
               Berita
-              {isDropdownOpen.berita ? (
-                <FaCaretUp />
-              ) : (
-                <FaCaretDown />
-              )}
+              {isDropdownOpen.berita ? <FaCaretUp /> : <FaCaretDown />}
             </button>
             {isDropdownOpen.berita && (
               <div className="ml-6 mt-2 space-y-2">
