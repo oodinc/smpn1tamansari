@@ -101,7 +101,7 @@ const Footer = () => {
       <div className="mt-8">
         <div className="border-t border-gray-500 pt-4">
           <p className="text-center text-sm">
-            &copy; {new Date().getFullYear()} SMP NEGERI 1 TAMANSARI. All rights reserved.
+            &copy; {new Date().getFullYear()} SMP Negeri 1 Tamansari. All rights reserved.
           </p>
         </div>
       </div>
