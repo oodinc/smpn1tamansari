@@ -48,7 +48,7 @@ const Navbar = () => {
             <img
               src="/assets/image/logo.png"
               alt="School Logo"
-              className="h-12 w-auto"
+              className="h-12 w-auto mr-3"
             />
             <div>
               {isAdminPage ? (
@@ -240,7 +240,7 @@ const Navbar = () => {
           <img
             src="/assets/image/logo.png"
             alt="School Logo"
-            className="h-12 w-auto"
+            className="h-12 w-auto mr-3"
           />
           <div className="text-left">
             <div className="text-lg font-bold tracking-wide">
