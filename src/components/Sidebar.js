@@ -89,7 +89,7 @@ const Sidebar = () => {
         </li>
         <li>
           <Link to="/admin-staff" className={getLinkClass("/admin-staff")}>
-            <FaChalkboardTeacher className="mr-3" /> Staff
+            <FaChalkboardTeacher className="mr-3" /> Staff & Guru
           </Link>
         </li>
 
