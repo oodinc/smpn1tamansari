@@ -1,14 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--	created with www.mysitemapgenerator.com	-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Halaman utama -->
     <url>
         <loc>https://smpn1tamansari.vercel.app/</loc>
         <lastmod>2025-01-21T03:34:07+01:00</lastmod>
         <priority>1.0</priority>
     </url>
-
-    <!-- Halaman penting lainnya -->
     <url>
         <loc>https://smpn1tamansari.vercel.app/profil</loc>
         <lastmod>2025-01-21T03:34:07+01:00</lastmod>
@@ -29,15 +26,11 @@
         <lastmod>2025-01-21T03:34:07+01:00</lastmod>
         <priority>1.0</priority>
     </url>
-
-    <!-- Halaman berita yang lebih spesifik -->
     <url>
         <loc>https://smpn1tamansari.vercel.app/berita/</loc>
         <lastmod>2025-01-21T03:34:07+01:00</lastmod>
         <priority>0.8</priority>
     </url>
-
-    <!-- Halaman admin dengan prioritas lebih rendah -->
     <url>
         <loc>https://smpn1tamansari.vercel.app/admin-hero</loc>
         <lastmod>2025-01-21T03:34:07+01:00</lastmod>
