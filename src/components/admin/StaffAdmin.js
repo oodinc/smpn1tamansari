@@ -103,7 +103,7 @@ const StaffAdmin = () => {
         {/* Add new staff form */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold text-gray-800">
-            Tambah Staff
+            Tambah Staff & Guru
           </h3>
           <form
             onSubmit={(e) => {
