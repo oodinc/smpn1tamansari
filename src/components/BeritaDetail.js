@@ -139,7 +139,7 @@ const BeritaDetail = () => {
               </div>
 
               <div
-                className="text-lg text-gray-800 leading-relaxed"
+                className="text-lg text-gray-800 leading-relaxed quill-description"
                 dangerouslySetInnerHTML={{ __html: beritaDetail.description }}
               />
             </div>

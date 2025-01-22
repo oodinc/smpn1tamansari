@@ -81,7 +81,7 @@ const Profile = () => {
                   {headmasterMessage.message}
                 </p>
                 <div
-                  className="text-lg leading-relaxed text-gray-700"
+                  className="text-lg leading-relaxed text-gray-700 leading-relaxed quill-description"
                   dangerouslySetInnerHTML={{
                     __html: headmasterMessage.description,
                   }}
@@ -145,7 +145,7 @@ const Profile = () => {
 
                 {/* Teks Sejarah */}
                 <div
-                  className="text-lg text-gray-700 md:w-2/3"
+                  className="text-lg text-gray-700 md:w-2/3 leading-relaxed quill-description"
                   dangerouslySetInnerHTML={{ __html: sejarah.text }}
                 />
               </div>
