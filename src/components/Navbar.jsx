@@ -243,7 +243,7 @@ const Navbar = () => {
             className="h-12 w-auto mr-3"
           />
           <div className="text-left">
-            <div className="text-lg font-bold tracking-wide">
+            <div className="text-md font-bold tracking-wide">
               SMPN 1 TAMANSARI SATU ATAP
             </div>
             <div className="text-[10px] tracking-wide">
