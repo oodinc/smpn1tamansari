@@ -141,9 +141,10 @@ const Profile = () => {
                 </motion.div>
 
                 {/* Teks Sejarah */}
-                <div className="text-lg text-gray-700 md:w-2/3">
-                  <p className="leading-relaxed">{sejarah.text}</p>
-                </div>
+                <div
+                  className="text-lg text-gray-700 md:w-2/3"
+                  dangerouslySetInnerHTML={{ __html: sejarah.text }}
+                />
               </div>
             </motion.div>
           </section>
