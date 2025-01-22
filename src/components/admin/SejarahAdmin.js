@@ -48,7 +48,7 @@ const SejarahAdmin = () => {
   const handleTextChange = (value) => {
     setNewText(value);
   };
-  
+
   if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
@@ -76,7 +76,6 @@ const SejarahAdmin = () => {
               }}
               className="space-y-4"
             >
-
               <label className="block text-gray-600">Teks Sejarah</label>
               <div>
                 <ReactQuill
@@ -110,10 +109,6 @@ const SejarahAdmin = () => {
               Bagian Sejarah Saat Ini
             </h3>
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <div
-                className="text-lg text-gray-800 leading-relaxed quill-description"
-                dangerouslySetInnerHTML={{ __html: sejarah.text }}
-              />
               {sejarah.image && (
                 <img
                   src={sejarah.image}
@@ -121,6 +116,10 @@ const SejarahAdmin = () => {
                   className="mt-4 w-64 h-64 object-cover"
                 />
               )}
+              <div
+                className="text-lg text-gray-800 leading-relaxed quill-description"
+                dangerouslySetInnerHTML={{ __html: sejarah.text }}
+              />
             </div>
           </div>
         )}
