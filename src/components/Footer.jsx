@@ -22,7 +22,7 @@ const Footer = () => {
               alt="SMP NEGERI 1 TAMANSARI"
               className="h-12 w-auto mr-3"
             />
-            <p className="text-2xl font-bold">SMP NEGERI 1 TAMANSARI</p>
+            <p className="text-xl font-bold">SMPN 1 TAMANSARI SATU ATAP</p>
           </div>
           <p className="mt-4 text-sm flex items-center">
             <FaMapMarkerAlt className="mr-2" />
@@ -101,7 +101,7 @@ const Footer = () => {
       <div className="mt-8">
         <div className="border-t border-gray-500 pt-4">
           <p className="text-center text-sm">
-            &copy; {new Date().getFullYear()} SMP Negeri 1 Tamansari. All rights reserved.
+            &copy; {new Date().getFullYear()} SMP Negeri 1 Tamansari Satu Atap. All rights reserved.
           </p>
         </div>
       </div>

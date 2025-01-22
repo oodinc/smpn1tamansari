@@ -83,8 +83,8 @@ const Profile = () => {
                 <p className="text-lg leading-relaxed text-gray-700">
                   {headmasterMessage.description}
                 </p>
-                <div className="mt-6 text-gray-500 text-sm">
-                  <span>- Kepala Sekolah SMPN 1 Tamansari</span>
+                <div className="mt-5 text-gray-500 text-sm">
+                  <span>- Kepala Sekolah SMPN 1 Tamansari Satu Atap</span>
                 </div>
               </motion.div>
 
