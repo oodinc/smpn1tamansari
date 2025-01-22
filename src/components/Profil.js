@@ -77,9 +77,6 @@ const Profile = () => {
                 transition={{ duration: 1 }}
                 className="bg-white p-10 rounded-xl shadow-2xl border border-gray-200"
               >
-                <p className="text-lg leading-relaxed text-gray-700">
-                  {headmasterMessage.message}
-                </p>
                 <div
                   className="text-lg leading-relaxed text-gray-700 leading-relaxed quill-description"
                   dangerouslySetInnerHTML={{

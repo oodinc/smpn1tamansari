@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LoadingSpinner from "../LoadingSpinner";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const SambutanAdmin = () => {
   const [headmasterMessage, setHeadmasterMessage] = useState(null);
@@ -9,6 +11,7 @@ const SambutanAdmin = () => {
   const [newImage, setNewImage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
+  const quillRef = useRef(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -59,6 +62,10 @@ const SambutanAdmin = () => {
     setNewImage(e.target.files[0]);
   };
 
+  const handleTextChange = (value) => {
+    setNewDescription(value);
+  };
+
   if (isLoading || isUpdating) {
     return (
       <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
@@ -83,24 +90,17 @@ const SambutanAdmin = () => {
               onSubmit={handleUpdateHeadmasterMessage}
               className="space-y-4"
             >
-              <label className="block text-gray-600">Salam</label>
-              <textarea
-                placeholder="Sambutan"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                rows="4"
-                required
-              />
-              <label className="block text-gray-600">Deskripsi</label>
-              <textarea
-                placeholder="Deskripsi"
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md"
-                rows="4"
-                required
-              />
+              <label className="block text-gray-600">Teks Sambutan</label>
+              <div>
+                <ReactQuill
+                  ref={quillRef}
+                  value={newDescription}
+                  onChange={handleTextChange}
+                  theme="snow"
+                  placeholder="Masukkan Teks Sejarah"
+                />
+              </div>
+
               <label className="block text-gray-600">Nama Kepala Sekolah</label>
               <input
                 type="text"
@@ -110,7 +110,9 @@ const SambutanAdmin = () => {
                 className="w-full p-3 border border-gray-300 rounded-md"
                 required
               />
-              <label className="block text-gray-600">Gambar Kepala Sekolah</label>
+              <label className="block text-gray-600">
+                Gambar Kepala Sekolah
+              </label>
               <input
                 type="file"
                 onChange={handleFileChange}
@@ -131,19 +133,29 @@ const SambutanAdmin = () => {
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
               Bagian Sambutan Kepala Sekolah Saat Ini
             </h3>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h4 className="text-3xl font-bold">{headmasterMessage.message}</h4>
-              <p className="mt-4 text-xl">{headmasterMessage.description}</p>
-              <p className="mt-2 text-lg font-medium">
-                {headmasterMessage.headmasterName}
-              </p>
-              {headmasterMessage.image && (
-                <img
-                  src={headmasterMessage.image}
-                  alt="Kepala Sekolah"
-                  className="mt-4 w-64 h-64 object-cover"
-                />
-              )}
+            <div className="bg-gradient-to-br from-blue-50 via-white to-gray-100 p-6 rounded-lg shadow-lg border border-gray-200">
+              <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                {headmasterMessage.image && (
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={headmasterMessage.image}
+                      alt="Kepala Sekolah"
+                      className="w-40 h-40 object-cover rounded-full border-4 border-blue-500"
+                    />
+                    <p className="mt-4 text-xl font-bold text-gray-700 text-center">
+                      {headmasterMessage.headmasterName}
+                    </p>
+                  </div>
+                )}
+                <div className="flex-1">
+                  <div
+                    className="mt-4 text-lg text-gray-800 leading-relaxed quill-description"
+                    dangerouslySetInnerHTML={{
+                      __html: headmasterMessage.description,
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}
