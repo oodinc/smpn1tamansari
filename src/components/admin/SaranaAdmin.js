@@ -46,7 +46,11 @@ const SaranaAdmin = () => {
     setIsUpdating(true); // Mulai memperbarui sarana
     const formData = new FormData();
     formData.append("name", selectedSarana.name);
-    if (selectedSarana.image) formData.append("image", selectedSarana.image);
+    if (selectedSarana.image instanceof File) {
+      formData.append("image", selectedSarana.image);
+    } else if (newImage) {
+      formData.append("image", newImage);
+    }
 
     fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${selectedSarana.id}`, {
       method: "PUT",
