@@ -115,7 +115,7 @@ const Berita = () => {
                   <FaBullhorn className="text-blue-500 text-3xl mr-4" />
                   <div className="flex-1">
                     <h3 className="font-semibold text-xl text-gray-800">
-                      {truncateText(item.title, 35)}
+                      {truncateText(item.title, 20)}
                     </h3>
                     <p className="text-gray-500 text-sm">
                       {new Date(item.publishedDate).toLocaleDateString(
