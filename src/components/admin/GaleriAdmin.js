@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import LoadingSpinner from "../LoadingSpinner";
 
 const GaleriAdmin = () => {
   const [galeri, setGaleri] = useState([]);
@@ -7,28 +6,22 @@ const GaleriAdmin = () => {
   const [selectedGaleri, setSelectedGaleri] = useState(null);
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCreating, setIsCreating] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  
+  const [titleError, setTitleError] = useState(""); // To hold error message
+
   // Fetch gallery items from backend
   useEffect(() => {
-    setIsLoading(true); // Mulai loading
-    fetch("https://smpn1tamansari-api.vercel.app/api/galeri")
+    fetch("http://localhost:5000/api/galeri")
       .then((response) => response.json())
-      .then((data) => setGaleri(data))
-      .finally(() => setIsLoading(false));
+      .then((data) => setGaleri(data));
   }, []);
 
   // Handle create gallery
   const handleCreateGaleri = () => {
-    setIsCreating(true); // Mulai membuat galeri
     const formData = new FormData();
     formData.append("title", newTitle);
     if (newImage) formData.append("image", newImage);
 
-    fetch("https://smpn1tamansari-api.vercel.app/api/galeri", {
+    fetch("http://localhost:5000/api/galeri", {
       method: "POST",
       body: formData,
     })
@@ -37,18 +30,16 @@ const GaleriAdmin = () => {
         setGaleri([...galeri, data]);
         setNewTitle("");
         setNewImage(null);
-      })
-      .finally(() => setIsCreating(false)); // Selesai membuat galeri
+      });
   };
 
   // Handle update gallery
   const handleUpdateGaleri = () => {
-    setIsUpdating(true); // Mulai memperbarui galeri
     const formData = new FormData();
     formData.append("title", selectedGaleri.title);
     if (selectedGaleri.image) formData.append("image", selectedGaleri.image);
 
-    fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${selectedGaleri.id}`, {
+    fetch(`http://localhost:5000/api/galeri/${selectedGaleri.id}`, {
       method: "PUT",
       body: formData,
     })
@@ -56,20 +47,16 @@ const GaleriAdmin = () => {
       .then((data) => {
         setGaleri(galeri.map((item) => (item.id === data.id ? data : item)));
         closeModal();
-      })
-      .finally(() => setIsUpdating(false)); // Selesai memperbarui galeri
+      });
   };
 
   // Handle delete gallery
   const handleDelete = (id) => {
-    setIsDeleting(true); // Mulai menghapus galeri
-    fetch(`https://smpn1tamansari-api.vercel.app/api/galeri/${id}`, {
+    fetch(`http://localhost:5000/api/galeri/${id}`, {
       method: "DELETE",
-    })
-      .then(() => {
-        setGaleri(galeri.filter((item) => item.id !== id));
-      })
-      .finally(() => setIsDeleting(false)); // Selesai menghapus galeri
+    }).then(() => {
+      setGaleri(galeri.filter((item) => item.id !== id));
+    });
   };
 
   const openModal = (item) => {
@@ -82,13 +69,15 @@ const GaleriAdmin = () => {
     setSelectedGaleri(null);
   };
 
-  if (isLoading || isCreating || isUpdating || isDeleting) {
-    return (
-      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center z-50">
-        <LoadingSpinner />
-      </div>
-    );
-  }
+  const handleTitleChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 30) {
+      setTitleError("Judul maksimal 30 karakter");
+    } else {
+      setTitleError(""); // Clear error when within limit
+    }
+    setNewTitle(value);
+  };
 
   return (
     <div className="bg-gray-50 py-12">
@@ -109,16 +98,17 @@ const GaleriAdmin = () => {
             }}
             className="space-y-4"
           >
-            {/* Keterangan Nama */}
-            <label className="block text-gray-700">Nama Galeri</label>
             <input
               type="text"
               placeholder="Judul Galeri"
               value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
+              onChange={handleTitleChange}
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+            {titleError && (
+              <p className="text-red-500 text-sm">{titleError}</p> // Error message
+            )}
             <input
               type="file"
               onChange={(e) => setNewImage(e.target.files[0])}
@@ -127,6 +117,7 @@ const GaleriAdmin = () => {
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              disabled={newTitle.length > 30} // Disable if title exceeds 30 characters
             >
               Tambah Galeri
             </button>
@@ -153,7 +144,7 @@ const GaleriAdmin = () => {
                   <td className="px-4 py-2">
                     {item.image && (
                       <img
-                        src={item.image}
+                        src={`http://localhost:5000${item.image}`}
                         alt={item.title}
                         className="w-20 h-20 object-cover"
                       />
@@ -191,7 +182,6 @@ const GaleriAdmin = () => {
                 }}
                 className="space-y-4"
               >
-                <label className="block text-gray-700">Nama Galeri</label>
                 <input
                   type="text"
                   value={selectedGaleri.title}
