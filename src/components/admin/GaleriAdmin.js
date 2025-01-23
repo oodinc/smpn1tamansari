@@ -6,7 +6,8 @@ const GaleriAdmin = () => {
   const [selectedGaleri, setSelectedGaleri] = useState(null);
   const [newTitle, setNewTitle] = useState("");
   const [newImage, setNewImage] = useState("");
-  const [titleError, setTitleError] = useState(""); // To hold error message
+  const [titleError, setTitleError] = useState(""); // Error message for creating new gallery
+  const [editTitleError, setEditTitleError] = useState(""); // Error message for editing gallery
 
   // Fetch gallery items from backend
   useEffect(() => {
@@ -79,6 +80,19 @@ const GaleriAdmin = () => {
     setNewTitle(value);
   };
 
+  const handleEditTitleChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 30) {
+      setEditTitleError("Judul maksimal 30 karakter");
+    } else {
+      setEditTitleError(""); // Clear error when within limit
+    }
+    setSelectedGaleri({
+      ...selectedGaleri,
+      title: value,
+    });
+  };
+
   return (
     <div className="bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto p-4">
@@ -107,7 +121,7 @@ const GaleriAdmin = () => {
               required
             />
             {titleError && (
-              <p className="text-red-500 text-sm">{titleError}</p> // Error message
+              <p className="text-red-500 text-sm">{titleError}</p>
             )}
             <input
               type="file"
@@ -117,7 +131,7 @@ const GaleriAdmin = () => {
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-md"
-              disabled={newTitle.length > 30} // Disable if title exceeds 30 characters
+              disabled={newTitle.length > 30}
             >
               Tambah Galeri
             </button>
@@ -185,15 +199,13 @@ const GaleriAdmin = () => {
                 <input
                   type="text"
                   value={selectedGaleri.title}
-                  onChange={(e) =>
-                    setSelectedGaleri({
-                      ...selectedGaleri,
-                      title: e.target.value,
-                    })
-                  }
+                  onChange={handleEditTitleChange}
                   className="w-full p-3 border border-gray-300 rounded-md"
                   required
                 />
+                {editTitleError && (
+                  <p className="text-red-500 text-sm">{editTitleError}</p>
+                )}
                 <input
                   type="file"
                   onChange={(e) =>
