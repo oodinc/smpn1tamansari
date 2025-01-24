@@ -548,7 +548,7 @@ const Profile = () => {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
+                  className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
