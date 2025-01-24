@@ -10,9 +10,15 @@ const Layanan = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/galeri").then((res) => res.json()),
-      fetch("https://smpn1tamansari-api.vercel.app/api/sarana").then((res) => res.json()),
+      fetch("https://smpn1tamansari-api.vercel.app/api/extracurriculars").then(
+        (res) => res.json()
+      ),
+      fetch("https://smpn1tamansari-api.vercel.app/api/galeri").then((res) =>
+        res.json()
+      ),
+      fetch("https://smpn1tamansari-api.vercel.app/api/sarana").then((res) =>
+        res.json()
+      ),
     ])
       .then(([ekskulData, galeriData, saranaData]) => {
         setExtracurriculars(ekskulData);
@@ -49,7 +55,7 @@ const Layanan = () => {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
+                  className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
@@ -113,29 +119,34 @@ const Layanan = () => {
         <div className="max-w-7xl mx-auto px-4">
           <section className="mb-16">
             <h2 className="text-4xl font-semibold text-center mb-10 text-gray-800">
-              Sarana dan Prasarana
+              Sarana dan Prasaranaa
             </h2>
             <p className="text-lg text-center text-gray-700">
               SMPN 1 Tamansari memiliki berbagai sarana dan prasarana yang
               mendukung proses belajar mengajar.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-              {sarana.map((sarana, index) => (
+              {sarana.map((item, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
+                  className="relative group bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                 >
                   <div className="relative w-full h-48 mb-4">
                     <img
-                      src={sarana.image}
-                      alt={sarana.name}
+                      src={item.image}
+                      alt={item.name}
                       className="object-cover w-full h-full rounded-lg"
                     />
+
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
+
+                    {/* Text on hover */}
+                    <div className="absolute bottom-4 left-4 text-white text-lg font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <span>{item.name}</span>
+                    </div>
                   </div>
-                  <h3 className="font-bold text-2xl text-center">
-                    {sarana.name}
-                  </h3>
                 </motion.div>
               ))}
             </div>

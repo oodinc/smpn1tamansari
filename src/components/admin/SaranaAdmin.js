@@ -11,10 +11,11 @@ const SaranaAdmin = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [nameError, setNameError] = useState("");
 
   // Fetch sarana from backend
   useEffect(() => {
-    setIsLoading(true); 
+    setIsLoading(true);
     fetch("https://smpn1tamansari-api.vercel.app/api/sarana")
       .then((response) => response.json())
       .then((data) => setSarana(data))
@@ -52,10 +53,13 @@ const SaranaAdmin = () => {
       formData.append("image", newImage);
     }
 
-    fetch(`https://smpn1tamansari-api.vercel.app/api/sarana/${selectedSarana.id}`, {
-      method: "PUT",
-      body: formData,
-    })
+    fetch(
+      `https://smpn1tamansari-api.vercel.app/api/sarana/${selectedSarana.id}`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         setSarana(sarana.map((item) => (item.id === data.id ? data : item)));
@@ -74,6 +78,26 @@ const SaranaAdmin = () => {
         setSarana(sarana.filter((item) => item.id !== id));
       })
       .finally(() => setIsDeleting(false)); // Selesai menghapus sarana
+  };
+
+  const handleNewNameChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 30) {
+      setNameError("Nama maksimal 30 karakter");
+    } else {
+      setNameError(""); // Hapus error saat valid
+    }
+    setNewName(value);
+  };
+
+  const handleEditNameChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 30) {
+      setNameError("Nama maksimal 30 karakter");
+    } else {
+      setNameError(""); // Hapus error saat valid
+    }
+    setSelectedSarana({ ...selectedSarana, name: value });
   };
 
   const openModal = (item) => {
@@ -119,10 +143,12 @@ const SaranaAdmin = () => {
               type="text"
               placeholder="Nama Sarana"
               value={newName}
-              onChange={(e) => setNewName(e.target.value)}
+              onChange={handleNewNameChange}
               className="w-full p-3 border border-gray-300 rounded-md"
               required
             />
+            {nameError && <p className="text-red-500 text-sm">{nameError}</p>}
+
             <input
               type="file"
               onChange={(e) => setNewImage(e.target.files[0])}
@@ -131,6 +157,7 @@ const SaranaAdmin = () => {
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-md"
+              disabled={nameError !== ""}
             >
               Tambah Sarana
             </button>
@@ -198,16 +225,15 @@ const SaranaAdmin = () => {
                 <label className="block text-gray-700">Nama Sarana</label>
                 <input
                   type="text"
-                  value={selectedSarana.name}
-                  onChange={(e) =>
-                    setSelectedSarana({
-                      ...selectedSarana,
-                      name: e.target.value,
-                    })
-                  }
+                  value={selectedSarana?.name || ""}
+                  onChange={handleEditNameChange}
                   className="w-full p-3 border border-gray-300 rounded-md"
                   required
                 />
+                {nameError && (
+                  <p className="text-red-500 text-sm">{nameError}</p>
+                )}
+
                 <input
                   type="file"
                   onChange={(e) =>
@@ -229,6 +255,7 @@ const SaranaAdmin = () => {
                   <button
                     type="submit"
                     className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                    disabled={nameError !== ""}
                   >
                     Simpan
                   </button>

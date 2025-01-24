@@ -319,7 +319,7 @@ const Home = () => {
                   <SwiperSlide key={index} className="mb-6">
                     <motion.div
                       whileHover={{ scale: 1.05 }}
-                      className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
+                      className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                     >
                       <div className="relative w-full h-48 mb-4">
                         <img
@@ -351,7 +351,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="bg-white p-8 rounded-lg shadow-lg"
+              className="bg-white p-4 rounded-lg shadow-lg"
             >
               <p className="text-xl">
                 Kalender pendidikan untuk tahun ajaran {kalender[0]?.title}:
