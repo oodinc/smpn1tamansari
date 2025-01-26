@@ -46,9 +46,8 @@ const Layanan = () => {
               Ekstrakurikuler
             </h2>
             <p className="text-lg text-center text-gray-700">
-              SMPN 1 Tamansari menyediakan berbagai ekstrakurikuler yang
-              bertujuan untuk mengembangkan minat dan bakat siswa. Beberapa
-              ekstrakurikuler yang tersedia antara lain:
+              SMPN 1 Tamansari Satu Atap menyediakan berbagai ekstrakurikuler yang
+              bertujuan untuk mengembangkan minat dan bakat siswa. 
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
               {extracurriculars.map((ekstra, index) => (
@@ -82,8 +81,7 @@ const Layanan = () => {
               Galeri
             </h2>
             <p className="text-lg text-center text-gray-700 mb-8">
-              Berikut adalah beberapa foto kegiatan di SMPN 1 Tamansari yang
-              memperlihatkan suasana dan kegiatan di sekolah kami.
+              Berikut adalah beberapa foto kegiatan di SMPN 1 Tamansari Satu Atap
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {galeri.map((item, index) => (
@@ -122,7 +120,7 @@ const Layanan = () => {
               Sarana dan Prasaranaa
             </h2>
             <p className="text-lg text-center text-gray-700">
-              SMPN 1 Tamansari memiliki berbagai sarana dan prasarana yang
+              SMPN 1 Tamansari Satu Atap memiliki berbagai sarana dan prasarana yang
               mendukung proses belajar mengajar.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
