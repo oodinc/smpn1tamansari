@@ -83,7 +83,6 @@ const Home = () => {
       {/* Hero Section */}
       <div id="home" className="relative bg-gray-100">
         <div className="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center h-screen">
-          {/* Text Section */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
