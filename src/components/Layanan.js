@@ -90,7 +90,7 @@ const Layanan = () => {
                   whileHover={{ scale: 1.05 }}
                   className="relative group bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                 >
-                  <div className="relative w-full h-48 mb-4">
+                  <div className="relative w-full h-48">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -130,7 +130,7 @@ const Layanan = () => {
                   whileHover={{ scale: 1.05 }}
                   className="relative group bg-white p-4 rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition duration-300"
                 >
-                  <div className="relative w-full h-48 mb-4">
+                  <div className="relative w-full h-48">
                     <img
                       src={item.image}
                       alt={item.name}
