@@ -106,7 +106,7 @@ const Berita = () => {
             Pengumuman Sekolah
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {pengumuman.map((item, index) => (
+          {pengumuman.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate)).map((item, index) => (
               <div
                 key={index}
                 className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 h-48 relative"
